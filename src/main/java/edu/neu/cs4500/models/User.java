@@ -9,7 +9,6 @@ import javax.persistence.Table;
 @Entity 
 @Table(name="users")
 public class User {
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -18,17 +17,6 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String role;
-	
-	public User(int id, String username, String password, String firstName, String lastName, String role) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
-	}
-	
 	
 	public int getId() {
 		return id;
@@ -66,5 +54,4 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
 }
