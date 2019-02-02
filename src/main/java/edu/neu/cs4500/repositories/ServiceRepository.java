@@ -1,4 +1,17 @@
 package edu.neu.cs4500.repositories;
 
-public interface ServiceRepository {
+import java.util.List;
+
+import edu.neu.cs4500.models.Service;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+
+
+public interface ServiceRepository extends CrudRepository<Service, Integer> {
+    @Query(value="SELECT service FROM Service service")
+    public List<Service> findAllServices();
+    @Query(value="SELECT service FROM Service service WHERE service.id=:id")
+    public Service findServiceById(@Param("id") Integer id);
 }
