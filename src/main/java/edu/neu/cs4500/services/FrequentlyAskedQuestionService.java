@@ -36,6 +36,9 @@ public class FrequentlyAskedQuestionService {
             @PathVariable("faqId") Integer id) {
         Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
         FrequentlyAskedQuestion question = optionalQuestion.orElse(null);
+        if (question == null) {
+            return null;
+        }
         return question.getAnswers();
     }
 
