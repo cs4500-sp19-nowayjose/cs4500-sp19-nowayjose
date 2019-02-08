@@ -1,5 +1,6 @@
 package edu.neu.cs4500.services;
 
+import edu.neu.cs4500.models.FrequentlyAskedAnswer;
 import edu.neu.cs4500.models.FrequentlyAskedQuestion;
 import edu.neu.cs4500.repositories.FrequentlyAskedQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,13 @@ public class FrequentlyAskedQuestionService {
             @PathVariable("faqId") Integer id) {
         Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
         return optionalQuestion.orElse(null);
+    }
+
+    @GetMapping("api/faq/{faqId}/answers")
+    public List<FrequentlyAskedAnswer> findAllAnswersToFaq(
+            @PathVariable("faqId") Integer id) {
+        Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
+        FrequentlyAskedQuestion question = optionalQuestion.orElse(null);
+        return question.getAnswers();
     }
 }
