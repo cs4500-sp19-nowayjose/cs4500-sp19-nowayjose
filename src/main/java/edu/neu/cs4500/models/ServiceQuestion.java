@@ -1,5 +1,9 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name="service_questions")
 public class ServiceQuestion {
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
@@ -23,10 +28,24 @@ public class ServiceQuestion {
     private ServiceQuestionType serviceQuestionType;
 
     @OneToMany(mappedBy="serviceQuestion")
+    @JsonIgnore
     private List<ServiceQuestionAnswer> serviceQuestionAnswers;
 
     @ManyToOne
     private Service service;
+
+    // Need an explicit default now
+    public ServiceQuestion() {
+        super();
+    }
+
+    // Allows mapping a JSON request with `{"id": id}` to as the serviceQuestion field
+    // to a ServiceQuestion with that id.
+    @JsonCreator
+    public ServiceQuestion(@JsonProperty("id") int id) {
+        super();
+        this.id = id;
+    }
 
     public Service getService() {
         return service;
@@ -38,10 +57,6 @@ public class ServiceQuestion {
 
     public List<ServiceQuestionAnswer> getServiceQuestionAnswers() {
         return serviceQuestionAnswers;
-    }
-
-    public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> serviceQuestionAnswers) {
-        this.serviceQuestionAnswers = serviceQuestionAnswers;
     }
 
     public Integer getId() {

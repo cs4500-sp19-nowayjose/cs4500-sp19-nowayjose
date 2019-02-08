@@ -1,13 +1,15 @@
-DROP DATABASE IF EXISTS service_question_answers;
+DROP TABLE IF EXISTS service_question_answers;
 CREATE TABLE service_question_answers (
-   id integer not null auto_increment,
-   true_false_answer bit,
+   id int(11) NOT NULL AUTO_INCREMENT,
+   true_false_answer boolean,
    max_range_answer integer,
    min_range_answer integer,
    choice_answer integer,
-   updatedBy_id integer,
+   user_id integer,
    service_question_id integer,
-   primary key (id),
-   foreign key (updatedBy_id) references users (id),
+   created_at             DATETIME,
+   updated_at             DATETIME,
+   PRIMARY KEY (id),
+   foreign key (user_id) references users (id),
    foreign key (service_question_id) references service_questions (id)
-) ENGINE=InnoDB
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -12,6 +12,7 @@ public class Service {
 	private String serviceName;
 	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ServiceQuestion> serviceQuestions;
+
 	@ManyToMany(mappedBy="services")
 	private List<ServiceCategory> serviceCategories;
 

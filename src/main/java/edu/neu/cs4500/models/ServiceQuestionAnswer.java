@@ -1,6 +1,6 @@
 package edu.neu.cs4500.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,23 +8,33 @@ import java.util.Date;
 @Entity
 @Table(name="service_question_answers")
 public class ServiceQuestionAnswer {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
+
     private Boolean trueFalseAnswer;
     private Integer maxRangeAnswer;
     private Integer minRangeAnswer;
     private Integer choiceAnswer;
+
     @OneToOne
-    @MapsId
-    @JsonIgnore
-    private User updatedBy;
+    // In JSON format, include a "user" field with just the User's ID
+    // instead of ignoring it or including the full nested object
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private User user;
+
     @ManyToOne
-    @JsonIgnore
-    @MapsId
+    // In JSON format, include a "serviceQuestion" field with just the question's ID
+    // instead of ignoring it or including the full nested object
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private ServiceQuestion serviceQuestion;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
@@ -68,12 +78,12 @@ public class ServiceQuestionAnswer {
         this.choiceAnswer = choiceAnswer;
     }
 
-    public User getUpdatedBy() {
-        return updatedBy;
+    public User getUser() {
+        return user;
     }
 
-    public void setUpdatedBy(User updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public ServiceQuestion getServiceQuestion() {
