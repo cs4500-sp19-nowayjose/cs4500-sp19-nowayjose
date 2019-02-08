@@ -38,4 +38,21 @@ public class FrequentlyAskedQuestionService {
         FrequentlyAskedQuestion question = optionalQuestion.orElse(null);
         return question.getAnswers();
     }
+
+    @PutMapping ("/api/faq/{faqId}")
+    public FrequentlyAskedQuestion updateQuestionById(
+            @PathVariable("fagId") Integer id,
+            @RequestBody FrequentlyAskedQuestion newQuestion) {
+        Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
+        FrequentlyAskedQuestion question;
+        if (!optionalQuestion.isPresent()) {
+            return null;
+        }
+        else {
+            question = optionalQuestion.get();
+        }
+        question.setQuestion(newQuestion.getQuestion());
+        question.setTitle(newQuestion.getTitle());
+        return questionRepository.save(question);
+    }
 }
