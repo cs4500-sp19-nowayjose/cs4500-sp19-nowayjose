@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="questions")
+@Table(name="service_questions")
 public class ServiceQuestion {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

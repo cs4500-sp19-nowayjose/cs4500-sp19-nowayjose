@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="answers")
+@Table(name="service_question_answers")
 public class ServiceQuestionAnswer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
