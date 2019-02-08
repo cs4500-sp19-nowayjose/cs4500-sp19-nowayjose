@@ -2,6 +2,7 @@ package edu.neu.cs4500.models;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="questions")
@@ -22,7 +23,26 @@ public class Question {
     private Type type;
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Answer answer;
+    private List<Answer> answers;
+
+    @ManyToOne
+    private Service service;
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 
     public Integer getId() {
         return id;
@@ -70,13 +90,5 @@ public class Question {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public Answer getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(Answer answer) {
-        this.answer = answer;
     }
 }
