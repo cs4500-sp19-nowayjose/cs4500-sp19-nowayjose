@@ -22,7 +22,7 @@ public class ServiceQuestion {
     @Enumerated(EnumType.STRING)
     private ServiceQuestionType serviceQuestionType;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy="serviceQuestion")
     private List<ServiceQuestionAnswer> serviceQuestionAnswers;
 
     @ManyToOne

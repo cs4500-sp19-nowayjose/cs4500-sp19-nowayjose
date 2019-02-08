@@ -1,5 +1,7 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -9,29 +11,22 @@ public class ServiceQuestionAnswer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    private String body;
-
+    private Boolean trueFalseAnswer;
+    private Integer maxRangeAnswer;
+    private Integer minRangeAnswer;
+    private Integer choiceAnswer;
     @OneToOne
     @MapsId
+    @JsonIgnore
     private User updatedBy;
-
+    @ManyToOne
+    @JsonIgnore
+    @MapsId
+    private ServiceQuestion serviceQuestion;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-
-    @ManyToOne
-    private ServiceQuestion serviceQuestion;
-
-    public ServiceQuestion getServiceQuestion() {
-        return serviceQuestion;
-    }
-
-    public void setServiceQuestion(ServiceQuestion serviceQuestion) {
-        this.serviceQuestion = serviceQuestion;
-    }
 
     public Integer getId() {
         return id;
@@ -41,12 +36,36 @@ public class ServiceQuestionAnswer {
         this.id = id;
     }
 
-    public String getBody() {
-        return body;
+    public Boolean getTrueFalseAnswer() {
+        return trueFalseAnswer;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setTrueFalseAnswer(Boolean trueFalseAnswer) {
+        this.trueFalseAnswer = trueFalseAnswer;
+    }
+
+    public Integer getMaxRangeAnswer() {
+        return maxRangeAnswer;
+    }
+
+    public void setMaxRangeAnswer(Integer maxRangeAnswer) {
+        this.maxRangeAnswer = maxRangeAnswer;
+    }
+
+    public Integer getMinRangeAnswer() {
+        return minRangeAnswer;
+    }
+
+    public void setMinRangeAnswer(Integer minRangeAnswer) {
+        this.minRangeAnswer = minRangeAnswer;
+    }
+
+    public Integer getChoiceAnswer() {
+        return choiceAnswer;
+    }
+
+    public void setChoiceAnswer(Integer choiceAnswer) {
+        this.choiceAnswer = choiceAnswer;
     }
 
     public User getUpdatedBy() {
@@ -55,6 +74,14 @@ public class ServiceQuestionAnswer {
 
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public ServiceQuestion getServiceQuestion() {
+        return serviceQuestion;
+    }
+
+    public void setServiceQuestion(ServiceQuestion serviceQuestion) {
+        this.serviceQuestion = serviceQuestion;
     }
 
     public Date getCreatedAt() {
@@ -72,5 +99,4 @@ public class ServiceQuestionAnswer {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }
