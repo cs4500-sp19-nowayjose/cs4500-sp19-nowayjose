@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ServiceQuestionAnswerRepository extends CrudRepository<ServiceQuestionAnswer, Integer> {
 
-    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswers serviceQuestionAnswer")
+    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswer serviceQuestionAnswer")
     public List<ServiceQuestionAnswer> findAllServiceQuestionAnswers();
 
-    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswers serviceQuestionAnswer WHERE serviceQuestionAnswer.id=:id")
+    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswer serviceQuestionAnswer WHERE serviceQuestionAnswer.id=:id")
     public ServiceQuestionAnswer findServiceQuestionAnswerById(@Param("id") Integer id);
 
-    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswers serviceQuestionAnswer WHERE updatedBy.id=:user_id AND serviceQuestion.id=:service_question_id")
+    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswer serviceQuestionAnswer WHERE user.id=:user_id AND serviceQuestion.id=:service_question_id")
     public ServiceQuestionAnswer findUsersAnswerToServiceQuestion(
         @Param("service_question_id") Integer serviceQuestionId,
         @Param("user_id") Integer userId);

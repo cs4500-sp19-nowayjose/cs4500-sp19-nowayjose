@@ -1,11 +1,16 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity 
 @Table(name="users")
 public class User {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -14,14 +19,23 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String role;
-	@OneToMany(mappedBy="updatedBy")
+
+	public User() {
+		super();
+	}
+
+	@JsonCreator
+	public User(@JsonProperty("id") int id) {
+		super();
+		this.id = id;
+	}
+
+	@JsonIgnore
+	@OneToMany(mappedBy="user")
 	private List<ServiceQuestionAnswer> serviceQuestionAnswers;
 
 	public List<ServiceQuestionAnswer> getServiceQuestionAnswers() {
 		return serviceQuestionAnswers;
-	}
-	public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> serviceQuestionAnswers) {
-		this.serviceQuestionAnswers = serviceQuestionAnswers;
 	}
 	public int getId() {
 		return id;

@@ -1,6 +1,6 @@
 package edu.neu.cs4500.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,16 +15,22 @@ public class ServiceQuestionAnswer {
     private Integer maxRangeAnswer;
     private Integer minRangeAnswer;
     private Integer choiceAnswer;
+
     @OneToOne
     @MapsId
-    @JsonIgnore
-    private User updatedBy;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private User user;
+
     @ManyToOne
-    @JsonIgnore
     @MapsId
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private ServiceQuestion serviceQuestion;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
@@ -68,12 +74,12 @@ public class ServiceQuestionAnswer {
         this.choiceAnswer = choiceAnswer;
     }
 
-    public User getUpdatedBy() {
-        return updatedBy;
+    public User getUser() {
+        return user;
     }
 
-    public void setUpdatedBy(User updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public ServiceQuestion getServiceQuestion() {

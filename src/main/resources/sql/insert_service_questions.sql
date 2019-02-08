@@ -1,0 +1,1 @@
+INSERT INTO service_questions (id, title, description, created_at, updated_at, service_question_type, service_id) VALUES (1, 'What size houses can you clean (in square feet)?', 'Select the minimum and maximum size of houses that you can clean.', NOW(), NOW(), 'MINMAX', 123);

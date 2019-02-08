@@ -18,10 +18,6 @@ public class Service {
 		return serviceQuestions;
 	}
 
-	public void setServiceQuestions(List<ServiceQuestion> serviceQuestions) {
-		this.serviceQuestions = serviceQuestions;
-	}
-
 	public Integer getId() {
 		return id;
 	}
