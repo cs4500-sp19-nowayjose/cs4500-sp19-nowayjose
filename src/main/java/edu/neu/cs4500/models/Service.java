@@ -10,24 +10,41 @@ public class Service {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String serviceName;
-
 	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ServiceQuestion> serviceQuestions;
+
+	@ManyToMany(mappedBy="services")
+	private List<ServiceCategory> serviceCategories;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
 
 	public List<ServiceQuestion> getServiceQuestions() {
 		return serviceQuestions;
 	}
 
-	public Integer getId() {
-		return id;
+	public void setServiceQuestions(List<ServiceQuestion> serviceQuestions) {
+		this.serviceQuestions = serviceQuestions;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+
+	public List<ServiceCategory> getServiceCategories() {
+		return serviceCategories;
 	}
-	public String getServiceName() {
-		return serviceName;
-	}
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+
+	public void setServiceCategories(List<ServiceCategory> serviceCategories) {
+		this.serviceCategories = serviceCategories;
 	}
 }
