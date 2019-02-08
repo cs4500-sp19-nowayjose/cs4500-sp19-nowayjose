@@ -20,10 +20,13 @@ public class User {
 	private String lastName;
 	private String role;
 
+	// Need an explicit default now
 	public User() {
 		super();
 	}
 
+	// Allows mapping a JSON request with `{"id": id}` as the user field to a User with
+	// that id.
 	@JsonCreator
 	public User(@JsonProperty("id") int id) {
 		super();

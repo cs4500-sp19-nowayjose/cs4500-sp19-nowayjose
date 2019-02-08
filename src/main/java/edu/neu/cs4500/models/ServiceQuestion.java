@@ -34,10 +34,13 @@ public class ServiceQuestion {
     @ManyToOne
     private Service service;
 
+    // Need an explicit default now
     public ServiceQuestion() {
         super();
     }
 
+    // Allows mapping a JSON request with `{"id": id}` to as the serviceQuestion field
+    // to a ServiceQuestion with that id.
     @JsonCreator
     public ServiceQuestion(@JsonProperty("id") int id) {
         super();
