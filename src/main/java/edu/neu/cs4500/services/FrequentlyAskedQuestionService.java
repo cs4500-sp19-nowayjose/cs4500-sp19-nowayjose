@@ -40,7 +40,7 @@ public class FrequentlyAskedQuestionService {
     }
 
     @PutMapping ("/api/faq/{faqId}")
-    public FrequentlyAskedQuestion updateQuestionById(
+    public FrequentlyAskedQuestion updateFaqById(
             @PathVariable("fagId") Integer id,
             @RequestBody FrequentlyAskedQuestion newQuestion) {
         Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
@@ -54,5 +54,10 @@ public class FrequentlyAskedQuestionService {
         question.setQuestion(newQuestion.getQuestion());
         question.setTitle(newQuestion.getTitle());
         return questionRepository.save(question);
+    }
+
+    @DeleteMapping("api/faq/{faqId}")
+    public void removeFaqById(@PathVariable("faqId") Integer id) {
+        questionRepository.deleteById(id);
     }
 }
