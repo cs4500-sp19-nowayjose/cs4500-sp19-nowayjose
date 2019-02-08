@@ -8,22 +8,22 @@ import java.util.Date;
 @Entity
 @Table(name="service_question_answers")
 public class ServiceQuestionAnswer {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
+
     private Boolean trueFalseAnswer;
     private Integer maxRangeAnswer;
     private Integer minRangeAnswer;
     private Integer choiceAnswer;
 
     @OneToOne
-    @MapsId
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
     @ManyToOne
-    @MapsId
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private ServiceQuestion serviceQuestion;

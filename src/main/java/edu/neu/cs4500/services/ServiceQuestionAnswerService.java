@@ -1,9 +1,10 @@
 package edu.neu.cs4500.services;
 
-import edu.neu.cs4500.models.*;
+import edu.neu.cs4500.models.ServiceQuestion;
+import edu.neu.cs4500.models.ServiceQuestionAnswer;
+import edu.neu.cs4500.models.User;
 import edu.neu.cs4500.repositories.ServiceQuestionAnswerRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
-import edu.neu.cs4500.repositories.ServiceRepository;
 import edu.neu.cs4500.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ public class ServiceQuestionAnswerService {
 
 	@GetMapping(ROUTE)
 	public List<ServiceQuestionAnswer> findAllServiceQuestionAnswers() {
-		return answersRepository.findAllServiceQuestionAnswers();
+	    List<ServiceQuestionAnswer> sq = answersRepository.findAllServiceQuestionAnswers();
+	    return sq;
 	}
 
 	@GetMapping(ROUTE + "/{serviceQuestionAnswerId}")
