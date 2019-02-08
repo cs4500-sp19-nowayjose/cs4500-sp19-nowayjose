@@ -1,10 +1,7 @@
 package edu.neu.cs4500.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="services")
@@ -13,6 +10,18 @@ public class Service {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String serviceName;
+
+	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<ServiceQuestion> serviceQuestions;
+
+	public List<ServiceQuestion> getServiceQuestions() {
+		return serviceQuestions;
+	}
+
+	public void setServiceQuestions(List<ServiceQuestion> serviceQuestions) {
+		this.serviceQuestions = serviceQuestions;
+	}
+
 	public Integer getId() {
 		return id;
 	}
