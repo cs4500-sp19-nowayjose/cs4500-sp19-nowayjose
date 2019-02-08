@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="answers")
-public class Answer {
+public class ServiceQuestionAnswer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
@@ -23,14 +23,14 @@ public class Answer {
     private Date updatedAt;
 
     @ManyToOne
-    private Question question;
+    private ServiceQuestion serviceQuestion;
 
-    public Question getQuestion() {
-        return question;
+    public ServiceQuestion getServiceQuestion() {
+        return serviceQuestion;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setServiceQuestion(ServiceQuestion serviceQuestion) {
+        this.serviceQuestion = serviceQuestion;
     }
 
     public Integer getId() {

@@ -10,16 +10,16 @@ public class Service {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String serviceName;
-	
-	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-	private List<Question> questions;
 
-	public List<Question> getQuestions() {
-		return questions;
+	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<ServiceQuestion> serviceQuestions;
+
+	public List<ServiceQuestion> getServiceQuestions() {
+		return serviceQuestions;
 	}
 
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public void setServiceQuestions(List<ServiceQuestion> serviceQuestions) {
+		this.serviceQuestions = serviceQuestions;
 	}
 
 	public Integer getId() {

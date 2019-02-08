@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name="questions")
-public class Question {
+public class ServiceQuestion {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
@@ -20,10 +20,10 @@ public class Question {
     private Date updatedAt;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private ServiceQuestionType serviceQuestionType;
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Answer> answers;
+    private List<ServiceQuestionAnswer> serviceQuestionAnswers;
 
     @ManyToOne
     private Service service;
@@ -36,12 +36,12 @@ public class Question {
         this.service = service;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<ServiceQuestionAnswer> getServiceQuestionAnswers() {
+        return serviceQuestionAnswers;
     }
 
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
+    public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> serviceQuestionAnswers) {
+        this.serviceQuestionAnswers = serviceQuestionAnswers;
     }
 
     public Integer getId() {
@@ -84,11 +84,11 @@ public class Question {
         this.updatedAt = updatedAt;
     }
 
-    public Type getType() {
-        return type;
+    public ServiceQuestionType getServiceQuestionType() {
+        return serviceQuestionType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setServiceQuestionType(ServiceQuestionType serviceQuestionType) {
+        this.serviceQuestionType = serviceQuestionType;
     }
 }
