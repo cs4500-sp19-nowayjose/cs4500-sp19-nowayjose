@@ -36,11 +36,11 @@ public class FrequentlyAskedAnswerService {
 	public FrequentlyAskedAnswer updateFAQAnswer(
 			@PathVariable("id") Integer id,
 			@RequestBody FrequentlyAskedAnswer newAnswer) {
-		FrequentlyAskedAnswer answer = answerRepository.findFAQAnswerById(id);
+		FrequentlyAskedAnswer answer = answerRepository.findById(id).get();
 		answer.setAnswer(newAnswer.getAnswer());
-		answer.setFrequentlyAskedQuestion(newAnswer.getFrequentlyAskedQuestion());
-		answer.setUser(newAnswer.getUser());
-		answer.setQuestion(newAnswer.getQuestion());
+//		answer.setFrequentlyAskedQuestion(newAnswer.getFrequentlyAskedQuestion());
+//		answer.setUser(newAnswer.getUser());
+//		answer.setQuestion(newAnswer.getQuestion());
 		return answerRepository.save(answer);
 	}
 	@PostMapping("/api/users/{userId}/answers")
@@ -54,7 +54,7 @@ public class FrequentlyAskedAnswerService {
 	@GetMapping("/api/users/{userId}/answers")
 	public List<FrequentlyAskedAnswer> findFAQAnswersForUser(
 			@PathVariable("userId") Integer userId) {
-		List<FrequentlyAskedAnswer> allAnswers = answerRepository.findAllFAQAnswers();
+		List<FrequentlyAskedAnswer> allAnswers = (List<FrequentlyAskedAnswer>) answerRepository.findAll();
 		List<FrequentlyAskedAnswer> result = new ArrayList<>();
 		for (FrequentlyAskedAnswer answer: allAnswers) {
 			if (answer.getUser().getId() == userId) {
@@ -65,11 +65,11 @@ public class FrequentlyAskedAnswerService {
 	}
 	@GetMapping("/api/answers")
 	public List<FrequentlyAskedAnswer> findAllFrequentlyAskedAnswers() {
-		return answerRepository.findAllFAQAnswers();
+		return (List<FrequentlyAskedAnswer>) answerRepository.findAll();
 	}
 	@GetMapping("/api/answers/{id}")
 	public FrequentlyAskedAnswer findFAQAnswersById(
 			@PathVariable("id") Integer id) {
-		return answerRepository.findFAQAnswerById(id);
+		return answerRepository.findById(id).get();
 	}
 }
