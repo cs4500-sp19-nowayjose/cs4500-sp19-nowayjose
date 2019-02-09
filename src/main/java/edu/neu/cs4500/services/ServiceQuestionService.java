@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.neu.cs4500.models.ServiceQuestionAnswer;
+
 import edu.neu.cs4500.models.ServiceQuestion;
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
 
