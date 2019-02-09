@@ -40,6 +40,10 @@ public class ServiceCategory {
         return services;
     }
 
+    public void addServiceToCategory(Service service) {
+    	this.services.add(service);
+    }
+    
     public void setServices(List<Service> services) {
         this.services = services;
     }
