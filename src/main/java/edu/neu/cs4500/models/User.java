@@ -19,6 +19,10 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String role;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy="providers")
+	private List<Service> services;
 
 	// Need an explicit default now
 	public User() {
@@ -75,5 +79,13 @@ public class User {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public List<Service> getServices() {
+		return services;
+	}
+
+	public void setServices(List<Service> services) {
+		this.services = services;
 	}
 }
