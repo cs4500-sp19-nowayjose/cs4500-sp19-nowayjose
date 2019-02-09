@@ -106,4 +106,16 @@ public class ServiceQuestion {
     public void setServiceQuestionType(ServiceQuestionType serviceQuestionType) {
         this.serviceQuestionType = serviceQuestionType;
     }
+
+    public void addServiceQuestionAnswer(ServiceQuestionAnswer ans){
+        this.serviceQuestionAnswers.add(ans);
+    }
+
+    public void removeServiceQuestionAnswer(Integer ansId){
+        for (ServiceQuestionAnswer ans: serviceQuestionAnswers){
+            if (ans.getId() == ansId){
+                serviceQuestionAnswers.remove(ans);
+            }
+        }
+    }
 }
