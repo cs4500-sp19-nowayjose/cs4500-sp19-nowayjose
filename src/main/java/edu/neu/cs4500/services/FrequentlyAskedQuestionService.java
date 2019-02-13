@@ -14,17 +14,17 @@ public class FrequentlyAskedQuestionService {
     @Autowired
     FrequentlyAskedQuestionRepository questionRepository;
 
-    @PostMapping("/api/faq")
+    @PostMapping("/api/faqs")
     public FrequentlyAskedQuestion createFaq(@RequestBody FrequentlyAskedQuestion faq) {
         return questionRepository.save(faq);
     }
 
-    @GetMapping("/api/faq")
+    @GetMapping("/api/faqs")
     public List<FrequentlyAskedQuestion> findAllFaqs() {
         return (List<FrequentlyAskedQuestion>) questionRepository.findAll();
     }
 
-    @GetMapping("/api/faq/{faqId}")
+    @GetMapping("/api/faqs/{faqId}")
     public FrequentlyAskedQuestion findFaqById(
             @PathVariable("faqId") Integer id) {
         Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
