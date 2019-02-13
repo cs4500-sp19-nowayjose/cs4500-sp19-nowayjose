@@ -68,6 +68,6 @@ public class FrequentlyAskedAnswerService {
 	@GetMapping("/api/faq-answers/{id}")
 	public FrequentlyAskedAnswer findFAQAnswersById(
 			@PathVariable("id") Integer id) {
-		return answerRepository.findById(id).get();
+		return answerRepository.findById(id).orElse(null);
 	}
 }
