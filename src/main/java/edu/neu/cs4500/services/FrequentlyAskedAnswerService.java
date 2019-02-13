@@ -37,7 +37,10 @@ public class FrequentlyAskedAnswerService {
 	public FrequentlyAskedAnswer updateFAQAnswer(
 			@PathVariable("id") Integer id,
 			@RequestBody FrequentlyAskedAnswer newAnswer) {
-		FrequentlyAskedAnswer answer = answerRepository.findById(id).get();
+		FrequentlyAskedAnswer answer = answerRepository.findById(id).orElse(null);
+		if (answer == null) {
+			return null;
+		}
 		answer.setAnswer(newAnswer.getAnswer());
 		return answerRepository.save(answer);
 	}
