@@ -38,9 +38,6 @@ public class FrequentlyAskedAnswerService {
 			@RequestBody FrequentlyAskedAnswer newAnswer) {
 		FrequentlyAskedAnswer answer = answerRepository.findById(id).get();
 		answer.setAnswer(newAnswer.getAnswer());
-//		answer.setFrequentlyAskedQuestion(newAnswer.getFrequentlyAskedQuestion());
-//		answer.setUser(newAnswer.getUser());
-//		answer.setQuestion(newAnswer.getQuestion());
 		return answerRepository.save(answer);
 	}
 	@PostMapping("/api/users/{userId}/answers")
