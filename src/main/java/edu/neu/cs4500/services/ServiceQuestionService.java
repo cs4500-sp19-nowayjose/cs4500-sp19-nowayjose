@@ -16,6 +16,7 @@ import edu.neu.cs4500.models.ServiceQuestion;
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
 
 @RestController
+@CrossOrigin(origins="*")
 public class ServiceQuestionService {
   @Autowired
   ServiceQuestionRepository serviceQuestionRepository;
