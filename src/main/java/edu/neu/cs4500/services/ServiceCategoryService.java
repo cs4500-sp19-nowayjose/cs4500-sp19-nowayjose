@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import edu.neu.cs4500.models.Service;
 import edu.neu.cs4500.models.ServiceCategory;
@@ -18,6 +19,7 @@ import edu.neu.cs4500.repositories.ServiceCategoryRepository;
 import edu.neu.cs4500.repositories.ServiceRepository;
 
 @RestController
+@CrossOrigin(origins="*")
 public class ServiceCategoryService {
 	@Autowired
 	ServiceCategoryRepository serviceCategoryRepository;
