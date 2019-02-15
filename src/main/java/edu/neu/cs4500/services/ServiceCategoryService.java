@@ -1,6 +1,7 @@
 package edu.neu.cs4500.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,37 +12,56 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.neu.cs4500.models.Service;
 import edu.neu.cs4500.models.ServiceCategory;
 import edu.neu.cs4500.repositories.ServiceCategoryRepository;
+import edu.neu.cs4500.repositories.ServiceRepository;
 
 @RestController
 public class ServiceCategoryService {
 	@Autowired
-	ServiceCategoryRepository serviceRepository;
+	ServiceCategoryRepository serviceCategoryRepository;
+	@Autowired
+	ServiceRepository serviceRepository;
 	@GetMapping("/api/categories")
 	public List<ServiceCategory> findAllServiceCategories() {
-		return serviceRepository.findAllServiceCategories();
+		return serviceCategoryRepository.findAllServiceCategories();
 	}
 	@GetMapping("/api/categories/{serviceCategoryId}")
 	public ServiceCategory findServiceCategoryById(
 			@PathVariable("serviceCategoryId") Integer id) {
-		return serviceRepository.findServiceCategoryById(id);
+		return serviceCategoryRepository.findServiceCategoryById(id);
 	}
 	@PostMapping("/api/categories")
 	public ServiceCategory createServiceCategory(@RequestBody ServiceCategory serviceCategory) {
-		return serviceRepository.save(serviceCategory);
+		return serviceCategoryRepository.save(serviceCategory);
+	}
+	
+	@PostMapping("/api/categories/{categoryId}/services/{serviceId}")
+	public ServiceCategory addServiceToCategory(
+			@PathVariable("categoryId") Integer categoryId,
+			@PathVariable("serviceId") Integer serviceId) {
+				Optional<ServiceCategory> possibleCategory = serviceCategoryRepository.findById(categoryId);
+				Service service = serviceRepository.findServiceById(serviceId);
+				ServiceCategory category = null;
+				if (possibleCategory.isPresent()) {
+					category = possibleCategory.get();
+					category.addServiceToCategory(service);
+				}
+				return serviceCategoryRepository.save(category);
+				
 	}
 	@PutMapping("/api/categories/{serviceCategoryId}")
 	public ServiceCategory updateServiceCategory(
 			@PathVariable("serviceCategoryId") Integer id,
 			@RequestBody ServiceCategory serviceUpdates) {
-		ServiceCategory serviceCategory = serviceRepository.findServiceCategoryById(id);
+		ServiceCategory serviceCategory = serviceCategoryRepository.findServiceCategoryById(id);
 		serviceCategory.setServiceCategoryName(serviceUpdates.getServiceCategoryName());
-		return serviceRepository.save(serviceCategory);
+		return serviceCategoryRepository.save(serviceCategory);
 	}
 	@DeleteMapping("/api/categories/{serviceCategoryId}")
 	public void deleteServiceCategory(
 			@PathVariable("serviceCategoryId") Integer id) {
-		serviceRepository.deleteById(id);
+		serviceCategoryRepository.deleteById(id);
 	}
 }
