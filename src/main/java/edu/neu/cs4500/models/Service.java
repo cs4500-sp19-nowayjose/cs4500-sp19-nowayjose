@@ -36,6 +36,10 @@ public class Service {
 		return serviceQuestions;
 	}
 
+	public void addCategoryToService(ServiceCategory category) {
+		this.serviceCategories.add(category);
+	}
+	
 	public void setServiceQuestions(List<ServiceQuestion> serviceQuestions) {
 		this.serviceQuestions = serviceQuestions;
 	}
@@ -44,6 +48,10 @@ public class Service {
 		return serviceCategories;
 	}
 
+	public void removeCategoryFromService(ServiceCategory category) {
+		serviceCategories.remove(category);
+	}
+	
 	public void setServiceCategories(List<ServiceCategory> serviceCategories) {
 		this.serviceCategories = serviceCategories;
 	}
