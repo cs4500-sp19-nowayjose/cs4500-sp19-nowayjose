@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 @RestController
+@CrossOrigin(origins="*")
 public class ServiceQuestionAnswerService {
 
 	public final static String ROUTE = "/api/service_question_answers";

@@ -21,6 +21,7 @@ public class ServiceQuestionAnswer {
     @OneToOne
     // In JSON format, include a "user" field with just the User's ID
     // instead of ignoring it or including the full nested object
+    // EX. { user: { id: 123 } }
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
@@ -28,6 +29,7 @@ public class ServiceQuestionAnswer {
     @ManyToOne
     // In JSON format, include a "serviceQuestion" field with just the question's ID
     // instead of ignoring it or including the full nested object
+    // EX. { serviceQuestion: { id: 3 } }
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private ServiceQuestion serviceQuestion;
