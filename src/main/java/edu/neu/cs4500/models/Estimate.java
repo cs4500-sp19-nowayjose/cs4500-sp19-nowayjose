@@ -22,6 +22,8 @@ public class Estimate {
     private Frequency subscriptionFrequency; 
     private Frequency deliveryFrequency; 
     
+    @OneToMany(mappedBy="estimate")
+    private List<Fee> fees;
 
 	public Integer getId() {
 		return id;
@@ -79,6 +81,13 @@ public class Estimate {
 		this.deliveryFrequency = deliveryFrequency;
 	}
 
+	public List<Fee> getFees() {
+		return fees;
+	}
+
+	public void setFees(List<Fee> fees) {
+		this.fees = fees;
+	} 
     
 
 }
