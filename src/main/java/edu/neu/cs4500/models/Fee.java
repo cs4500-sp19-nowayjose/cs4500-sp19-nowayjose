@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javafx.util.Pair; 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,7 +18,7 @@ public class Fee {
 	private Integer id;
 	private float fee; 
 	private Frequency frequency; 
-	private Integer additionalMiles; 
+	private Pair<Integer, Integer> additionalMiles; 
 	private boolean flat; 
 	@ManyToOne
 	@JsonIgnore
@@ -47,11 +48,11 @@ public class Fee {
 		this.frequency = frequency;
 	}
 	
-	public Integer getAdditionalMiles() {
+	public Pair<Integer, Integer> getAdditionalMiles() {
 		return additionalMiles;
 	}
 	
-	public void setAdditionalMiles(Integer additionalMiles) {
+	public void setAdditionalMiles(Pair<Integer, Integer> additionalMiles) {
 		this.additionalMiles = additionalMiles;
 	}
 	
