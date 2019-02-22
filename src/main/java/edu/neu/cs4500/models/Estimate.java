@@ -1,6 +1,7 @@
 package edu.neu.cs4500.models;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,30 @@ public class Estimate {
     
     @OneToMany(mappedBy="estimate")
     private List<Fee> chargedFees;
+    
+    @OneToMany(mappedBy="estimate")
+    private List<Discount> discounts;
+    
+    public float getDiscount() {
+
+    	float totalDiscount = 0;
+    
+    	for (Discount discount : discounts) {
+    		if (discount.isFlat()) {
+    			totalDiscount += discount.getDiscount();
+    		} else {
+    			if (this.subscriptionFrequency.equals(discount.getFrequency())) {
+						totalDiscount += (this.basePrice * discount.getDiscount());
+					}
+    		}
+    	}
+    	
+    	if (totalDiscount > basePrice) {
+    		return basePrice;
+    	}
+    	return totalDiscount;
+    	
+    }
 
 	public Integer getId() {
 		return id;
@@ -125,7 +150,13 @@ public class Estimate {
 			}
 		}
 		return fees; 
+  }
+  
+	public List<Discount> getDiscounts() {
+		return discounts;
 	}
-    
 
+	public void setDiscounts(List<Discount> discounts) {
+		this.discounts = discounts;
+	}
 }
