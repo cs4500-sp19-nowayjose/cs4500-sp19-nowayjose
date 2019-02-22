@@ -39,14 +39,17 @@ class DeliveryFeeEstimateTest {
 		  this.fee1.setFlat(false);
 		  this.fee1.setFrequency(Frequency.Holiday);
 		  
+		  this.fee2 = new Fee();
 		  this.fee2.setFee(50);
 		  this.fee2.setFlat(true);
 		  this.fee2.setFrequency(Frequency.Holiday);
-		  
+
+		  this.fee3 = new Fee();
 		  this.fee3.setFee(0);
 		  this.fee3.setFlat(true);
 		  this.fee3.setFrequency(Frequency.Weekday);
 		  
+		  this.fee4 = new Fee();
 		  this.fee4.setFee(200);
 		  this.fee4.setFlat(true);
 		  this.fee4.setFrequency(Frequency.Emergency);
