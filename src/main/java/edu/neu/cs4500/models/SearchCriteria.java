@@ -15,6 +15,13 @@ public class SearchCriteria {
     }
 
     public List<User> orderUsersByScore(List<User> users) {
+        List<ScoredUser> scoredUsers = calculateUsersMatchScores(users);
+        sortUsers(scoredUsers);
+        List<User> sortedUsers = filterSortedUsers(scoredUsers);
+        return sortedUsers;
+    }
+
+    List<ScoredUser> calculateUsersMatchScores(List<User> users) {
         ArrayList<ScoredUser> scoredUsers = new ArrayList<>();
         for (User user : users) {
             ScoredUser sc = new ScoredUser(user, 0);
@@ -27,16 +34,10 @@ public class SearchCriteria {
             }
             scoredUsers.add(sc);
         }
-        return sortScoredUsersFilterZeros(scoredUsers);
+        return scoredUsers;
     }
 
     // Modifies the `scoredUsers` by sorting in place.
-    private List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
-        sortUsers(scoredUsers);
-        List<User> sortedUsers = filterSortedUsers(scoredUsers);
-        return sortedUsers;
-    }
-
     void sortUsers(List<ScoredUser> scoredUsers) {
         scoredUsers.sort((o1, o2) -> {
             if (o1.score > o2.score) return -1;
@@ -55,12 +56,27 @@ public class SearchCriteria {
     }
 
 
-    class ScoredUser {
+    static class ScoredUser {
         User user;
         Integer score;
         ScoredUser(User user, Integer score) {
             this.user = user;
             this.score = score;
+        }
+
+        @Override
+        public int hashCode() {
+            return ("" + user.hashCode() + ":" + score.hashCode()).hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof ScoredUser) {
+                ScoredUser sc = (ScoredUser) obj;
+                return sc.user.equals(user) && sc.score.equals(score);
+            } else {
+                return false;
+            }
         }
     }
 
