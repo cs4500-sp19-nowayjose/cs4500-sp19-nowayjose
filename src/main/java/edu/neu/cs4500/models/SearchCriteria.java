@@ -26,15 +26,16 @@ public class SearchCriteria {
                 }
             }
         }
+        return sortScoredUsersFilterZeros(scoredUsers);
+    }
+
+    // Modifies the `scoredUsers` by sorting in place.
+    List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
         scoredUsers.sort((o1, o2) -> {
             if (o1.score > o2.score) return 1;
             else if (o2.score > o1.score) return -1;
             else return o1.user.getUsername().compareTo(o2.user.getUsername());
         });
-        return sortScoredUsersFilterZeros(scoredUsers);
-    }
-
-    List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
         ArrayList<User> sortedUsers = new ArrayList<>();
         for (ScoredUser sc : scoredUsers) {
             if (sc.score == 0) break;
