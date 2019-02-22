@@ -11,7 +11,7 @@ public class Cs4500Sp19NowayjoseApplicationTests {
 
     @Test
     public void contextLoads() {
-    }
 
+    }
 }
 
