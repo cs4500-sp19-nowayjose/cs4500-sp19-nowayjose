@@ -24,6 +24,19 @@ public class Estimate {
     
     @OneToMany(mappedBy="estimate")
     private List<Fee> fees;
+    
+    public float getDiscount() {
+    	switch (this.baseFrequency) {
+    		case Daily : 
+    			return this.basePrice * (float).3;
+    		case Weekly : 
+    			return this.basePrice * (float).2;
+    		case Monthly : 
+    			return this.basePrice * (float).1;
+    		default :
+    			return 0;	
+    	}
+    }
 
 	public Integer getId() {
 		return id;
