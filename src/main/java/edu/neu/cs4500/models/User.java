@@ -40,17 +40,25 @@ public class User {
 	public List<ServiceQuestionAnswer> getServiceQuestionAnswers() {
 		return serviceQuestionAnswers;
 	}
+
+	protected User setServiceQuestionAnswers(List<ServiceQuestionAnswer> answers) {
+		this.serviceQuestionAnswers = answers;
+		return this;
+	}
+
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public User setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getUsername() {
 		return username;
 	}
-	public void setUsername(String username) {
+	public User setUsername(String username) {
 		this.username = username;
+		return this;
 	}
 	public String getPassword() {
 		return password;
@@ -61,19 +69,22 @@ public class User {
 	public String getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public User setRole(String role) {
 		this.role = role;
+		return this;
 	}
 	public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstName(String firstName) {
+	public User setFirstName(String firstName) {
 		this.firstName = firstName;
+		return this;
 	}
 	public String getLastName() {
 		return lastName;
 	}
-	public void setLastName(String lastName) {
+	public User setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
 	}
 }

@@ -25,17 +25,27 @@ public class SearchCriteria {
                         .scoreAnswerMatch(answer);
                 }
             }
+            scoredUsers.add(sc);
         }
         return sortScoredUsersFilterZeros(scoredUsers);
     }
 
     // Modifies the `scoredUsers` by sorting in place.
-    List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
+    private List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
+        sortUsers(scoredUsers);
+        List<User> sortedUsers = filterSortedUsers(scoredUsers);
+        return sortedUsers;
+    }
+
+    void sortUsers(List<ScoredUser> scoredUsers) {
         scoredUsers.sort((o1, o2) -> {
-            if (o1.score > o2.score) return 1;
-            else if (o2.score > o1.score) return -1;
+            if (o1.score > o2.score) return -1;
+            else if (o2.score > o1.score) return 1;
             else return o1.user.getUsername().compareTo(o2.user.getUsername());
         });
+    }
+
+    List<User> filterSortedUsers(List<ScoredUser> scoredUsers) {
         ArrayList<User> sortedUsers = new ArrayList<>();
         for (ScoredUser sc : scoredUsers) {
             if (sc.score == 0) break;
@@ -43,6 +53,7 @@ public class SearchCriteria {
         }
         return sortedUsers;
     }
+
 
     class ScoredUser {
         User user;
@@ -53,7 +64,7 @@ public class SearchCriteria {
         }
     }
 
-    public class QuestionAnswerCriterion {
+    public static class QuestionAnswerCriterion {
 
         private Optional<Boolean> trueFalseAnswer;
         private Optional<Integer> rangeAnswer;
@@ -67,16 +78,22 @@ public class SearchCriteria {
 
         public int scoreAnswerMatch(ServiceQuestionAnswer answer) {
             int score = 0;
-            if (trueFalseAnswer.isPresent() && trueFalseAnswer.get().equals(answer.getTrueFalseAnswer())) {
+            if (trueFalseAnswer.isPresent()
+                    && answer.getTrueFalseAnswer() != null
+                    && trueFalseAnswer.get().equals(answer.getTrueFalseAnswer())) {
                 score += 1;
             }
             if (rangeAnswer.isPresent()
-                && rangeAnswer.get() < answer.getMaxRangeAnswer()
-                && rangeAnswer.get() > answer.getMinRangeAnswer()
+                    && answer.getMaxRangeAnswer() != null
+                    && answer.getMinRangeAnswer() != null
+                    && rangeAnswer.get() <= answer.getMaxRangeAnswer()
+                    && rangeAnswer.get() >= answer.getMinRangeAnswer()
             ) {
                 score += 1;
             }
-            if (choiceAnswer.isPresent() && choiceAnswer.get().equals(answer.getChoiceAnswer())) {
+            if (choiceAnswer.isPresent()
+                    && answer.getChoiceAnswer() != null
+                    && choiceAnswer.get().equals(answer.getChoiceAnswer())) {
                 score += 1;
             }
             return score;
