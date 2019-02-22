@@ -44,56 +44,63 @@ public class ServiceQuestionAnswer {
         return id;
     }
 
-    public void setId(Integer id) {
+    public ServiceQuestionAnswer setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public Boolean getTrueFalseAnswer() {
         return trueFalseAnswer;
     }
 
-    public void setTrueFalseAnswer(Boolean trueFalseAnswer) {
+    public ServiceQuestionAnswer setTrueFalseAnswer(Boolean trueFalseAnswer) {
         this.trueFalseAnswer = trueFalseAnswer;
+        return this;
     }
 
     public Integer getMaxRangeAnswer() {
         return maxRangeAnswer;
     }
 
-    public void setMaxRangeAnswer(Integer maxRangeAnswer) {
+    public ServiceQuestionAnswer setMaxRangeAnswer(Integer maxRangeAnswer) {
         this.maxRangeAnswer = maxRangeAnswer;
+        return this;
     }
 
     public Integer getMinRangeAnswer() {
         return minRangeAnswer;
     }
 
-    public void setMinRangeAnswer(Integer minRangeAnswer) {
+    public ServiceQuestionAnswer setMinRangeAnswer(Integer minRangeAnswer) {
         this.minRangeAnswer = minRangeAnswer;
+        return this;
     }
 
     public Integer getChoiceAnswer() {
         return choiceAnswer;
     }
 
-    public void setChoiceAnswer(Integer choiceAnswer) {
+    public ServiceQuestionAnswer setChoiceAnswer(Integer choiceAnswer) {
         this.choiceAnswer = choiceAnswer;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public ServiceQuestionAnswer setUser(User user) {
         this.user = user;
+        return this;
     }
 
     public ServiceQuestion getServiceQuestion() {
         return serviceQuestion;
     }
 
-    public void setServiceQuestion(ServiceQuestion serviceQuestion) {
+    public ServiceQuestionAnswer setServiceQuestion(ServiceQuestion serviceQuestion) {
         this.serviceQuestion = serviceQuestion;
+        return this;
     }
 
     public Date getCreatedAt() {

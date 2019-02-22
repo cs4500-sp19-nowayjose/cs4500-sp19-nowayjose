@@ -63,24 +63,27 @@ public class ServiceQuestion {
         return id;
     }
 
-    public void setId(Integer id) {
+    public ServiceQuestion setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public ServiceQuestion setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public ServiceQuestion setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public Date getCreatedAt() {
@@ -103,8 +106,9 @@ public class ServiceQuestion {
         return serviceQuestionType;
     }
 
-    public void setServiceQuestionType(ServiceQuestionType serviceQuestionType) {
+    public ServiceQuestion setServiceQuestionType(ServiceQuestionType serviceQuestionType) {
         this.serviceQuestionType = serviceQuestionType;
+        return this;
     }
 
     public void addServiceQuestionAnswer(ServiceQuestionAnswer ans){
