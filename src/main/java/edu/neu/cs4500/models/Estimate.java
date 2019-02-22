@@ -30,15 +30,7 @@ public class Estimate {
     private List<Discount> discounts;
     
     public float getDiscount() {
-//    	List<Discount> subscriptionDiscounts = discounts.stream()
-//    			.filter(discount -> this.subscriptionFrequency.equals(discount.getFrequency()))
-//    			.collect(Collectors.toList());
-//    	
-//    	List<Discount> flatDiscounts = discounts.stream()
-//    			.filter(discount -> discount.isFlat())
-//    			.collect(Collectors.toList());
-    	
-    	
+
     	float totalDiscount = 0;
     
     	for (Discount discount : discounts) {
@@ -46,9 +38,8 @@ public class Estimate {
     			totalDiscount += discount.getDiscount();
     		} else {
     			if (this.subscriptionFrequency.equals(discount.getFrequency())) {
-    				totalDiscount += (this.basePrice * discount.getDiscount());
-    			}
-    			
+						totalDiscount += (this.basePrice * discount.getDiscount());
+					}
     		}
     	}
     	
