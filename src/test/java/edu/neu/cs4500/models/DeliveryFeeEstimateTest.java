@@ -51,7 +51,30 @@ class DeliveryFeeEstimateTest {
 		  this.fee4.setFlat(true);
 		  this.fee4.setFrequency(Frequency.Emergency);
 	  }
-
+	  
+	  //test holiday fee percentage 
+	  @Test
+	  void testHolidayPercentFee() {
+		  ArrayList<Fee> chargedFees = new ArrayList<>(); 
+		  chargedFees.add(this.fee1);
+		  chargedFees.add(this.fee4);
+		  this.estimate1.setChargedFees(chargedFees);
+	      assertEquals(this.estimate1.getEstimate(), 900);
+	  }
+	  
+	  //test emergency fee flat 
+	  @Test
+	  void testEmergencyPercentFee() {
+		  this.estimate1.setDeliveryFrequency(Frequency.Emergency);
+		  ArrayList<Fee> chargedFees = new ArrayList<>(); 
+		  chargedFees.add(this.fee1);
+		  chargedFees.add(this.fee4);
+		  this.estimate1.setChargedFees(chargedFees);
+	      assertEquals(this.estimate3.getEstimate(), 700);
+	  }
+	  
+	 
+	  
 	  
 	  
 	  
