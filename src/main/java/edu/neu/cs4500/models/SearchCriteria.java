@@ -33,7 +33,7 @@ public class SearchCriteria {
     // Modifies the `scoredUsers` by sorting in place.
     private List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
         sortUsers(scoredUsers);
-        List<User> sortedUsers = filterUsers(scoredUsers);
+        List<User> sortedUsers = filterSortedUsers(scoredUsers);
         return sortedUsers;
     }
 
@@ -45,7 +45,7 @@ public class SearchCriteria {
         });
     }
 
-    List<User> filterUsers(List<ScoredUser> scoredUsers) {
+    List<User> filterSortedUsers(List<ScoredUser> scoredUsers) {
         ArrayList<User> sortedUsers = new ArrayList<>();
         for (ScoredUser sc : scoredUsers) {
             if (sc.score == 0) break;
