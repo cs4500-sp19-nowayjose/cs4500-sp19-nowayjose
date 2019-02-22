@@ -1,6 +1,7 @@
 package edu.neu.cs4500.models;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,17 +26,37 @@ public class Estimate {
     @OneToMany(mappedBy="estimate")
     private List<Fee> fees;
     
+    @OneToMany(mappedBy="estimate")
+    private List<Discount> discounts;
+    
     public float getDiscount() {
-    	switch (this.baseFrequency) {
-    		case Daily : 
-    			return this.basePrice * (float).3;
-    		case Weekly : 
-    			return this.basePrice * (float).2;
-    		case Monthly : 
-    			return this.basePrice * (float).1;
-    		default :
-    			return 0;	
+//    	List<Discount> subscriptionDiscounts = discounts.stream()
+//    			.filter(discount -> this.subscriptionFrequency.equals(discount.getFrequency()))
+//    			.collect(Collectors.toList());
+//    	
+//    	List<Discount> flatDiscounts = discounts.stream()
+//    			.filter(discount -> discount.isFlat())
+//    			.collect(Collectors.toList());
+    	
+    	
+    	float totalDiscount = 0;
+    
+    	for (Discount discount : discounts) {
+    		if (discount.isFlat()) {
+    			totalDiscount += discount.getDiscount();
+    		} else {
+    			if (this.subscriptionFrequency.equals(discount.getFrequency())) {
+    				totalDiscount += (this.basePrice * discount.getDiscount());
+    			}
+    			
+    		}
     	}
+    	
+    	if (totalDiscount > basePrice) {
+    		return basePrice;
+    	}
+    	return totalDiscount;
+    	
     }
 
 	public Integer getId() {
@@ -100,7 +121,13 @@ public class Estimate {
 
 	public void setFees(List<Fee> fees) {
 		this.fees = fees;
-	} 
-    
+	}
 
+	public List<Discount> getDiscounts() {
+		return discounts;
+	}
+
+	public void setDiscounts(List<Discount> discounts) {
+		this.discounts = discounts;
+	}
 }
