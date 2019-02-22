@@ -20,16 +20,18 @@ public class Service {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public Service setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getServiceName() {
 		return serviceName;
 	}
 
-	public void setServiceName(String serviceName) {
+	public Service setServiceName(String serviceName) {
 		this.serviceName = serviceName;
+		return this;
 	}
 
 	public List<ServiceQuestion> getServiceQuestions() {
