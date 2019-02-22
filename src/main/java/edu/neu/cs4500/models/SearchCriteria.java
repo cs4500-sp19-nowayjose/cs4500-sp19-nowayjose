@@ -31,14 +31,19 @@ public class SearchCriteria {
             else if (o2.score > o1.score) return -1;
             else return 0;
         });
+        return sortScoredUsersFilterZeros(scoredUsers);
+    }
+
+    List<User> sortScoredUsersFilterZeros(List<ScoredUser> scoredUsers) {
         ArrayList<User> sortedUsers = new ArrayList<>();
         for (ScoredUser sc : scoredUsers) {
+            if (sc.score == 0) break;
             sortedUsers.add(sc.user);
         }
         return sortedUsers;
     }
 
-    private class ScoredUser {
+    class ScoredUser {
         User user;
         Integer score;
         ScoredUser(User user, Integer score) {
