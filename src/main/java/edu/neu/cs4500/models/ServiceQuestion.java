@@ -118,4 +118,19 @@ public class ServiceQuestion {
             }
         }
     }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ServiceQuestion) {
+            ServiceQuestion question = (ServiceQuestion) obj;
+            return question.getId().equals(this.id);
+        } else {
+            return false;
+        }
+    }
 }
