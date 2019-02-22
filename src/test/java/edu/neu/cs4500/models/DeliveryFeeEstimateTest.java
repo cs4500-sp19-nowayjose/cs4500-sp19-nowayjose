@@ -73,7 +73,24 @@ class DeliveryFeeEstimateTest {
 	      assertEquals(this.estimate3.getEstimate(), 700);
 	  }
 	  
-	 
+	  //test holiday fee flat  
+	  @Test
+	  void testHolidayFlatFee() {
+		  ArrayList<Fee> chargedFees = new ArrayList<>(); 
+		  chargedFees.add(this.fee2);
+		  chargedFees.add(this.fee4);
+		  this.estimate1.setChargedFees(chargedFees);
+	      assertEquals(this.estimate1.getEstimate(), 800);	
+	   }
+	  
+	  //test weekday no fee   
+	  @Test
+	  void testWeekdayNoFee() {
+		  ArrayList<Fee> chargedFees = new ArrayList<>(); 
+		  chargedFees.add(this.fee3);
+		  this.estimate1.setChargedFees(chargedFees);
+	      assertEquals(this.estimate1.getEstimate(), 750);	
+	   }
 	  
 	  
 	  
