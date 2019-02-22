@@ -7,9 +7,12 @@ import edu.neu.cs4500.models.SearchCriteria.QuestionAnswerCriterion;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class SearchCriteriaTest {
-    private static ServiceQuestion serviceQuestion;
+    private static ServiceQuestion uselessQuestion;
+    private static ServiceQuestion usefulQuestion;
     private static SearchCriteria searchCriteria;
     private static List<User> users = new ArrayList<>();
     private static User travis;
@@ -19,7 +22,7 @@ public class SearchCriteriaTest {
     @BeforeAll
     public static void setUpEachTest() {
         setUpUsers();
-        setUpServiceQuestion();
+        setUpServiceQuestions();
         setUpServiceQuestionAnswers();
     }
 
@@ -47,53 +50,83 @@ public class SearchCriteriaTest {
         users.add(kanye);
     }
 
-    private static void setUpServiceQuestion() {
-        serviceQuestion = new ServiceQuestion();
-        serviceQuestion
+    private static void setUpServiceQuestions() {
+        uselessQuestion = new ServiceQuestion();
+        uselessQuestion
                 .setId(1)
                 .setTitle("Some useless title")
                 .setDescription("Wow testing is exciting!")
                 .setServiceQuestionType(ServiceQuestionType.MINMAX);
+        usefulQuestion = new ServiceQuestion();
+        usefulQuestion
+            .setId(2)
+            .setTitle("Some useful title")
+            .setDescription("Wow testing is boring!")
+            .setServiceQuestionType(ServiceQuestionType.YESORNO);
     }
 
     private static void setUpServiceQuestionAnswers() {
-        List<ServiceQuestionAnswer> answers = new ArrayList<>();
-        answers.add(new ServiceQuestionAnswer()
+        List<ServiceQuestionAnswer> travisAnswers = new ArrayList<>();
+        travisAnswers.add(new ServiceQuestionAnswer()
                 .setId(1200010)
-                .setServiceQuestion(serviceQuestion)
+                .setServiceQuestion(uselessQuestion)
                 .setMinRangeAnswer(2)
                 .setMaxRangeAnswer(3));
-        answers.add(new ServiceQuestionAnswer()
+        travisAnswers.add(new ServiceQuestionAnswer()
                 .setId(1200011)
-                .setServiceQuestion(serviceQuestion)
+                .setServiceQuestion(usefulQuestion)
+                .setMinRangeAnswer(5)
                 .setTrueFalseAnswer(false));
-        travis.setServiceQuestionAnswers(answers);
-        answers = new ArrayList<>();
-        answers.add(new ServiceQuestionAnswer()
-                .setId(1200011)
-                .setServiceQuestion(serviceQuestion)
-                .setMinRangeAnswer(3)
-                .setMaxRangeAnswer(4));
-        answers.add(new ServiceQuestionAnswer()
-                .setId(1200014)
-                .setServiceQuestion(serviceQuestion)
-                .setTrueFalseAnswer(true));
-        lil.setServiceQuestionAnswers(answers);
-        kanye.setServiceQuestionAnswers(Arrays.asList((new ServiceQuestionAnswer()
+        travis.setServiceQuestionAnswers(travisAnswers);
+
+        List<ServiceQuestionAnswer> lilAnswers = new ArrayList<>();
+        lilAnswers.add(new ServiceQuestionAnswer()
                 .setId(1200012)
-                .setServiceQuestion(serviceQuestion)
-                .setMinRangeAnswer(4)
-                .setMaxRangeAnswer(5))));
+                .setServiceQuestion(uselessQuestion)
+                .setMinRangeAnswer(1)
+                .setMaxRangeAnswer(4));
+        lilAnswers.add(new ServiceQuestionAnswer()
+                .setId(1200013)
+                .setServiceQuestion(usefulQuestion)
+                .setTrueFalseAnswer(true));
+        lil.setServiceQuestionAnswers(lilAnswers);
+
+        kanye.setServiceQuestionAnswers(Arrays.asList((new ServiceQuestionAnswer()
+                .setId(1200014)
+                .setServiceQuestion(uselessQuestion)
+                .setMinRangeAnswer(1)
+                .setMaxRangeAnswer(2))));
     }
 
     @Test // adam sortUsers
     public void testScoresCorrectness() {
-
+        QuestionAnswerCriterion uselessCriterion =
+            new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
+        QuestionAnswerCriterion usefulCriterion =
+            new QuestionAnswerCriterion(Optional.of(true), Optional.empty(), Optional.empty());
+        Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
+        criteria.put(uselessQuestion, uselessCriterion);
+        criteria.put(usefulQuestion, usefulCriterion);
+        searchCriteria = new SearchCriteria(criteria);
+        List<SearchCriteria.ScoredUser> scoredUsers = searchCriteria.calculateUsersMatchScores(users);
+        assertEquals(scoredUsers.size(), 3);
+        assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(travis, 0)));
+        assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(lil, 2)));
+        assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(kanye, 1)));
     }
 
     @Test // adam filterUsers
     public void testFilteringUsers() {
-
+        QuestionAnswerCriterion uselessCriterion =
+            new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
+        QuestionAnswerCriterion usefulCriterion =
+            new QuestionAnswerCriterion(Optional.of(true), Optional.empty(), Optional.empty());
+        Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
+        criteria.put(uselessQuestion, uselessCriterion);
+        criteria.put(usefulQuestion, usefulCriterion);
+        searchCriteria = new SearchCriteria(criteria);
+        List<User> searchResults = searchCriteria.orderAndFilterUsersByScore(users);
+        assertArrayEquals(searchResults.toArray(), new User[]{lil, kanye});
     }
 
     @Test
@@ -101,12 +134,12 @@ public class SearchCriteriaTest {
         QuestionAnswerCriterion emptyCriterion =
                 new QuestionAnswerCriterion(Optional.empty(), Optional.empty(), Optional.empty());
         Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
-        criteria.put(serviceQuestion, emptyCriterion);
+        criteria.put(uselessQuestion, emptyCriterion);
         searchCriteria = new SearchCriteria(criteria);
-        assertEquals(searchCriteria.orderUsersByScore(users).size(), 0);
+        assertEquals(searchCriteria.orderAndFilterUsersByScore(users).size(), 0);
     }
 
-    @Test // calvin orderUsersByScore with users same score
+    @Test // calvin orderAndFilterUsersByScore with users same score
     public void testSortingServiceWithSameScore() {
 
     }

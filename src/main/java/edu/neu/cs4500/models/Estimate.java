@@ -22,9 +22,10 @@ public class Estimate {
     private boolean subscription; 
     private Frequency subscriptionFrequency; 
     private Frequency deliveryFrequency; 
+    private Integer extraMiles; 
     
     @OneToMany(mappedBy="estimate")
-    private List<Fee> fees;
+    private List<Fee> chargedFees;
     
     @OneToMany(mappedBy="estimate")
     private List<Discount> discounts;
@@ -59,6 +60,9 @@ public class Estimate {
 	}
 
 	public float getEstimate() {
+		float fees = this.getFees(); 
+		float discount = this.getDiscount(); 
+		this.setEstimate(this.basePrice - fees + discount);
 		return estimate;
 	}
 
@@ -106,14 +110,48 @@ public class Estimate {
 		this.deliveryFrequency = deliveryFrequency;
 	}
 
-	public List<Fee> getFees() {
-		return fees;
+	public List<Fee> getChargedFees() {
+		return chargedFees;
 	}
 
-	public void setFees(List<Fee> fees) {
-		this.fees = fees;
+	public void setChargedFees(List<Fee> chargedFees) {
+		this.chargedFees = chargedFees;
+	} 
+
+	public Integer getExtraMiles() {
+		return extraMiles;
 	}
 
+	public void setExtraMiles(Integer extraMiles) {
+		this.extraMiles = extraMiles;
+	}
+
+	public float getDiscount() {
+		return 0;
+	}
+	public float getFees() {
+		float fees = 0; 
+		
+		for (Fee fee: this.chargedFees) {
+			// calculates delivery fee 
+			if (fee.getFrequency().equals(this.deliveryFrequency)) {
+				if (fee.isFlat()) {
+					fees += fee.getFee(); 
+				}
+				else {
+					fees += fee.getFee() * this.basePrice; 
+				}
+			}
+			
+			// calculates progressive fee 
+			if (fee.getAdditionalMiles().getKey() >= this.extraMiles && 
+				fee.getAdditionalMiles().getValue() <= this.extraMiles) {
+				fees += fee.getFee() * this.basePrice; 
+			}
+		}
+		return fees; 
+  }
+  
 	public List<Discount> getDiscounts() {
 		return discounts;
 	}
