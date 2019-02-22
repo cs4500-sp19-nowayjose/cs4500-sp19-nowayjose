@@ -8,6 +8,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class SearchCriteriaTest {
     private static ServiceQuestion uselessQuestion;
@@ -116,7 +117,16 @@ public class SearchCriteriaTest {
 
     @Test // adam filterUsers
     public void testFilteringUsers() {
-
+        QuestionAnswerCriterion uselessCriterion =
+            new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
+        QuestionAnswerCriterion usefulCriterion =
+            new QuestionAnswerCriterion(Optional.of(true), Optional.empty(), Optional.empty());
+        Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
+        criteria.put(uselessQuestion, uselessCriterion);
+        criteria.put(usefulQuestion, usefulCriterion);
+        searchCriteria = new SearchCriteria(criteria);
+        List<User> searchResults = searchCriteria.orderAndFilterUsersByScore(users);
+        assertArrayEquals(searchResults.toArray(), new User[]{lil, kanye});
     }
 
     @Test
@@ -126,10 +136,10 @@ public class SearchCriteriaTest {
         Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
         criteria.put(uselessQuestion, emptyCriterion);
         searchCriteria = new SearchCriteria(criteria);
-        assertEquals(searchCriteria.orderUsersByScore(users).size(), 0);
+        assertEquals(searchCriteria.orderAndFilterUsersByScore(users).size(), 0);
     }
 
-    @Test // calvin orderUsersByScore with users same score
+    @Test // calvin orderAndFilterUsersByScore with users same score
     public void testSortingServiceWithSameScore() {
 
     }

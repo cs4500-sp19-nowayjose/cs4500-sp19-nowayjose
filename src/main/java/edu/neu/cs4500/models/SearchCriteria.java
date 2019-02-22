@@ -14,7 +14,7 @@ public class SearchCriteria {
         this.criteria = criteria;
     }
 
-    public List<User> orderUsersByScore(List<User> users) {
+    public List<User> orderAndFilterUsersByScore(List<User> users) {
         List<ScoredUser> scoredUsers = calculateUsersMatchScores(users);
         sortUsers(scoredUsers);
         List<User> sortedUsers = filterSortedUsers(scoredUsers);

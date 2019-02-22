@@ -14,7 +14,7 @@ public class SearchService {
     private UserRepository userRepository;
 
     public List<User> searchForProviders(Service service, SearchCriteria criteria) {
-        return criteria.orderUsersByScore(userRepository.findAllUsers());
+        return criteria.orderAndFilterUsersByScore(userRepository.findAllUsers());
     }
 
 }
