@@ -105,7 +105,11 @@ public class Estimate {
 		return 0;
 	}
 	public float getFees() {
-		float fees = 0; 
+		float fees = 0;
+
+		if (this.chargedFees == null) {
+			return fees;
+		}
 		
 		for (Fee fee: this.chargedFees) {
 			// calculates delivery fee 
@@ -118,10 +122,12 @@ public class Estimate {
 				}
 			}
 			
-			// calculates progressive fee 
-			if (fee.getAdditionalMiles().getKey() >= this.extraMiles && 
-				fee.getAdditionalMiles().getValue() <= this.extraMiles) {
-				fees += fee.getFee() * this.basePrice; 
+			// calculates progressive fee
+			if (fee.getAdditionalMiles() != null) {
+				if (fee.getAdditionalMiles().getKey() >= this.extraMiles &&
+						fee.getAdditionalMiles().getValue() <= this.extraMiles) {
+					fees += fee.getFee() * this.basePrice;
+				}
 			}
 		}
 		return fees; 
