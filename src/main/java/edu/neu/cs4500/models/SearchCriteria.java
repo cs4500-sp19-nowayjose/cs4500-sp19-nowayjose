@@ -29,7 +29,7 @@ public class SearchCriteria {
         scoredUsers.sort((o1, o2) -> {
             if (o1.score > o2.score) return 1;
             else if (o2.score > o1.score) return -1;
-            else return 0;
+            else return o1.user.getUsername().compareTo(o2.user.getUsername());
         });
         return sortScoredUsersFilterZeros(scoredUsers);
     }
