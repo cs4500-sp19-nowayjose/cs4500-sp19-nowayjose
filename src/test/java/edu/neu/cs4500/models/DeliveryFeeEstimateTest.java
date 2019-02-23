@@ -107,6 +107,17 @@ class DeliveryFeeEstimateTest {
         assertEquals(600, this.estimate3.getEstimate());
     }
 
+    //test emergency percentage no fee
+    @Test
+    void testEmergencyFlatNoFee() {
+        ArrayList<Fee> chargedFees = new ArrayList<>();
+        chargedFees.add(this.fee1);
+        chargedFees.add(this.fee4);
+        this.fee4.setFee(0);
+        this.estimate3.setChargedFees(chargedFees);
+        assertEquals(500, this.estimate3.getEstimate());
+    }
+
     //test holiday fee flat
     @Test
     void testHolidayFlatFee() {
