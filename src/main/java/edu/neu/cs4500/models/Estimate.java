@@ -58,14 +58,9 @@ public class Estimate {
 	}
 
 	public float getEstimate() {
-		//float fees = this.getFees();
+		float fees = this.getFees();
 		float discount = this.getDiscount(); 
-<<<<<<< HEAD
 		this.setEstimate(this.basePrice - discount + fees);
-=======
-		//this.setEstimate(this.basePrice - fees + discount);
-		this.setEstimate(this.basePrice - discount);
->>>>>>> master
 		return estimate;
 	}
 
