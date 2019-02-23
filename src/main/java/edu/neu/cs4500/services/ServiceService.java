@@ -43,7 +43,7 @@ public class ServiceService {
 	public Service createService(@RequestBody Service service) {
 		return serviceRepository.save(service);
 	}
-	
+
 	@PostMapping("/api/services/{serviceId}/categories/{categoryId}")
 	public Service addCategoryToService(
 			@PathVariable("serviceId") Integer serviceId,
@@ -56,10 +56,10 @@ public class ServiceService {
 					service.addCategoryToService(category);
 				}
 				return serviceRepository.save(service);
-				
+
 	}
-	
-	
+
+
 	@PutMapping("/api/services/{serviceId}")
 	public Service updateService(
 			@PathVariable("serviceId") Integer id,
@@ -73,12 +73,12 @@ public class ServiceService {
 			@PathVariable("serviceId") Integer id) {
 		serviceRepository.deleteById(id);
 	}
-	
+
 	@DeleteMapping("/api/services/{serviceId}/categories/{categoryId}")
 	public void deleteCategoryFromService(
 			@PathVariable("serviceId") Integer serviceId,
 			@PathVariable("categoryId") Integer categoryId) {
-	
+
 		Service service = serviceRepository.findServiceById(serviceId);
 		Optional<ServiceCategory> possibleCategory = serviceCategoryRepository.findById(categoryId);
 		ServiceCategory category = null;
