@@ -79,7 +79,6 @@ public class SubscriptionEstimateDiscountTest {
         List<Discount> discounts2 = new ArrayList();
         List<Discount> discounts3 = new ArrayList();
 
-
         discounts1.add(d1);
         discounts1.add(d2);
         discounts2.add(flat);
@@ -87,8 +86,6 @@ public class SubscriptionEstimateDiscountTest {
         discounts3.add(d2);
         discounts3.add(d3);
         discounts3.add(d4);
-
-
 
         e1.setDiscounts(discounts1);
         e2.setDiscounts(discounts1);
@@ -98,7 +95,7 @@ public class SubscriptionEstimateDiscountTest {
     }
 	
 	@Test
-	public void testFlatDiscount() {
+	public void testFlatRewards() {
 		assertEquals(20, e3.getDiscount());
 		assertEquals(120, e2.getDiscount());
 	}
@@ -128,6 +125,24 @@ public class SubscriptionEstimateDiscountTest {
         assertEquals(380, e3.getEstimate());
         assertEquals(70, e4.getEstimate());
     }
-	
+
+
+    @Test
+    public void testRecurringAwards() {
+
+        assertEquals(300, e1.getDiscount());
+        assertEquals(700, e3.getEstimate());
+    }
+
+    @Test
+    public void testSubscriptionDiscounts() {
+        assertEquals(700, e1.getEstimate());
+        assertEquals(380, e3.getEstimate());
+    }
+
+    @Test
+    public void testFlatDiscounts() {
+        assertEquals(20, e3.getDiscount());
+    }
 
 }
