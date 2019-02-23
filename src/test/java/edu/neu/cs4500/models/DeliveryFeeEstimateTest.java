@@ -5,12 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class DeliveryFeeEstimateTest {
-
     Estimate estimate1;
     Estimate estimate2;
     Estimate estimate3;
@@ -163,6 +161,4 @@ class DeliveryFeeEstimateTest {
         this.estimate4.setExtraMiles(100);
         assertEquals(150, estimate4.getEstimate());
     }
-
-
 }

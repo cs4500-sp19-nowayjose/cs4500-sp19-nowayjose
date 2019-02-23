@@ -13,12 +13,17 @@ public class SubscriptionEstimateDiscountTest {
 	private static Estimate e1;
 	private static Estimate e2;
 	private static Estimate e3;
-	private static Discount d1;
+    private static Estimate e4;
+    private static Estimate e5;
+    private static Discount d1;
 	private static Discount d2;
-	private static Discount flat;
+    private static Discount d3;
+    private static Discount d4;
+    private static Discount flat;
 	
 	@BeforeAll
     public static void setUp() {
+
         e1 = new Estimate();
         e1.setBaseFrequency(Frequency.Daily);
         e1.setBasePrice(1000);
@@ -36,6 +41,18 @@ public class SubscriptionEstimateDiscountTest {
         e3.setBasePrice(400);
         e3.setSubscription(true);
         e3.setSubscriptionFrequency(Frequency.Daily);
+
+        e4 = new Estimate();
+        e4.setBaseFrequency(Frequency.Biweekly);
+        e4.setBasePrice(100);
+        e4.setSubscription(true);
+        e4.setSubscriptionFrequency(Frequency.Biweekly);
+
+        e5 = new Estimate();
+        e5.setBaseFrequency(Frequency.Hourly);
+        e5.setBasePrice(10000);
+        e5.setSubscription(true);
+        e5.setSubscriptionFrequency(Frequency.Hourly);
         
         d1 = new Discount();
         d1.setDiscount(.3f);
@@ -44,6 +61,14 @@ public class SubscriptionEstimateDiscountTest {
         d2 = new Discount();
         d2.setFrequency(Frequency.Monthly);
         d2.setDiscount(.2f);
+
+        d3 = new Discount();
+        d3.setFrequency(Frequency.Daily);
+        d3.setDiscount(.1f);
+
+        d4 = new Discount();
+        d4.setFrequency(Frequency.Hourly);
+        d4.setDiscount(.01f);
         
         flat = new Discount();
         flat.setFlat(true);
@@ -52,20 +77,72 @@ public class SubscriptionEstimateDiscountTest {
 
         List<Discount> discounts1 = new ArrayList();
         List<Discount> discounts2 = new ArrayList();
+        List<Discount> discounts3 = new ArrayList();
 
         discounts1.add(d1);
         discounts1.add(d2);
         discounts2.add(flat);
+        discounts3.add(d1);
+        discounts3.add(d2);
+        discounts3.add(d3);
+        discounts3.add(d4);
 
         e1.setDiscounts(discounts1);
         e2.setDiscounts(discounts1);
         e3.setDiscounts(discounts2);
+        e4.setDiscounts(discounts1);
+        e5.setDiscounts(discounts3);
     }
 	
 	@Test
-	public void testFlatDiscount() {
+	public void testFlatRewards() {
 		assertEquals(20, e3.getDiscount());
 		assertEquals(120, e2.getDiscount());
 	}
+
+	@Test
+    public void testPercentageDiscount() {
+
+	    assertEquals(480, e2.getEstimate());
+        assertEquals(300, e1.getDiscount());
+        assertEquals(700, e1.getEstimate());
+        assertEquals(e1.getBasePrice() - e1.getDiscount(), e1.getEstimate());
+    }
+
+    @Test
+    public void testVariousDiscountFrequency() {
+        assertEquals(700, e1.getEstimate());
+        assertEquals(480, e2.getEstimate());
+        assertEquals(380, e3.getEstimate());
+        assertEquals(70, e4.getEstimate());
+    }
+
+    @Test
+    public void testOngoingDiscounts() {
+	    assertEquals(9900, e5.getEstimate());
+        assertEquals(700, e1.getEstimate());
+        assertEquals(480, e2.getEstimate());
+        assertEquals(380, e3.getEstimate());
+        assertEquals(70, e4.getEstimate());
+    }
+
+
+    @Test
+    public void testRecurringAwards() {
+
+        assertEquals(300, e1.getDiscount());
+        assertEquals(700, e3.getEstimate());
+    }
+
+    @Test
+    public void testSubscriptionDiscounts() {
+        assertEquals(700, e1.getEstimate());
+        assertEquals(380, e3.getEstimate());
+    }
+
+    @Test
+    public void testFlatDiscounts() {
+        assertEquals(20, e3.getDiscount());
+    }
 
 }
