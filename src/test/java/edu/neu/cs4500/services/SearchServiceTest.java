@@ -3,27 +3,29 @@ package edu.neu.cs4500.services;
 import edu.neu.cs4500.models.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+// To do: connect jupiter with Spring
 public class SearchServiceTest {
+    private static ServiceQuestionAnswerService sqas = new ServiceQuestionAnswerService();
+    private static UserService userService = new UserService();
+    private static SearchService searchService = new SearchService();
 
-    ServiceQuestionAnswerService sqas = new ServiceQuestionAnswerService();
-    UserService userService = new UserService();
+    private static User travis = new User();
+    private static User lil = new User();
+    private static User kanye = new User();
 
-    User travis = new User();
-    User lil = new User();
-    User kanye = new User();
-
-    List<ServiceQuestion> houseCleaningServiceQuestions;
-    Service houseCleaningService;
-    SearchCriteria searchCriteria;
-    SearchCriteria.QuestionAnswerCriterion questionAnswerCriterion;
+    private static List<ServiceQuestion> houseCleaningServiceQuestions;
+    private static Service houseCleaningService;
+    private static SearchCriteria searchCriteria;
+    private static SearchCriteria.QuestionAnswerCriterion questionAnswerCriterion;
 
     @BeforeAll
-    public void setUp() {
+    public static void setUp() {
         setUpService();
         setUpServiceQuestions();
         insertUsersToDB();
@@ -31,14 +33,14 @@ public class SearchServiceTest {
         setUpQuestionCriteria();
     }
 
-    private void setUpService() {
+    private static void setUpService() {
         houseCleaningService = new Service();
         houseCleaningService
                 .setId(94831)
                 .setServiceName("House Cleaning");
     }
 
-    private void setUpServiceQuestions() {
+    private static void setUpServiceQuestions() {
         houseCleaningServiceQuestions = new ArrayList<>();
         houseCleaningServiceQuestions.add(new ServiceQuestion()
                 .setId(99201)
@@ -52,7 +54,7 @@ public class SearchServiceTest {
                 .setServiceQuestionType(ServiceQuestionType.YESORNO));
     }
 
-    private void insertUsersToDB() {
+    private static void insertUsersToDB() {
         travis = new User()
                 .setId(1200010)
                 .setFirstName("Travis")
@@ -76,7 +78,7 @@ public class SearchServiceTest {
         userService.createUser(kanye);
     }
 
-    private void insertServiceQuestionAnswersForUsers() {
+    private static void insertServiceQuestionAnswersForUsers() {
         sqas.createServiceQuestionAnswer(new ServiceQuestionAnswer()
                 .setId(1200010)
                 .setServiceQuestion(houseCleaningServiceQuestions.get(0))
@@ -112,7 +114,7 @@ public class SearchServiceTest {
                 .setUser(kanye));
     }
 
-    private void setUpQuestionCriteria() {
+    private static void setUpQuestionCriteria() {
         Map<ServiceQuestion, SearchCriteria.QuestionAnswerCriterion> criteria = new HashMap<>();
         criteria.put(
                 houseCleaningServiceQuestions.get(0),
@@ -125,12 +127,13 @@ public class SearchServiceTest {
     }
 
 
-    @Test // jin
+    @Test
     public void testSearchForProviders() {
-
+        assertArrayEquals(searchService.searchForProviders(houseCleaningService, searchCriteria).toArray(),
+                new User[]{travis, kanye});
     }
 
-    @Test // jin
+    @Test
     public void testSortingOfProviders() {
 
     }
@@ -141,22 +144,21 @@ public class SearchServiceTest {
     }
 
     @AfterAll
-    public void destroy() {
+    public static void destroy() {
         deleteTestingUsers();
+        deleteQuestionAnswers();
     }
 
-    private void deleteTestingUsers() {
+    private static void deleteTestingUsers() {
         userService.deleteUser(1200010);
         userService.deleteUser(1200011);
         userService.deleteUser(1200012);
+    }
+
+    private static void deleteQuestionAnswers() {
         sqas.deleteServiceQuestionAnswer(1200010);
         sqas.deleteServiceQuestionAnswer(1200011);
         sqas.deleteServiceQuestionAnswer(1200012);
-
     }
-
-
-
-
 }
 

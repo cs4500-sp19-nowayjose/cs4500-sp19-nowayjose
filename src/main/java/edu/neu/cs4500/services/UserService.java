@@ -3,6 +3,7 @@ package edu.neu.cs4500.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +18,11 @@ import edu.neu.cs4500.repositories.UserRepository;
 
 @RestController
 @CrossOrigin(origins="*")
+@Service
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
+
 	@GetMapping("/api/users")
 	public List<User> findAllUser() {
 		return userRepository.findAllUsers();
@@ -31,6 +34,7 @@ public class UserService {
 	}
 	@PostMapping("/api/users")
 	public User createUser(@RequestBody User user) {
+		System.out.println(userRepository);
 		return userRepository.save(user);
 	}
 	@PutMapping("/api/users/{userId}")

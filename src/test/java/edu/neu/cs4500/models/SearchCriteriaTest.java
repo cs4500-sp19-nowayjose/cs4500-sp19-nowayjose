@@ -18,6 +18,7 @@ public class SearchCriteriaTest {
     private static User travis;
     private static User lil;
     private static User kanye;
+    private static User anotherLil;
 
     @BeforeAll
     public static void setUpEachTest() {
@@ -39,6 +40,12 @@ public class SearchCriteriaTest {
                 .setLastName("Pump")
                 .setRole("Provider")
                 .setUsername("GucciGang");
+        anotherLil = new User()
+                .setId(1200015)
+                .setFirstName("Lil")
+                .setLastName("wayne")
+                .setRole("Provider")
+                .setUsername("DontCry");
         kanye = new User()
                 .setId(1200012)
                 .setFirstName("Kanye")
@@ -90,6 +97,7 @@ public class SearchCriteriaTest {
                 .setServiceQuestion(usefulQuestion)
                 .setTrueFalseAnswer(true));
         lil.setServiceQuestionAnswers(lilAnswers);
+        anotherLil.setServiceQuestionAnswers((lilAnswers));
 
         kanye.setServiceQuestionAnswers(Arrays.asList((new ServiceQuestionAnswer()
                 .setId(1200014)
@@ -98,8 +106,8 @@ public class SearchCriteriaTest {
                 .setMaxRangeAnswer(2))));
     }
 
-    @Test // adam sortUsers
-    public void testScoresCorrectness() {
+    @Test
+    public void testUsersOutputCorrectly() {
         QuestionAnswerCriterion uselessCriterion =
             new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
         QuestionAnswerCriterion usefulCriterion =
@@ -115,7 +123,32 @@ public class SearchCriteriaTest {
         assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(kanye, 1)));
     }
 
-    @Test // adam filterUsers
+    @Test
+    public void testUserSortedCorrectly() {
+        QuestionAnswerCriterion uselessCriterion =
+                new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
+        QuestionAnswerCriterion usefulCriterion =
+                new QuestionAnswerCriterion(Optional.of(true), Optional.empty(), Optional.empty());
+        Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
+        criteria.put(uselessQuestion, uselessCriterion);
+        criteria.put(usefulQuestion, usefulCriterion);
+        searchCriteria = new SearchCriteria(criteria);
+        users.add(anotherLil);
+
+        List<SearchCriteria.ScoredUser> scoredUsers = searchCriteria.calculateUsersMatchScores(users);
+        searchCriteria.sortUsers(scoredUsers);
+        for (int i = 1; i < scoredUsers.size(); i++) {
+            SearchCriteria.ScoredUser user1 = scoredUsers.get(i-1);
+            SearchCriteria.ScoredUser user2 = scoredUsers.get(i);
+            if (user1.score == user2.score) {
+                assertTrue(user2.user.getUsername().compareTo(user1.user.getUsername()) > 0);
+            } else {
+                assertTrue(user1.score > user2.score);
+            }
+        }
+    }
+
+    @Test
     public void testFilteringUsers() {
         QuestionAnswerCriterion uselessCriterion =
             new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
@@ -127,6 +160,27 @@ public class SearchCriteriaTest {
         searchCriteria = new SearchCriteria(criteria);
         List<User> searchResults = searchCriteria.orderAndFilterUsersByScore(users);
         assertArrayEquals(searchResults.toArray(), new User[]{lil, kanye});
+    }
+
+    @Test
+    public void testScoresCorrectness() {
+        QuestionAnswerCriterion uselessCriterion =
+                new QuestionAnswerCriterion(Optional.empty(), Optional.of(1), Optional.empty());
+        ServiceQuestionAnswer q = new ServiceQuestionAnswer()
+                .setId(1200010)
+                .setServiceQuestion(uselessQuestion)
+                .setMinRangeAnswer(2)
+                .setMaxRangeAnswer(3);
+        assertEquals(uselessCriterion.scoreAnswerMatch(q), 0);
+
+        QuestionAnswerCriterion choiceCriterion =
+                new QuestionAnswerCriterion(Optional.empty(), Optional.of(2), Optional.empty());
+        assertEquals(choiceCriterion.scoreAnswerMatch(q), 1);
+
+
+        QuestionAnswerCriterion multipleCriterion =
+                new QuestionAnswerCriterion(Optional.of(false), Optional.of(2), Optional.empty());
+        assertEquals(multipleCriterion.scoreAnswerMatch(q), 1);
     }
 
     @Test
