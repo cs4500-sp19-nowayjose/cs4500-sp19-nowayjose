@@ -126,9 +126,7 @@ public class Estimate {
 		this.extraMiles = extraMiles;
 	}
 
-	public float getDiscount() {
-		return 0;
-	}
+
 	public float getFees() {
 		float fees = 0;
 

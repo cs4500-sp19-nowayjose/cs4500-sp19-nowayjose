@@ -25,15 +25,18 @@ class DeliveryFeeEstimateTest {
 		  this.estimate1 = new Estimate();
 		  this.estimate1.setBasePrice(750);
 		  this.estimate1.setDeliveryFrequency(Frequency.Holiday);
+		  this.estimate1.setDiscounts(new ArrayList<Discount>());
 		  
 		  this.estimate2 = new Estimate();
 		  this.estimate2.setBasePrice(750);
 		  this.estimate2.setDeliveryFrequency(Frequency.Weekday);
-		  
+		  this.estimate2.setDiscounts(new ArrayList<Discount>());
+
 		  this.estimate3 = new Estimate();
 		  this.estimate3.setBasePrice(500);
 		  this.estimate3.setDeliveryFrequency(Frequency.Emergency);
-		  
+		  this.estimate3.setDiscounts(new ArrayList<Discount>());
+
 		  this.fee1 = new Fee();
 		  this.fee1.setFee((float) 0.20);
 		  this.fee1.setFlat(false);
