@@ -4,7 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="discount")
@@ -16,6 +19,10 @@ public class Discount {
 	private float discount;
 	private Frequency frequency;
 	private boolean flat;
+	@ManyToOne
+	@JsonIgnore
+	private Estimate estimate;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -39,6 +46,12 @@ public class Discount {
 	}
 	public void setFlat(boolean flat) {
 		this.flat = flat;
+	}
+	public Estimate getEstimate() {
+		return estimate;
+	}
+	public void setEstimate(Estimate estimate) {
+		this.estimate = estimate;
 	}
 	
 	
