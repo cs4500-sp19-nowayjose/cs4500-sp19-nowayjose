@@ -133,7 +133,7 @@ public class Estimate {
 		
 		for (Fee fee: this.chargedFees) {
 			// calculates delivery fee 
-			if (fee.getFrequency().equals(this.deliveryFrequency)) {
+			if (fee.getFrequency() != null && fee.getFrequency().equals(this.deliveryFrequency)) {
 				if (fee.isFlat()) {
 					fees += fee.getFee(); 
 				}
