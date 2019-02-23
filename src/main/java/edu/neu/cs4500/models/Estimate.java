@@ -124,10 +124,6 @@ public class Estimate {
 		this.extraMiles = extraMiles;
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 	public float getFees() {
 		float fees = 0;
 
