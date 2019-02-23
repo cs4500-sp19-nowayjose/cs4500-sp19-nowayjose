@@ -133,7 +133,7 @@ public class Estimate {
 		
 		for (Fee fee: this.chargedFees) {
 			// calculates delivery fee 
-			if (fee.getFrequency().equals(this.deliveryFrequency)) {
+			if (fee.getFrequency() != null && fee.getFrequency().equals(this.deliveryFrequency)) {
 				if (fee.isFlat()) {
 					fees += fee.getFee(); 
 				}
@@ -145,8 +145,8 @@ public class Estimate {
 			// calculates progressive fee
 			if (fee.getAdditionalMiles() != null && 
 					fee.getAdditionalMiles().size() == 2) {
-				if (fee.getAdditionalMiles().get(0) >= this.extraMiles &&
-						fee.getAdditionalMiles().get(1) <= this.extraMiles) {
+				if (fee.getAdditionalMiles().get(0) <= this.extraMiles &&
+						fee.getAdditionalMiles().get(1) >= this.extraMiles) {
 					fees += fee.getFee() * this.basePrice;
 				}
 			}
