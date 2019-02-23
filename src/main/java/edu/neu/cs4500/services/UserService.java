@@ -20,6 +20,7 @@ import edu.neu.cs4500.repositories.UserRepository;
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
+
 	@GetMapping("/api/users")
 	public List<User> findAllUser() {
 		return userRepository.findAllUsers();
