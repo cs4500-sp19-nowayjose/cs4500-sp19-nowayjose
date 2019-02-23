@@ -29,27 +29,25 @@ public class Estimate {
     
     @OneToMany(mappedBy="estimate")
     private List<Discount> discounts;
-    
-    public float getDiscount() {
 
-    	float totalDiscount = 0;
-    
-    	for (Discount discount : discounts) {
-    		if (discount.isFlat()) {
-    			totalDiscount += discount.getDiscount();
-    		} else {
-    			if (this.subscriptionFrequency.equals(discount.getFrequency())) {
-						totalDiscount += (this.basePrice * discount.getDiscount());
-					}
-    		}
-    	}
-    	
-    	if (totalDiscount > basePrice) {
-    		return basePrice;
-    	}
-    	return totalDiscount;
-    	
-    }
+	public float getDiscount() {
+		float totalDiscount = 0;
+
+		for (Discount discount : discounts) {
+			if (discount.isFlat()) {
+				totalDiscount += discount.getDiscount();
+			} else {
+				if (this.subscriptionFrequency.equals(discount.getFrequency())) {
+					totalDiscount += (this.basePrice * discount.getDiscount());
+				}
+			}
+		}
+
+		if (totalDiscount > basePrice) {
+			return basePrice;
+		}
+		return totalDiscount;
+	}
 
 	public Integer getId() {
 		return id;
@@ -126,7 +124,10 @@ public class Estimate {
 		this.extraMiles = extraMiles;
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 	public float getFees() {
 		float fees = 0;
 
