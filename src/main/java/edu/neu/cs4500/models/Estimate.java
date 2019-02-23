@@ -123,9 +123,10 @@ public class Estimate {
 			}
 			
 			// calculates progressive fee
-			if (fee.getAdditionalMiles() != null) {
-				if (fee.getAdditionalMiles().getKey() >= this.extraMiles &&
-						fee.getAdditionalMiles().getValue() <= this.extraMiles) {
+			if (fee.getAdditionalMiles() != null && 
+					fee.getAdditionalMiles().size() == 2) {
+				if (fee.getAdditionalMiles().get(0) >= this.extraMiles &&
+						fee.getAdditionalMiles().get(1) <= this.extraMiles) {
 					fees += fee.getFee() * this.basePrice;
 				}
 			}
