@@ -60,9 +60,10 @@ public class Estimate {
 	}
 
 	public float getEstimate() {
-		float fees = this.getFees(); 
+		//float fees = this.getFees();
 		float discount = this.getDiscount(); 
-		this.setEstimate(this.basePrice - fees + discount);
+		//this.setEstimate(this.basePrice - fees + discount);
+		this.setEstimate(this.basePrice - discount);
 		return estimate;
 	}
 
@@ -126,9 +127,6 @@ public class Estimate {
 		this.extraMiles = extraMiles;
 	}
 
-	public float getDiscount() {
-		return 0;
-	}
 	public float getFees() {
 		float fees = 0; 
 		
