@@ -45,7 +45,7 @@ public class FrequentlyAskedQuestionService {
 
     @PutMapping ("/api/faq/{faqId}")
     public FrequentlyAskedQuestion updateFaqById(
-            @PathVariable("fagId") Integer id,
+            @PathVariable("faqId") Integer id,
             @RequestBody FrequentlyAskedQuestion newQuestion) {
         Optional<FrequentlyAskedQuestion> optionalQuestion = questionRepository.findById(id);
         FrequentlyAskedQuestion question;
