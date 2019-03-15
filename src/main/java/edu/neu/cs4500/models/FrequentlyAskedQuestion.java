@@ -1,6 +1,7 @@
 package edu.neu.cs4500.models;
+import edu.neu.cs4500.models.FrequentlyAskedAnswer;
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,13 @@ public class FrequentlyAskedQuestion {
     private String question;
     @OneToMany(mappedBy="frequentlyAskedQuestion")
     private List<FrequentlyAskedAnswer> answers;
+
+    public FrequentlyAskedQuestion(Integer id, String title, String question) {
+        this.id = id; 
+        this.title = title; 
+        this.question = question; 
+        this.answers= new ArrayList<FrequentlyAskedAnswer>(); 
+    }
 
     public List<FrequentlyAskedAnswer> getAnswers() {
         return answers;
