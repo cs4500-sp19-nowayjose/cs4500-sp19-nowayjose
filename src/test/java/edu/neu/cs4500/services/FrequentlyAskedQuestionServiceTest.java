@@ -71,7 +71,41 @@ class FrequentlyAskedQuestionServiceTest {
 	}
 
 
+	@Test
+	public void getFAQShouldReturnEmptyFAQFromService()
+			throws Exception {
+		ArrayList<FrequentlyAskedQuestion> faqs = new ArrayList<>(); 
+		when(service.findAllFaqs()).thenReturn(faqs);
+		this.mockMvc
+		.perform(get("/api/faqs"))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.frequentlyAskedQuestions",
+				hasSize(0)));  
+	}
 
+	@Test
+	public void deleteFAQShouldNotReturnFAQFromService()
+			throws Exception {
+		FrequentlyAskedQuestion q1 = new FrequentlyAskedQuestion(123, "first question", "How old are you?");
+		FrequentlyAskedQuestion q2 = new FrequentlyAskedQuestion(234, "second question", "How many employees do you have?");
+
+		ArrayList<FrequentlyAskedQuestion> faqs = new ArrayList<>(); 
+		faqs.add(q1);
+		faqs.add(q2); 
+		when(service.findAllFaqs()).thenReturn(faqs);
+		this.mockMvc
+		.perform(delete("/api/faqs/123"))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.frequentlyAskedQuestions",
+				hasSize(1)))
+		.andExpect(jsonPath("$.id", is(234)))
+		.andExpect(jsonPath("$.frequentlyAskedQuestions[*].title",
+				containsInAnyOrder("second question")));  
+	}
+
+	
 	static String asJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);
