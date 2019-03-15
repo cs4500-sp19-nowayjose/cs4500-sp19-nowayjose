@@ -128,7 +128,28 @@ class FrequentlyAskedQuestionServiceTest {
 				containsInAnyOrder("How many employees do you have?", "What is your age")));  
 	}
 
-	
+	@Test
+	public void createFAQShouldReturnCreatedFAQFromService()
+			throws Exception {
+		FrequentlyAskedQuestion q1 = new FrequentlyAskedQuestion(123, "first question", "How old are you?");
+		FrequentlyAskedQuestion q2 = new FrequentlyAskedQuestion(234, "second question", "How many employees do you have?");
+
+		FrequentlyAskedQuestion newQ = new FrequentlyAskedQuestion(345, "third question", "Do you like your job?");
+
+		ArrayList<FrequentlyAskedQuestion> faqs = new ArrayList<>(); 
+		faqs.add(q1);
+		faqs.add(q2); 
+		when(service.findAllFaqs()).thenReturn(faqs);
+		((ResultActions) ((MockHttpServletRequestBuilder) this.mockMvc
+				.perform(post("/api/faqs")))
+				.content(asJsonString(newQ)))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.frequentlyAskedQuestions",
+				hasSize(3)))
+		.andExpect(jsonPath("$.frequentlyAskedQuestions[*].question",
+				containsInAnyOrder("How many employees do you have?", "How old are you?", "Do you like your job?")));  
+	}
 
 	static String asJsonString(final Object obj) {
 		try {
