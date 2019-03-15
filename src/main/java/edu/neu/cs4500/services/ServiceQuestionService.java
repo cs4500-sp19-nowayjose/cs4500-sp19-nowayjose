@@ -1,6 +1,7 @@
 package edu.neu.cs4500.services;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,19 @@ public class ServiceQuestionService {
   @GetMapping("api/service_question")
   public List<ServiceQuestion> findAllService() {
     return serviceQuestionRepository.findAllServiceQuestions();
+  }
+
+  @PostMapping("api/service_question/filter")
+  public List<ServiceQuestion> filterServiceBasedOnTitleDescriptionType(
+          @RequestBody ServiceQuestion body
+  ) {
+    return serviceQuestionRepository
+            .findAllServiceQuestions()
+            .stream()
+            .filter(serviceQuestion ->
+              serviceQuestion.getTitle().toLowerCase().contains(body.getTitle().toLowerCase())
+                && serviceQuestion.getDescription().toLowerCase().contains(body.getDescription().toLowerCase()))
+            .collect(Collectors.toList());
   }
 
   // for Admin find one question by question id
