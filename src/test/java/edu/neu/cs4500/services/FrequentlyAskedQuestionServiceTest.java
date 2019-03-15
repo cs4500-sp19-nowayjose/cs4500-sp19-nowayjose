@@ -105,7 +105,31 @@ class FrequentlyAskedQuestionServiceTest {
 				containsInAnyOrder("second question")));  
 	}
 
+	@Test
+	public void updateFAQShouldReturnEditedFAQFromService()
+			throws Exception {
+		FrequentlyAskedQuestion q1 = new FrequentlyAskedQuestion(123, "first question", "How old are you?");
+		FrequentlyAskedQuestion q2 = new FrequentlyAskedQuestion(234, "second question", "How many employees do you have?");
+
+		FrequentlyAskedQuestion editq1 = new FrequentlyAskedQuestion(123, "first question", "What is your age");
+
+		ArrayList<FrequentlyAskedQuestion> faqs = new ArrayList<>(); 
+		faqs.add(q1);
+		faqs.add(q2); 
+		when(service.findAllFaqs()).thenReturn(faqs);
+		((ResultActions) ((MockHttpServletRequestBuilder) this.mockMvc
+				.perform(delete("/api/faqs/123")))
+				.content(asJsonString(editq1)))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.frequentlyAskedQuestions",
+				hasSize(2)))
+		.andExpect(jsonPath("$.frequentlyAskedQuestions[*].question",
+				containsInAnyOrder("How many employees do you have?", "What is your age")));  
+	}
+
 	
+
 	static String asJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);
