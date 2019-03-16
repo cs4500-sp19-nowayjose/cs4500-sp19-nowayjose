@@ -17,15 +17,5 @@ public interface ServiceQuestionRepository extends CrudRepository<ServiceQuestio
         @Param("id")
             Integer id
     );
-
-    @Query(value="SELECT serviceQuestion " +
-            "FROM ServiceQuestion serviceQuestion " +
-            "WHERE serviceQuestion.title LIKE %:title% " +
-            "   AND serviceQuestion.description LIKE %:description% ")
-    public List<ServiceQuestion> findServiceQuestionByTitleAndDescription(
-            @Param("title") String title,
-            @Param("description") String description
-    );
-
 }
 

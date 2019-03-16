@@ -26,7 +26,13 @@ public class ServiceQuestionService {
   public List<ServiceQuestion> filterServiceBasedOnTitleDescriptionType(
           @RequestBody ServiceQuestion body
   ) {
-    return serviceQuestionRepository.findServiceQuestionByTitleAndDescription(body.getTitle(), body.getDescription());
+    return serviceQuestionRepository
+            .findAllServiceQuestions()
+            .stream()
+            .filter(serviceQuestion ->
+              serviceQuestion.getTitle().toLowerCase().contains(body.getTitle().toLowerCase())
+                && serviceQuestion.getDescription().toLowerCase().contains(body.getDescription().toLowerCase()))
+            .collect(Collectors.toList());
   }
 
   // for Admin find one question by question id
