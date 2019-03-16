@@ -27,6 +27,12 @@ public class FrequentlyAskedQuestion {
         this.answers= new ArrayList<FrequentlyAskedAnswer>(); 
     }
 
+
+    public FrequentlyAskedQuestion() {
+       
+    }
+
+    
     public List<FrequentlyAskedAnswer> getAnswers() {
         return answers;
     }
