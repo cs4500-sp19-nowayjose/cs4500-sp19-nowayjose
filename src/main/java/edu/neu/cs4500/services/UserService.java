@@ -40,6 +40,8 @@ public class UserService {
 			@RequestBody User userUpdates) {
 		User user = userRepository.findUserById(id);
 		user.setRole(userUpdates.getRole());
+		user.setFirstName(userUpdates.getFirstName());
+		user.setLastName(userUpdates.getLastName());
 		return userRepository.save(user);
 	}
 	@DeleteMapping("/api/users/{userId}")
