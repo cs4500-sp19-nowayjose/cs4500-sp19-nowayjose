@@ -17,6 +17,5 @@ public interface ServiceQuestionRepository extends CrudRepository<ServiceQuestio
         @Param("id")
             Integer id
     );
-
 }
 
