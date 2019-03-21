@@ -25,11 +25,19 @@ public class FrequentlyAskedAnswer {
     private User user;
     @Transient
     private String question;
+    @Transient
+    private String username;
     public String getQuestion() {
         return frequentlyAskedQuestion.getQuestion();
     }
     public void setQuestion(String question) {
         this.question = question;
+    }
+    public String getUsername() {
+        return this.user.getUsername();
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
     public User getUser() {
         return user;
