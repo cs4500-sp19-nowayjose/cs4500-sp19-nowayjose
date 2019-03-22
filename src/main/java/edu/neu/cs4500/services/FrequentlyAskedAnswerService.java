@@ -3,6 +3,8 @@ package edu.neu.cs4500.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.neu.cs4500.models.FrequentlyAskedQuestion;
+import edu.neu.cs4500.repositories.FrequentlyAskedQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +20,15 @@ public class FrequentlyAskedAnswerService {
 	FrequentlyAskedAnswerRepository answerRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	FrequentlyAskedQuestionRepository questionRepository;
 
 	@PostMapping("/api/faq-answers")
     public FrequentlyAskedAnswer createAnswer(@RequestBody FrequentlyAskedAnswer answer) {
+		User u = userRepository.findByUsername(answer.getUsername());
+		FrequentlyAskedQuestion q = questionRepository.findFrequentlyAskedQuestionByQuestion(answer.getQuestion());
+		answer.setUser(u);
+		answer.setFrequentlyAskedQuestion(q);
         return answerRepository.save(answer);
     }
 	@DeleteMapping("/api/faq-answers/{id}")
