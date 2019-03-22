@@ -13,24 +13,22 @@ public class FrequentlyAskedAnswer {
     private String answer;
     @ManyToOne
     @JsonIgnore
-    @Column(nullable = false)
     private FrequentlyAskedQuestion frequentlyAskedQuestion;
     @ManyToOne
     @JsonIgnore
-    @Column(nullable = false)
     private User user;
     @Transient
     private String question;
     @Transient
     private String username;
     public String getQuestion() {
-        return this.question;
+        return frequentlyAskedQuestion == null ? this.question : frequentlyAskedQuestion.getQuestion();
     }
     public void setQuestion(String question) {
         this.question = question;
     }
     public String getUsername() {
-        return this.username;
+        return user == null ? this.username : user.getUsername();
     }
     public void setUsername(String username) {
         this.username = username;
