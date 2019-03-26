@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins="*")
-public class FrequentlyAskedQuestionService {
+public class  FrequentlyAskedQuestionService {
     @Autowired
     FrequentlyAskedQuestionRepository questionRepository;
 
