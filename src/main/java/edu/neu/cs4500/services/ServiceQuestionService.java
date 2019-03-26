@@ -26,8 +26,7 @@ public class ServiceQuestionService {
   public List<ServiceQuestion> filterServiceBasedOnTitleDescriptionType(
           @RequestBody ServiceQuestion body
   ) {
-    return serviceQuestionRepository
-            .findAllServiceQuestions()
+    return findAllService()
             .stream()
             .filter(serviceQuestion ->
               serviceQuestion.getTitle().toLowerCase().contains(body.getTitle().toLowerCase())
@@ -66,7 +65,7 @@ public class ServiceQuestionService {
             serviceQuestionRepository.findAllServiceQuestions();
     List<ServiceQuestion> temp = new ArrayList<>();
     for (ServiceQuestion question: list) {
-      if (question.getServiceQuestionType().equals(type)) {
+      if (question.getServiceQuestionType().toString().toLowerCase().equals(type.toLowerCase())) {
         temp.add(question);
       }
     }
@@ -80,8 +79,6 @@ public class ServiceQuestionService {
     return serviceQuestionRepository.save(question);
   }
 
-
-
   // to update a question
   @PutMapping("api/service_question/{serviceQuestionId}")
   public ServiceQuestion updateQuestion(
@@ -89,6 +86,7 @@ public class ServiceQuestionService {
           @RequestBody ServiceQuestion updatedQuestion) {
     ServiceQuestion target =
             serviceQuestionRepository.findServiceQuestionById(id);
+    if (target == null) return null;
     target.setTitle(updatedQuestion.getTitle());
     target.setServiceQuestionType(updatedQuestion.getServiceQuestionType());
 
@@ -108,9 +106,11 @@ public class ServiceQuestionService {
     if (updatedQuestion.getService() != null) {
       target.setService(updatedQuestion.getService());
     }
+
     if (updatedQuestion.getId() != null) {
       target.setId(updatedQuestion.getId());
     }
+
     return serviceQuestionRepository.save(target);
   }
 
