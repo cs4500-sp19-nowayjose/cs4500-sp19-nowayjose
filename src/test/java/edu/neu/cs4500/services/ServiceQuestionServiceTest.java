@@ -254,7 +254,19 @@ public class ServiceQuestionServiceTest {
 
     @Test
     public void updateDescriptionForAQuestion() throws Exception {
+        setUp();
+        ServiceQuestion updateParam = new ServiceQuestion();
+        updateParam.setDescription("this is a new description").setId(1);
+        when(repo.save(updateParam)).thenReturn(updateParam);
 
+        this.mockMvc
+                .perform(put("/api/service_question/1")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(asJsonString(updateParam)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.description", is("this is a new description")));
     }
 
     @Test
