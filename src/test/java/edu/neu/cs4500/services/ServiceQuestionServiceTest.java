@@ -260,7 +260,7 @@ public class ServiceQuestionServiceTest {
         when(repo.save(updateParam)).thenReturn(updateParam);
 
         this.mockMvc
-                .perform(put("/api/service_question/1")
+                .perform(put("/api/service_question/1/updateDescription/this is a new description")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(asJsonString(updateParam)))
                 .andDo(print())
