@@ -15,7 +15,7 @@ public class ServiceProvider {
     private String title;
     private Float rating;
     private List<Float> ratingScores;
-
+    private String zipCode;
     private Integer yearsInBusiness;
     private Integer hires;
     private String latestReview;
