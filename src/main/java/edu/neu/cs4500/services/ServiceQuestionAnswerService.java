@@ -1,8 +1,10 @@
 package edu.neu.cs4500.services;
 
+import edu.neu.cs4500.models.ServiceProvider;
 import edu.neu.cs4500.models.ServiceQuestion;
 import edu.neu.cs4500.models.ServiceQuestionAnswer;
 import edu.neu.cs4500.models.User;
+import edu.neu.cs4500.repositories.ServiceProviderRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionAnswerRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
 import edu.neu.cs4500.repositories.UserRepository;
@@ -24,7 +26,7 @@ public class ServiceQuestionAnswerService {
 	ServiceQuestionAnswerRepository answersRepository;
 
 	@Autowired
-	UserRepository userRepository;
+	ServiceProviderRepository providerRepository;
 	@Autowired
 	ServiceQuestionRepository serviceRepository;
 
@@ -42,8 +44,8 @@ public class ServiceQuestionAnswerService {
 
 	@PostMapping(ROUTE)
 	public ServiceQuestionAnswer createServiceQuestionAnswer(@RequestBody ServiceQuestionAnswer serviceQuestionAnswer) {
-        User answerer = userRepository.findUserById(serviceQuestionAnswer.getUser().getId());
-        serviceQuestionAnswer.setUser(answerer);
+        ServiceProvider provider = providerRepository.findServiceProviderById(serviceQuestionAnswer.getProvider().getId());
+        serviceQuestionAnswer.setProvider(provider);
 
 		ServiceQuestion serviceQuestion = serviceRepository.findServiceQuestionById(serviceQuestionAnswer.getServiceQuestion().getId());
 		serviceQuestionAnswer.setServiceQuestion(serviceQuestion);

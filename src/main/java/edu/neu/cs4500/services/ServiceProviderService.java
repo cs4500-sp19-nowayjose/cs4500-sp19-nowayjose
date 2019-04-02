@@ -34,7 +34,14 @@ public class ServiceProviderService {
     @PostMapping("/api/service-provider")
     @ResponseBody
     public ServiceProvider addServiceProvider(@RequestBody ServiceProvider serviceProvider) {
+        if (serviceProviderRepository == null) throw new RuntimeException("Fuck the repo");
+        if (serviceProvider == null) throw new RuntimeException("Fuck the provider");
         return serviceProviderRepository.save(serviceProvider);
+    }
+
+    @DeleteMapping("/api/service-provider/{id}")
+    public void deleteServiceProvider(@RequestParam("id") Integer id) {
+        serviceProviderRepository.deleteById(id);
     }
 
 }

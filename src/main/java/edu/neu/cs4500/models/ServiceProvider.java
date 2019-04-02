@@ -1,5 +1,7 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,8 +24,14 @@ public class ServiceProvider {
     private String introduction;
     private Boolean backgroundChecked;
     private Integer employees;
+
     @OneToMany
+    @JsonIgnore
     private List<FrequentlyAskedQuestion> faqs;
+
+    @OneToMany
+    @JsonIgnore
+    private List<ServiceQuestionAnswer> sqas;
 
 
 
@@ -116,5 +124,12 @@ public class ServiceProvider {
         this.faqs = faqs;
     }
 
+    public List<ServiceQuestionAnswer> getServiceQuestionAnswers() {
+        return sqas;
+    }
+
+    public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> sqas) {
+        this.sqas = sqas;
+    }
 
 }
