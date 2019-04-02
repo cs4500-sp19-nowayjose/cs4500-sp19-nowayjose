@@ -13,8 +13,18 @@ public class Service {
 	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ServiceQuestion> serviceQuestions;
 
+	private String imageUrl;
+
 	@ManyToMany(mappedBy="services")
 	private List<ServiceCategory> serviceCategories;
+
+	public String getImageUrl() {
+		return this.imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 
 	public Integer getId() {
 		return id;
