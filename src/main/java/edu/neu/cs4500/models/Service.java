@@ -17,14 +17,6 @@ public class Service {
 	@ManyToMany(mappedBy="services")
 	private List<ServiceCategory> serviceCategories;
   
-  public Integer getCount() {
-    return count;  
-  }
-  
-  public void incrementCount() {
-    this.count++;
-  }
-
 	public Integer getId() {
 		return id;
 	}
@@ -33,6 +25,18 @@ public class Service {
 		this.id = id;
 		return this;
 	}
+  
+  public Integer getCount() {
+    return count;  
+  }
+  
+  public void setCount(Integer count) {
+    this.count = count;
+  }
+  
+  public void incrementCount() {
+    this.count++;
+  }
 
 	public String getServiceName() {
 		return serviceName;

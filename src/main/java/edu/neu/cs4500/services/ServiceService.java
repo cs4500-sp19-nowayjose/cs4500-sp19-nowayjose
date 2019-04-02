@@ -62,7 +62,7 @@ public class ServiceService {
 		service.setServiceName(serviceUpdates.getServiceName());
 		return serviceRepository.save(service);
 	}
-  @PutMapping("/api/services/{serviceId}")
+  @PutMapping("/api/services/{serviceId}/visit")
 	public Service incrementVisitCount(
 			@PathVariable("serviceId") Integer id) {
 		Service service = serviceRepository.findServiceById(id);
