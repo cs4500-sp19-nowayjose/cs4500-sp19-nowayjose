@@ -14,7 +14,6 @@ public class ServiceProvider {
 
     private String title;
     private Float rating;
-    private List<Float> ratingScores;
     private String zipCode;
     private Integer yearsInBusiness;
     private Integer hires;
@@ -23,11 +22,8 @@ public class ServiceProvider {
     private String introduction;
     private Boolean backgroundChecked;
     private Integer employees;
-    private List<String> paymentMethods;
-
     @OneToMany
     private List<FrequentlyAskedQuestion> faqs;
-    private List<String> reviews;
 
 
 
@@ -53,14 +49,6 @@ public class ServiceProvider {
 
     public void setRating(Float rating) {
         this.rating = rating;
-    }
-
-    public List<Float> getRatingScores() {
-        return ratingScores;
-    }
-
-    public void setRatingScores(List<Float> ratingScores) {
-        this.ratingScores = ratingScores;
     }
 
     public Integer getYearsInBusiness() {
@@ -119,13 +107,6 @@ public class ServiceProvider {
         this.employees = employees;
     }
 
-    public List<String> getPaymentMethods() {
-        return paymentMethods;
-    }
-
-    public void setPaymentMethods(List<String> paymentMethods) {
-        this.paymentMethods = paymentMethods;
-    }
 
     public List<FrequentlyAskedQuestion> getFaqs() {
         return faqs;
@@ -135,12 +116,5 @@ public class ServiceProvider {
         this.faqs = faqs;
     }
 
-    public List<String> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<String> reviews) {
-        this.reviews = reviews;
-    }
 
 }
