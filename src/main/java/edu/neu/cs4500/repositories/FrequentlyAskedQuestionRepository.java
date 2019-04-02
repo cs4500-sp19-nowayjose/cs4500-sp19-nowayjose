@@ -14,4 +14,7 @@ public interface FrequentlyAskedQuestionRepository  extends CrudRepository<Frequ
 	  
 	  @Query(value="SELECT frequentlyAskedQuestion FROM FrequentlyAskedQuestion frequentlyAskedQuestion WHERE frequentlyAskedQuestion.id=:id")
 	  public FrequentlyAskedQuestion findFrequentlyAskedQuestionById(@Param("id") Integer id);
+
+	  @Query(value="SELECT frequentlyAskedQuestion FROM FrequentlyAskedQuestion frequentlyAskedQuestion WHERE frequentlyAskedQuestion.question = :question")
+	  public FrequentlyAskedQuestion findFrequentlyAskedQuestionByQuestion(@Param("question") String question);
 }
