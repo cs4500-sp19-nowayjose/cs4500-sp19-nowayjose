@@ -1,7 +1,5 @@
 package edu.neu.cs4500.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,6 +17,8 @@ public class ServiceProvider {
     private Integer hires;
     private String latestReview;
     private String price;
+
+    @Column( length = 1000 )
     private String introduction;
     private Boolean backgroundChecked;
     private Integer employees;

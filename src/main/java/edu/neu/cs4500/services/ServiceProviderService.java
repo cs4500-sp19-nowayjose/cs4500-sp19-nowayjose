@@ -31,4 +31,10 @@ public class ServiceProviderService {
         return new ArrayList<>();
     }
 
+    @PostMapping("/api/service-provider")
+    @ResponseBody
+    public ServiceProvider addServiceProvider(@RequestBody ServiceProvider serviceProvider) {
+        return serviceProviderRepository.save(serviceProvider);
+    }
+
 }
