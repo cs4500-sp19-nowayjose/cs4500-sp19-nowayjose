@@ -25,13 +25,6 @@ public class ServiceService {
 		return service.getServiceCategories();
 	}
 
-	@GetMapping("api/services/category/{catId}")
-	public List<Service> getServicesByCategory(
-			@PathVariable("catId") Integer cid) {
-		ServiceCategory c = serviceCategoryRepository.findServiceCategoryById(cid);
-		return c.getServices();
-	}
-
 	@GetMapping("/api/services")
 	public List<Service> findAllService() {
 		return serviceRepository.findAllServices();

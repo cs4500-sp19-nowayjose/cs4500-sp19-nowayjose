@@ -34,6 +34,13 @@ public class ServiceCategoryService {
 			@PathVariable("serviceCategoryId") Integer id) {
 		return serviceCategoryRepository.findServiceCategoryById(id);
 	}
+
+	@GetMapping("/api/categories/{id}/services")
+	public List<Service> findAllServicesByCategory(@PathVariable("id") Integer id) {
+		ServiceCategory c = serviceCategoryRepository.findServiceCategoryById(id);
+		return c.getServices();
+	}
+
 	@PostMapping("/api/categories")
 	public ServiceCategory createServiceCategory(@RequestBody ServiceCategory serviceCategory) {
 		return serviceCategoryRepository.save(serviceCategory);
