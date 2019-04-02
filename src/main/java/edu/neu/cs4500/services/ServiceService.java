@@ -24,6 +24,7 @@ public class ServiceService {
 		Service service = serviceRepository.findServiceById(id);
 		return service.getServiceCategories();
 	}
+
 	@GetMapping("/api/services")
 	public List<Service> findAllService() {
 		return serviceRepository.findAllServices();
