@@ -9,12 +9,21 @@ public class Service {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+  private Integer count;
 	private String serviceName;
 	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ServiceQuestion> serviceQuestions;
 
 	@ManyToMany(mappedBy="services")
 	private List<ServiceCategory> serviceCategories;
+  
+  public Integer getCount() {
+    return count;  
+  }
+  
+  public void incrementCount() {
+    this.count++;
+  }
 
 	public Integer getId() {
 		return id;
