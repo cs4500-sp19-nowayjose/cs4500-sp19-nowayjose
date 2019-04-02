@@ -1,5 +1,7 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,15 +12,24 @@ public class ServiceQuestionChoiceOption {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    private ServiceQuestionAnswer questionAnswer;
+    @JsonIgnore
+    private ServiceQuestion serviceQuestion;
     private String text;
 
-    public ServiceQuestionAnswer getQuestionAnswer() {
-        return questionAnswer;
+    public Integer getId() {
+        return id;
     }
 
-    public void setQuestionAnswer(ServiceQuestionAnswer questionAnswer) {
-        this.questionAnswer = questionAnswer;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public ServiceQuestion getServiceQuestion() {
+        return serviceQuestion;
+    }
+
+    public void setServiceQuestion(ServiceQuestion serviceQuestion) {
+        this.serviceQuestion = serviceQuestion;
     }
 
     public String getText() {

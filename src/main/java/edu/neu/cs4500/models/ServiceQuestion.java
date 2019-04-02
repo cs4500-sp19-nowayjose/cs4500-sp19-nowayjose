@@ -31,7 +31,11 @@ public class ServiceQuestion {
     @JsonIgnore
     private List<ServiceQuestionAnswer> serviceQuestionAnswers;
 
+    @OneToMany(mappedBy="serviceQuestion")
+    private List<ServiceQuestionChoiceOption> serviceQuestionChoiceOptions;
+
     @ManyToOne
+    @JsonIgnore
     private Service service;
 
     // Need an explicit default now
@@ -109,6 +113,10 @@ public class ServiceQuestion {
     public ServiceQuestion setServiceQuestionType(ServiceQuestionType serviceQuestionType) {
         this.serviceQuestionType = serviceQuestionType;
         return this;
+    }
+
+    public List<ServiceQuestionChoiceOption> getServiceQuestionChoiceOptions() {
+        return serviceQuestionChoiceOptions;
     }
 
     public void addServiceQuestionAnswer(ServiceQuestionAnswer ans){
