@@ -1,1 +1,0 @@
-INSERT INTO service_question_answers (id, true_false_answer, max_range_answer, min_range_answer, choice_answer, provider_id, service_question_id, created_at, updated_at) VALUES (1, false, 2000, 100, 0, 123, 1, NOW(), NOW());

@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS service_providers;
-CREATE TABLE service_categories (
+CREATE TABLE service_providers (
   id int(11) NOT NULL AUTO_INCREMENT,
   title varchar(255) DEFAULT NULL,
   zip_code varchar(255) DEFAULT NULL,

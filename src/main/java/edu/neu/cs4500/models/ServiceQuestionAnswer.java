@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="service_question_answers")
@@ -33,6 +34,10 @@ public class ServiceQuestionAnswer {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private ServiceQuestion serviceQuestion;
+
+    @OneToMany
+    @JsonIgnore
+    private List<ServiceQuestionChoiceOption> choiceOptions;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

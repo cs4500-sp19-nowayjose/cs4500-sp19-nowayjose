@@ -15,10 +15,10 @@ public interface ServiceQuestionAnswerRepository extends CrudRepository<ServiceQ
     @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswer serviceQuestionAnswer WHERE id=:id")
     public ServiceQuestionAnswer findServiceQuestionAnswerById(@Param("id") Integer id);
 
-    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswer serviceQuestionAnswer WHERE user.id=:user_id AND serviceQuestion.id=:service_question_id")
-    public ServiceQuestionAnswer findUsersAnswerToServiceQuestion(
+    @Query(value="SELECT serviceQuestionAnswer FROM ServiceQuestionAnswer serviceQuestionAnswer WHERE provider.id=:provider_id AND serviceQuestion.id=:service_question_id")
+    public ServiceQuestionAnswer findProvidersAnswerToServiceQuestion(
         @Param("service_question_id") Integer serviceQuestionId,
-        @Param("user_id") Integer userId);
+        @Param("provider_id") Integer userId);
 
 }
 
