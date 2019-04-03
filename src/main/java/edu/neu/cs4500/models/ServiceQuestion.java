@@ -2,6 +2,7 @@ package edu.neu.cs4500.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class ServiceQuestion {
     private Date updatedAt;
 
     @Enumerated(EnumType.STRING)
+    @JsonInclude
     private ServiceQuestionType serviceQuestionType;
 
     @OneToMany(mappedBy="serviceQuestion")
