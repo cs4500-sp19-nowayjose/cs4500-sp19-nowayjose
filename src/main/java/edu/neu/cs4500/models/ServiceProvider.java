@@ -29,7 +29,7 @@ public class ServiceProvider {
     @JsonIgnore
     private List<FrequentlyAskedQuestion> faqs;
 
-    @OneToMany
+    @OneToMany(mappedBy="provider")
     @JsonIgnore
     private List<ServiceQuestionAnswer> sqas;
 

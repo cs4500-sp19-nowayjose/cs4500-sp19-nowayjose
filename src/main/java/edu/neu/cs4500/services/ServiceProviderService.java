@@ -38,12 +38,27 @@ public class ServiceProviderService {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(searchQueryJson);
 
-        String title = root.path("title").asText("");
-        String zip = root.path("zip").asText("02115");
-        List<ServiceProvider> matchingProviders = serviceProviderRepository.searchServiceProviders(zip, title);
+        Optional<String> title = Optional.ofNullable(root.path("title").asText(null));
+        Optional<String> zip = Optional.ofNullable(root.path("zip").asText(null));
+        List<ServiceProvider> matchingProviders = new ArrayList<>();
+        if (title.isPresent() && zip.isPresent()) {
+            matchingProviders = serviceProviderRepository.searchServiceProvidersByTitleAndZip(zip.get(), title.get());
+        } else if (zip.isPresent()) {
+            matchingProviders = serviceProviderRepository.searchServiceProvidersByZip(zip.get());
+        } else if (title.isPresent()) {
+            matchingProviders = serviceProviderRepository.searchServiceProvidersByTitle(title.get());
+        } else {
+            matchingProviders = serviceProviderRepository.findAllServiceProviders();
+        }
 
         SearchCriteria sq = buildSearchCriteria(root.get("filters"));
         return sq.orderAndFilterProvidersByScore(matchingProviders);
+    }
+
+    @GetMapping("/api/service-provider")
+    @ResponseBody
+    public List<ServiceProvider> getAllServiceProviders() {
+        return serviceProviderRepository.findAllServiceProviders();
     }
 
     @PostMapping("/api/service-provider")
@@ -72,7 +87,6 @@ public class ServiceProviderService {
                 trueFalseAnswer = Optional.of(criterionJson.asBoolean());
                 break;
         }
-        System.out.println("Criteria: " + trueFalseAnswer + ", " + rangeAnswer + ", " + choiceAnswer);
         return new SearchCriteria.QuestionAnswerCriterion(trueFalseAnswer, rangeAnswer, choiceAnswer);
     }
 
@@ -80,7 +94,6 @@ public class ServiceProviderService {
         HashMap<ServiceQuestion, SearchCriteria.QuestionAnswerCriterion> criteria = new HashMap<>();
         filterQuery.fields().forEachRemaining(filterEntry -> {
             ServiceQuestion sq = serviceQuestionRepository.findServiceQuestionById(Integer.parseInt(filterEntry.getKey()));
-            System.out.println("Found service question " + sq.getId());
             SearchCriteria.QuestionAnswerCriterion criterion = buildQuestionAnswerCriterion(sq, filterEntry.getValue());
             criteria.put(sq, criterion);
         });
