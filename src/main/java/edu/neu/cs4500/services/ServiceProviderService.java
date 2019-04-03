@@ -20,13 +20,13 @@ public class ServiceProviderService {
     public List<ServiceProvider> filterByTitleAndZip(@RequestParam("title") Optional<String> title,
                                                      @RequestParam("zip") Optional<String> zip) {
         if (title.isPresent() && zip.isPresent()) {
-            return serviceProviderRepository.searchServiceProviders(zip.toString(), title.toString());
+            return serviceProviderRepository.searchServiceProviders(zip.get(), title.get());
         }
         if (title.isPresent() && !zip.isPresent()) {
-            return serviceProviderRepository.searchServiceProviders("02115", title.toString());
+            return serviceProviderRepository.searchServiceProviders("02115", title.get());
         }
         if (!title.isPresent() && zip.isPresent()) {
-            return serviceProviderRepository.searchServiceProviders(zip.toString(), "");
+            return serviceProviderRepository.searchServiceProviders(zip.get(), "");
         }
         return new ArrayList<>();
     }
