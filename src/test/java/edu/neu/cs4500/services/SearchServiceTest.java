@@ -4,6 +4,12 @@ import edu.neu.cs4500.models.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 
@@ -12,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 // To do: connect jupiter with Spring
 public class SearchServiceTest {
     private static ServiceQuestionAnswerService sqas = new ServiceQuestionAnswerService();
-    private static UserService userService = new UserService();
+    private static ServiceProviderService providerService = new ServiceProviderService();
     private static SearchService searchService = new SearchService();
 
-    private static User travis = new User();
-    private static User lil = new User();
-    private static User kanye = new User();
+    private static ServiceProvider travis;
+    private static ServiceProvider lil;
+    private static ServiceProvider kanye;
 
     private static List<ServiceQuestion> houseCleaningServiceQuestions;
     private static Service houseCleaningService;
@@ -55,27 +61,45 @@ public class SearchServiceTest {
     }
 
     private static void insertUsersToDB() {
-        travis = new User()
-                .setId(1200010)
-                .setFirstName("Travis")
-                .setLastName("Scott")
-                .setRole("Provider")
-                .setUsername("SickoMode");
-        lil = new User()
-                .setId(1200011)
-                .setFirstName("Lil")
-                .setLastName("Pump")
-                .setRole("Provider")
-                .setUsername("GucciGang");
-        kanye = new User()
-                .setId(1200012)
-                .setFirstName("Kanye")
-                .setLastName("West")
-                .setRole("Admin")
-                .setUsername("SlowJamz");
-        userService.createUser(travis);
-        userService.createUser(lil);
-        userService.createUser(kanye);
+        travis = new ServiceProvider();
+        travis.setId(1200010);
+        travis.setTitle("Travis llc");
+        travis.setRating(4.3f);
+        travis.setYearsInBusiness(1);
+        travis.setHires(1);
+        travis.setLatestReview("Pretty good");
+        travis.setPrice("$3");
+        travis.setIntroduction("Hey I'm travis.");
+        travis.setBackgroundChecked(true);
+        travis.setEmployees(1);
+
+        kanye = new ServiceProvider();
+        kanye.setId(1200011);
+        kanye.setTitle("Kanye llc");
+        kanye.setRating(4.2f);
+        kanye.setYearsInBusiness(2);
+        kanye.setHires(2);
+        kanye.setLatestReview("Ok");
+        kanye.setPrice("$4");
+        kanye.setIntroduction("Hey I'm kanye.");
+        kanye.setBackgroundChecked(false);
+        kanye.setEmployees(2);
+
+        lil = new ServiceProvider();
+        lil.setId(1200012);
+        lil.setTitle("lil llc");
+        lil.setRating(4.1f);
+        lil.setYearsInBusiness(3);
+        lil.setHires(3);
+        lil.setLatestReview("Bad");
+        lil.setPrice("$92");
+        lil.setIntroduction("Hey I'm lil.");
+        lil.setBackgroundChecked(true);
+        lil.setEmployees(3);
+
+        providerService.addServiceProvider(travis);
+        providerService.addServiceProvider(lil);
+        providerService.addServiceProvider(kanye);
     }
 
     private static void insertServiceQuestionAnswersForUsers() {
@@ -84,34 +108,34 @@ public class SearchServiceTest {
                 .setServiceQuestion(houseCleaningServiceQuestions.get(0))
                 .setMinRangeAnswer(2)
                 .setMaxRangeAnswer(3)
-                .setUser(travis));
+                .setProvider(travis));
         sqas.createServiceQuestionAnswer(new ServiceQuestionAnswer()
                 .setId(1200011)
                 .setServiceQuestion(houseCleaningServiceQuestions.get(0))
                 .setMinRangeAnswer(3)
                 .setMaxRangeAnswer(4)
-                .setUser(lil));
+                .setProvider(lil));
         sqas.createServiceQuestionAnswer(new ServiceQuestionAnswer()
                 .setId(1200012)
                 .setServiceQuestion(houseCleaningServiceQuestions.get(0))
                 .setMinRangeAnswer(4)
                 .setMaxRangeAnswer(5)
-                .setUser(kanye));
+                .setProvider(kanye));
         sqas.createServiceQuestionAnswer(new ServiceQuestionAnswer()
                 .setId(1200013)
                 .setServiceQuestion(houseCleaningServiceQuestions.get(1))
                 .setTrueFalseAnswer(false)
-                .setUser(travis));
+                .setProvider(travis));
         sqas.createServiceQuestionAnswer(new ServiceQuestionAnswer()
                 .setId(1200014)
                 .setServiceQuestion(houseCleaningServiceQuestions.get(1))
                 .setTrueFalseAnswer(true)
-                .setUser(lil));
+                .setProvider(lil));
         sqas.createServiceQuestionAnswer(new ServiceQuestionAnswer()
                 .setId(1200015)
                 .setServiceQuestion(houseCleaningServiceQuestions.get(1))
                 .setTrueFalseAnswer(true)
-                .setUser(kanye));
+                .setProvider(kanye));
     }
 
     private static void setUpQuestionCriteria() {
@@ -130,7 +154,7 @@ public class SearchServiceTest {
     @Test
     public void testSearchForProviders() {
         assertArrayEquals(searchService.searchForProviders(houseCleaningService, searchCriteria).toArray(),
-                new User[]{travis, kanye});
+                new ServiceProvider[]{travis, kanye});
     }
 
     @Test
@@ -150,9 +174,9 @@ public class SearchServiceTest {
     }
 
     private static void deleteTestingUsers() {
-        userService.deleteUser(1200010);
-        userService.deleteUser(1200011);
-        userService.deleteUser(1200012);
+        providerService.deleteServiceProvider(1200010);
+        providerService.deleteServiceProvider(1200011);
+        providerService.deleteServiceProvider(1200012);
     }
 
     private static void deleteQuestionAnswers() {

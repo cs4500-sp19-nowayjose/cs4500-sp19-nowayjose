@@ -2,14 +2,12 @@ package edu.neu.cs4500.services;
 
 import edu.neu.cs4500.models.SearchCriteria;
 import edu.neu.cs4500.models.Service;
-import edu.neu.cs4500.models.User;
-import edu.neu.cs4500.repositories.ServiceQuestionRepository;
-import edu.neu.cs4500.repositories.ServiceRepository;
-import edu.neu.cs4500.repositories.UserRepository;
+import edu.neu.cs4500.models.ServiceProvider;
+import edu.neu.cs4500.repositories.ServiceProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,20 +15,10 @@ import java.util.List;
 public class SearchService {
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ServiceRepository serviceRepository;
-    @Autowired
-    private ServiceQuestionRepository serviceQuestionRepository;
+    private ServiceProviderRepository providerRepository;
 
-    @GetMapping("/api/provider-search/{serviceId}")
-    public List<User> searchProvidersForService(@PathVariable("serviceId") Integer serviceId)
-    {
-        return userRepository.findAllUsers();
-    }
-
-    List<User> searchForProviders(Service service, SearchCriteria criteria) {
-        return criteria.orderAndFilterUsersByScore(userRepository.findAllUsers());
+    public List<ServiceProvider> searchForProviders(Service service, SearchCriteria criteria) {
+        return criteria.orderAndFilterProvidersByScore(providerRepository.findAllServiceProviders());
     }
 
 }

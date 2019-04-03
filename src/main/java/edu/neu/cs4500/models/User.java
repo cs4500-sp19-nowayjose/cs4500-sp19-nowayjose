@@ -33,19 +33,6 @@ public class User {
 		this.id = id;
 	}
 
-	@JsonIgnore
-	@OneToMany(mappedBy="user")
-	private List<ServiceQuestionAnswer> serviceQuestionAnswers;
-
-	public List<ServiceQuestionAnswer> getServiceQuestionAnswers() {
-		return serviceQuestionAnswers;
-	}
-
-	protected User setServiceQuestionAnswers(List<ServiceQuestionAnswer> answers) {
-		this.serviceQuestionAnswers = answers;
-		return this;
-	}
-
 	public int getId() {
 		return id;
 	}
