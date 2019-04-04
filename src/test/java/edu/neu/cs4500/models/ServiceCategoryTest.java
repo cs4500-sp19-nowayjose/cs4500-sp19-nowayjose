@@ -46,4 +46,11 @@ class ServiceCategoryTest {
         assertFalse(this.serviceCategory1.getServices().isEmpty());
     }
 
+    @Test
+    void testAddingServiceToExistingServices() {
+        assertFalse(this.serviceCategory2.getServices().isEmpty());
+        this.serviceCategory1.addServiceToCategory(service2);
+        assertEquals(2, this.serviceCategory1.getServices().size());
+    }
+
 }
