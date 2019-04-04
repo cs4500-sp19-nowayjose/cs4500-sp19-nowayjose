@@ -62,5 +62,23 @@ class ServiceCategoryServiceTest {
     }
     
     
+	@Test
+	public void getAllServiceCategories()
+			throws Exception {
+		ArrayList<ServiceCategory> serviceCategories = new ArrayList<>(); 
+		serviceCategories.add(this.serviceCategory1);
+		serviceCategories.add(this.serviceCategory2);
+
+		when(service.findAllServiceCategories()).thenReturn(serviceCategories);
+		this.mockMvc
+		.perform(get("/api/categories"))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.serviceCategories",
+				hasSize(2)))
+		.andExpect(jsonPath("$.serviceCategories[*].serviceCategoryName",
+				containsInAnyOrder("Home", "Outdoor")));  
+	}
+	
 	
 }
