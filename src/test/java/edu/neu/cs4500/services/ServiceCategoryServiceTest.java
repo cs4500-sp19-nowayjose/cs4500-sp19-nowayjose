@@ -80,5 +80,20 @@ class ServiceCategoryServiceTest {
 				containsInAnyOrder("Home", "Outdoor")));  
 	}
 	
+	@Test
+	public void getServiceCategoryById()
+			throws Exception {
+
+		when(service.findServiceCategoryById(1)).thenReturn(this.serviceCategory1);
+		this.mockMvc
+		.perform(get("/api/categories/1"))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.serviceCategoryName",
+				is("Home")))
+		.andExpect(jsonPath("$.id",
+				is(1)));
+	}
+	
 	
 }
