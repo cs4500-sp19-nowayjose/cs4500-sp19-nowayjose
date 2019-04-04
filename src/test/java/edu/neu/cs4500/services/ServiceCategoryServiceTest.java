@@ -95,5 +95,22 @@ class ServiceCategoryServiceTest {
 				is(1)));
 	}
 	
-	
+	@Test
+	public void getServicesForCategoryById()
+			throws Exception {
+        ArrayList<Service> lst = new ArrayList<Service>();
+        lst.add(this.service1);
+        lst.add(this.service2);
+        this.serviceCategory2.setServices(lst);
+		
+		when(service.findAllServicesByCategory(2)).thenReturn(lst);
+		this.mockMvc
+		.perform(get("/api/categories/2/services"))
+		.andDo(print())
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.services",
+				hasSize(2)))
+		.andExpect(jsonPath("$.services[*].serviceName",
+				containsInAnyOrder("Appliances", "Gardening")));  
+	}
 }
