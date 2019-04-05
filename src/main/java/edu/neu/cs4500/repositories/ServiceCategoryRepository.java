@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ServiceCategoryRepository extends CrudRepository<ServiceCategory, Integer> {
-  @Query(value="SELECT serviceCategory FROM ServiceCategory serviceCategory ORDER BY popularity DESC")
+  @Query(value="SELECT serviceCategory FROM ServiceCategory serviceCategory")
   public List<ServiceCategory> findAllServiceCategories();
   @Query(value="SELECT serviceCategory FROM ServiceCategory serviceCategory WHERE serviceCategory.id=:id")
   public ServiceCategory findServiceCategoryById(@Param("id") Integer id);
