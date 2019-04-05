@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -26,8 +27,13 @@ public class ServiceCategoryService {
 	@Autowired
 	ServiceRepository serviceRepository;
 	@GetMapping("/api/categories")
-	public List<ServiceCategory> findAllServiceCategories() {
-		return serviceCategoryRepository.findAllServiceCategories();
+	public List<ServiceCategory> findAllServiceCategories(
+					@RequestParam(name="limit", required=false) Integer limit) {
+		List<ServiceCategory> categories = serviceCategoryRepository.findAllServiceCategories();
+		if(limit != null) {
+			return categories.subList(0, limit);
+		}
+		return categories;
 	}
 	@GetMapping("/api/categories/{serviceCategoryId}")
 	public ServiceCategory findServiceCategoryById(
