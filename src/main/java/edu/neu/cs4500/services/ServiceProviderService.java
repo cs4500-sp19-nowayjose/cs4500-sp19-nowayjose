@@ -51,8 +51,12 @@ public class ServiceProviderService {
             matchingProviders = serviceProviderRepository.findAllServiceProviders();
         }
 
-        SearchCriteria sq = buildSearchCriteria(root.get("filters"));
-        return sq.orderAndFilterProvidersByScore(matchingProviders);
+        if (!root.get("filters").elements().hasNext()) {
+            return matchingProviders;
+        } else {
+            SearchCriteria sq = buildSearchCriteria(root.get("filters"));
+            return sq.orderAndFilterProvidersByScore(matchingProviders);
+        }
     }
 
     @GetMapping("/api/service-provider")
