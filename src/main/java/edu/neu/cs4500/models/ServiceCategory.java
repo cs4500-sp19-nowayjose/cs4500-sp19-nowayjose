@@ -12,6 +12,8 @@ public class ServiceCategory {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     private String serviceCategoryName;
+    private Integer popularity;
+    private String icon;
     @ManyToMany
     @JsonIgnore
     @JoinTable(
@@ -46,5 +48,23 @@ public class ServiceCategory {
     
     public void setServices(List<Service> services) {
         this.services = services;
+    }
+
+    public ServiceCategory() {}
+    public ServiceCategory(Integer id, String serviceCategoryName) {
+        this.id = id;
+        this.serviceCategoryName = serviceCategoryName;
+    }
+    public Integer getPopularity() {
+        return popularity;
+    }
+    public void setPopularity(Integer popularity) {
+        this.popularity = popularity;
+    }
+    public String getIcon() {
+        return icon;
+    }
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
