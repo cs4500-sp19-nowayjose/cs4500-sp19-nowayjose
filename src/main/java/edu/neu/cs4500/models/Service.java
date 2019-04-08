@@ -9,6 +9,7 @@ public class Service {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+  private Integer count;
 	private String serviceName;
 	@OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ServiceQuestion> serviceQuestions;
@@ -25,7 +26,7 @@ public class Service {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-
+  
 	public Integer getId() {
 		return id;
 	}
@@ -34,6 +35,18 @@ public class Service {
 		this.id = id;
 		return this;
 	}
+  
+  public Integer getCount() {
+    return count;  
+  }
+  
+  public void setCount(Integer count) {
+    this.count = count;
+  }
+  
+  public void incrementCount() {
+    this.count++;
+  }
 
 	public String getServiceName() {
 		return serviceName;

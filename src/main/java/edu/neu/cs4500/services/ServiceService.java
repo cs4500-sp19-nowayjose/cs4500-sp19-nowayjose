@@ -32,6 +32,7 @@ public class ServiceService {
 	@GetMapping("/api/services/{serviceId}")
 	public Service findServiceById(
 			@PathVariable("serviceId") Integer id) {
+    incrementVisitCount(id);
 		return serviceRepository.findServiceById(id);
 	}
 	@PostMapping("/api/services")
@@ -51,9 +52,7 @@ public class ServiceService {
 					service.addCategoryToService(category);
 				}
 				return serviceRepository.save(service);
-
 	}
-
 
 	@PutMapping("/api/services/{serviceId}")
 	public Service updateService(
@@ -63,6 +62,14 @@ public class ServiceService {
 		service.setServiceName(serviceUpdates.getServiceName());
 		return serviceRepository.save(service);
 	}
+  @PutMapping("/api/services/{serviceId}/visit")
+	public Service incrementVisitCount(
+			@PathVariable("serviceId") Integer id) {
+		Service service = serviceRepository.findServiceById(id);
+		service.incrementCount();
+		return serviceRepository.save(service);
+	}
+  
 	@DeleteMapping("/api/services/{serviceId}")
 	public void deleteService(
 			@PathVariable("serviceId") Integer id) {
