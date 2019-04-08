@@ -14,11 +14,11 @@ public class SearchCriteriaTest {
     private static ServiceQuestion uselessQuestion;
     private static ServiceQuestion usefulQuestion;
     private static SearchCriteria searchCriteria;
-    private static List<User> users = new ArrayList<>();
-    private static User travis;
-    private static User lil;
-    private static User kanye;
-    private static User anotherLil;
+    private static List<ServiceProvider> providers = new ArrayList<>();
+    private static ServiceProvider travis;
+    private static ServiceProvider lil;
+    private static ServiceProvider kanye;
+    private static ServiceProvider anotherLil;
 
     @BeforeAll
     public static void setUpEachTest() {
@@ -28,33 +28,58 @@ public class SearchCriteriaTest {
     }
 
     private static void setUpUsers() {
-        travis = new User()
-                .setId(1200010)
-                .setFirstName("Travis")
-                .setLastName("Scott")
-                .setRole("Provider")
-                .setUsername("SickoMode");
-        lil = new User()
-                .setId(1200011)
-                .setFirstName("Lil")
-                .setLastName("Pump")
-                .setRole("Provider")
-                .setUsername("GucciGang");
-        anotherLil = new User()
-                .setId(1200015)
-                .setFirstName("Lil")
-                .setLastName("wayne")
-                .setRole("Provider")
-                .setUsername("DontCry");
-        kanye = new User()
-                .setId(1200012)
-                .setFirstName("Kanye")
-                .setLastName("West")
-                .setRole("Admin")
-                .setUsername("SlowJamz");
-        users.add(travis);
-        users.add(lil);
-        users.add(kanye);
+        travis = new ServiceProvider();
+        travis.setId(1200010);
+        travis.setTitle("Travis llc");
+        travis.setRating(4.3f);
+        travis.setYearsInBusiness(1);
+        travis.setHires(1);
+        travis.setLatestReview("Pretty good");
+        travis.setPrice("$3");
+        travis.setIntroduction("Hey I'm travis.");
+        travis.setBackgroundChecked(true);
+        travis.setEmployees(1);
+
+        kanye = new ServiceProvider();
+        kanye.setId(1200011);
+        kanye.setTitle("Kanye llc");
+        kanye.setRating(4.2f);
+        kanye.setYearsInBusiness(2);
+        kanye.setHires(2);
+        kanye.setLatestReview("Ok");
+        kanye.setPrice("$4");
+        kanye.setIntroduction("Hey I'm kanye.");
+        kanye.setBackgroundChecked(false);
+        kanye.setEmployees(2);
+
+        lil = new ServiceProvider();
+        lil.setId(1200012);
+        lil.setTitle("lil llc");
+        lil.setRating(4.1f);
+        lil.setYearsInBusiness(3);
+        lil.setHires(3);
+        lil.setLatestReview("Bad");
+        lil.setPrice("$92");
+        lil.setIntroduction("Hey I'm lil.");
+        lil.setBackgroundChecked(true);
+        lil.setEmployees(3);
+
+        anotherLil = new ServiceProvider();
+        anotherLil.setId(1200013);
+        anotherLil.setTitle("another lil llc");
+        anotherLil.setRating(4.1f);
+        anotherLil.setYearsInBusiness(3);
+        anotherLil.setHires(3);
+        anotherLil.setLatestReview("Bad");
+        anotherLil.setPrice("$92");
+        anotherLil.setIntroduction("Hey I'm lil.");
+        anotherLil.setBackgroundChecked(true);
+        anotherLil.setEmployees(3);
+
+        providers.add(anotherLil);
+        providers.add(travis);
+        providers.add(lil);
+        providers.add(kanye);
     }
 
     private static void setUpServiceQuestions() {
@@ -116,11 +141,12 @@ public class SearchCriteriaTest {
         criteria.put(uselessQuestion, uselessCriterion);
         criteria.put(usefulQuestion, usefulCriterion);
         searchCriteria = new SearchCriteria(criteria);
-        List<SearchCriteria.ScoredUser> scoredUsers = searchCriteria.calculateUsersMatchScores(users);
-        assertEquals(scoredUsers.size(), 3);
-        assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(travis, 0)));
-        assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(lil, 2)));
-        assertTrue(scoredUsers.contains(new SearchCriteria.ScoredUser(kanye, 1)));
+        List<SearchCriteria.ScoredProvider> scoredProviders = searchCriteria.calculateProvidersMatchScores(providers);
+        assertEquals(scoredProviders.size(), 4);
+        assertTrue(scoredProviders.contains(new SearchCriteria.ScoredProvider(travis, 0)));
+        assertTrue(scoredProviders.contains(new SearchCriteria.ScoredProvider(lil, 2)));
+        assertTrue(scoredProviders.contains(new SearchCriteria.ScoredProvider(anotherLil, 2)));
+        assertTrue(scoredProviders.contains(new SearchCriteria.ScoredProvider(kanye, 1)));
     }
 
     @Test
@@ -133,17 +159,17 @@ public class SearchCriteriaTest {
         criteria.put(uselessQuestion, uselessCriterion);
         criteria.put(usefulQuestion, usefulCriterion);
         searchCriteria = new SearchCriteria(criteria);
-        users.add(anotherLil);
+        providers.add(anotherLil);
 
-        List<SearchCriteria.ScoredUser> scoredUsers = searchCriteria.calculateUsersMatchScores(users);
-        searchCriteria.sortUsers(scoredUsers);
-        for (int i = 1; i < scoredUsers.size(); i++) {
-            SearchCriteria.ScoredUser user1 = scoredUsers.get(i-1);
-            SearchCriteria.ScoredUser user2 = scoredUsers.get(i);
-            if (user1.score == user2.score) {
-                assertTrue(user2.user.getUsername().compareTo(user1.user.getUsername()) > 0);
+        List<SearchCriteria.ScoredProvider> scoredProviders = searchCriteria.calculateProvidersMatchScores(providers);
+        searchCriteria.sortProviders(scoredProviders);
+        for (int i = 1; i < scoredProviders.size(); i++) {
+            SearchCriteria.ScoredProvider p1 = scoredProviders.get(i - 1);
+            SearchCriteria.ScoredProvider p2 = scoredProviders.get(i);
+            if (p1.score.equals(p2.score)) {
+                assertTrue(p2.provider.getTitle().compareTo(p1.provider.getTitle()) >= 0);
             } else {
-                assertTrue(user1.score > user2.score);
+                assertTrue(p1.score > p2.score);
             }
         }
     }
@@ -158,8 +184,8 @@ public class SearchCriteriaTest {
         criteria.put(uselessQuestion, uselessCriterion);
         criteria.put(usefulQuestion, usefulCriterion);
         searchCriteria = new SearchCriteria(criteria);
-        List<User> searchResults = searchCriteria.orderAndFilterUsersByScore(users);
-        assertArrayEquals(searchResults.toArray(), new User[]{lil, kanye});
+        List<ServiceProvider> searchResults = searchCriteria.orderAndFilterProvidersByScore(providers);
+        assertArrayEquals(searchResults.toArray(), new ServiceProvider[]{anotherLil, lil, kanye});
     }
 
     @Test
@@ -190,10 +216,10 @@ public class SearchCriteriaTest {
         Map<ServiceQuestion, QuestionAnswerCriterion> criteria = new HashMap<>();
         criteria.put(uselessQuestion, emptyCriterion);
         searchCriteria = new SearchCriteria(criteria);
-        assertEquals(searchCriteria.orderAndFilterUsersByScore(users).size(), 0);
+        assertEquals(searchCriteria.orderAndFilterProvidersByScore(providers).size(), 0);
     }
 
-    @Test // calvin orderAndFilterUsersByScore with users same score
+    @Test // calvin orderAndFilterProvidersByScore with providers same score
     public void testSortingServiceWithSameScore() {
 
     }

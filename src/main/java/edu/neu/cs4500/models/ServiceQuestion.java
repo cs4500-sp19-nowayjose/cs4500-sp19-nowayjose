@@ -2,6 +2,7 @@ package edu.neu.cs4500.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -25,13 +26,18 @@ public class ServiceQuestion {
     private Date updatedAt;
 
     @Enumerated(EnumType.STRING)
+    @JsonInclude
     private ServiceQuestionType serviceQuestionType;
 
     @OneToMany(mappedBy="serviceQuestion")
     @JsonIgnore
     private List<ServiceQuestionAnswer> serviceQuestionAnswers;
 
+    @OneToMany(mappedBy="serviceQuestion")
+    private List<ServiceQuestionChoiceOption> serviceQuestionChoiceOptions;
+
     @ManyToOne
+    @JsonIgnore
     private Service service;
 
     // Need an explicit default now
@@ -109,6 +115,10 @@ public class ServiceQuestion {
     public ServiceQuestion setServiceQuestionType(ServiceQuestionType serviceQuestionType) {
         this.serviceQuestionType = serviceQuestionType;
         return this;
+    }
+
+    public List<ServiceQuestionChoiceOption> getServiceQuestionChoiceOptions() {
+        return serviceQuestionChoiceOptions;
     }
 
     public void addServiceQuestionAnswer(ServiceQuestionAnswer ans){

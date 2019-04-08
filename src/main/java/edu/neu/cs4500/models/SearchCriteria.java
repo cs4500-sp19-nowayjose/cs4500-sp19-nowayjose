@@ -14,66 +14,65 @@ public class SearchCriteria {
         this.criteria = criteria;
     }
 
-    public List<User> orderAndFilterUsersByScore(List<User> users) {
-        List<ScoredUser> scoredUsers = calculateUsersMatchScores(users);
-        sortUsers(scoredUsers);
-        List<User> sortedUsers = filterSortedUsers(scoredUsers);
-        return sortedUsers;
+    public List<ServiceProvider> orderAndFilterProvidersByScore(List<ServiceProvider> providers) {
+        List<ScoredProvider> scoredProviders = calculateProvidersMatchScores(providers);
+        sortProviders(scoredProviders);
+        return filterSortedProviders(scoredProviders);
     }
 
-    List<ScoredUser> calculateUsersMatchScores(List<User> users) {
-        ArrayList<ScoredUser> scoredUsers = new ArrayList<>();
-        for (User user : users) {
-            ScoredUser sc = new ScoredUser(user, 0);
-            for (ServiceQuestionAnswer answer : user.getServiceQuestionAnswers()) {
+    List<ScoredProvider> calculateProvidersMatchScores(List<ServiceProvider> providers) {
+        ArrayList<ScoredProvider> scoredProviders = new ArrayList<>();
+        for (ServiceProvider provider : providers) {
+            ScoredProvider sc = new ScoredProvider(provider, 0);
+            for (ServiceQuestionAnswer answer : provider.getServiceQuestionAnswers()) {
                 if (criteria.containsKey(answer.getServiceQuestion())) {
                     sc.score += criteria
                         .get(answer.getServiceQuestion())
                         .scoreAnswerMatch(answer);
                 }
             }
-            scoredUsers.add(sc);
+            scoredProviders.add(sc);
         }
-        return scoredUsers;
+        return scoredProviders;
     }
 
-    // Modifies the `scoredUsers` by sorting in place.
-    void sortUsers(List<ScoredUser> scoredUsers) {
-        scoredUsers.sort((o1, o2) -> {
+    // Modifies the `scoredProviders` by sorting in place.
+    void sortProviders(List<ScoredProvider> scoredProviders) {
+        scoredProviders.sort((o1, o2) -> {
             if (o1.score > o2.score) return -1;
             else if (o2.score > o1.score) return 1;
-            else return o1.user.getUsername().compareTo(o2.user.getUsername());
+            else return o1.provider.getTitle().compareTo(o2.provider.getTitle());
         });
     }
 
-    List<User> filterSortedUsers(List<ScoredUser> scoredUsers) {
-        ArrayList<User> sortedUsers = new ArrayList<>();
-        for (ScoredUser sc : scoredUsers) {
+    List<ServiceProvider> filterSortedProviders(List<ScoredProvider> scoredProviders) {
+        ArrayList<ServiceProvider> sortedProviders = new ArrayList<>();
+        for (ScoredProvider sc : scoredProviders) {
             if (sc.score == 0) break;
-            sortedUsers.add(sc.user);
+            sortedProviders.add(sc.provider);
         }
-        return sortedUsers;
+        return sortedProviders;
     }
 
 
-    static class ScoredUser {
-        User user;
+    static class ScoredProvider {
+        ServiceProvider provider;
         Integer score;
-        ScoredUser(User user, Integer score) {
-            this.user = user;
+        ScoredProvider(ServiceProvider provider, Integer score) {
+            this.provider = provider;
             this.score = score;
         }
 
         @Override
         public int hashCode() {
-            return ("" + user.hashCode() + ":" + score.hashCode()).hashCode();
+            return ("" + provider.hashCode() + ":" + score.hashCode()).hashCode();
         }
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof ScoredUser) {
-                ScoredUser sc = (ScoredUser) obj;
-                return sc.user.equals(user) && sc.score.equals(score);
+            if (obj instanceof ScoredProvider) {
+                ScoredProvider sc = (ScoredProvider) obj;
+                return sc.provider.equals(provider) && sc.score.equals(score);
             } else {
                 return false;
             }

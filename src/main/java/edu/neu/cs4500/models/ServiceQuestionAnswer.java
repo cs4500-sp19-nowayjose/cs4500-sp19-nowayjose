@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="service_question_answers")
@@ -19,12 +20,12 @@ public class ServiceQuestionAnswer {
     private Integer choiceAnswer;
 
     @OneToOne
-    // In JSON format, include a "user" field with just the User's ID
+    // In JSON format, include a "provider" field with just the ServiceProvider's ID
     // instead of ignoring it or including the full nested object
-    // EX. { user: { id: 123 } }
+    // EX. { provider: { id: 123 } }
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
-    private User user;
+    private ServiceProvider provider;
 
     @ManyToOne
     // In JSON format, include a "serviceQuestion" field with just the question's ID
@@ -33,6 +34,10 @@ public class ServiceQuestionAnswer {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private ServiceQuestion serviceQuestion;
+
+    @OneToMany
+    @JsonIgnore
+    private List<ServiceQuestionChoiceOption> choiceOptions;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -85,12 +90,12 @@ public class ServiceQuestionAnswer {
         return this;
     }
 
-    public User getUser() {
-        return user;
+    public ServiceProvider getProvider() {
+        return provider;
     }
 
-    public ServiceQuestionAnswer setUser(User user) {
-        this.user = user;
+    public ServiceQuestionAnswer setProvider(ServiceProvider provider) {
+        this.provider = provider;
         return this;
     }
 
