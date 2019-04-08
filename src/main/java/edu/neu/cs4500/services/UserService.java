@@ -2,6 +2,9 @@ package edu.neu.cs4500.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +37,18 @@ public class UserService {
 	public User createUser(@RequestBody User user) {
 		return userRepository.save(user);
 	}
+
+	@PostMapping("/api/users/register")
+	public User register(@RequestBody User user, HttpSession session, HttpServletResponse response) {
+		List<User> userFound = (List<User>) userRepository.findByUsername(user.getUsername());
+		if (userFound.isEmpty()) {
+			session.setAttribute("user", user);
+			return userRepository.save(user);
+		}
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		return null;
+	}
+
 	@PutMapping("/api/users/{userId}")
 	public User updateUser(
 			@PathVariable("userId") Integer id,
