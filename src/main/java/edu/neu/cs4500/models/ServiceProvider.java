@@ -1,5 +1,6 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -34,7 +35,8 @@ public class ServiceProvider {
     @JsonIgnore
     private List<ServiceQuestionAnswer> sqas;
 
-
+    @OneToOne(mappedBy="providerDetail")
+    private User user;
 
     public Integer getId() {
         return id;

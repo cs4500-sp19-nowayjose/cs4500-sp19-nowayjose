@@ -20,6 +20,9 @@ public class User {
 	private String lastName;
 	private String role;
 
+	@OneToOne
+	private ServiceProvider providerDetail;
+
 	// Need an explicit default now
 	public User() {
 		super();
@@ -73,5 +76,13 @@ public class User {
 	public User setLastName(String lastName) {
 		this.lastName = lastName;
 		return this;
+	}
+
+	public ServiceProvider getProviderDetail() {
+		return providerDetail;
+	}
+
+	public void setProviderDetail(ServiceProvider providerDetail) {
+		this.providerDetail = providerDetail;
 	}
 }
