@@ -25,7 +25,7 @@ public class FrequentlyAskedAnswerService {
 
 	@PostMapping("/api/faq-answers")
     public FrequentlyAskedAnswer createAnswer(@RequestBody FrequentlyAskedAnswer answer) {
-		User u = userRepository.findByUsername(answer.getUsername());
+		User u = userRepository.findByUsername(answer.getUsername()).iterator().next();
 		FrequentlyAskedQuestion q = questionRepository.findFrequentlyAskedQuestionByQuestion(answer.getQuestion());
 		answer.setUser(u);
 		answer.setFrequentlyAskedQuestion(q);
