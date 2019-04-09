@@ -71,6 +71,14 @@ public class UserService {
 		user.setUsername(user.getUsername());
 		user.setFirstName(userUpdates.getFirstName());
 		user.setLastName(userUpdates.getLastName());
+		user.setEmail(userUpdates.getEmail());
+		user.setDOBMonth(userUpdates.getDOBMonth());
+		user.setDOBDay(userUpdates.getDOBDay());
+		user.setDOBYear(userUpdates.getDOBYear());
+		user.setAddStreet(userUpdates.getAddStreet());
+		user.setAddCity(userUpdates.getAddCity());
+		user.setAddState(userUpdates.getAddState());
+		user.setAddZip(userUpdates.getAddZip());
 		return userRepository.save(user);
 	}
 	@DeleteMapping("/api/users/{userId}")
