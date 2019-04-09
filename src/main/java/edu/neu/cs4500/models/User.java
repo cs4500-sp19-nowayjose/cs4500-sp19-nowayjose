@@ -18,6 +18,17 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
+  private String email;
+  
+	private int dobMonth;
+	private int dobDay;
+	private int dobYear;
+  
+	private String addStreet;
+	private String addCity;
+	private String addState;
+	private int addZip;
+  
 	private String role;
 
 	@OneToOne
@@ -84,5 +95,62 @@ public class User {
 
 	public void setProviderDetail(ServiceProvider providerDetail) {
 		this.providerDetail = providerDetail;
+	}
+	
+  public String getEmail() {
+		return email;
+	}
+	public User setEmail(String email) {
+		this.email = email;
+		return this;
+	}
+  public int getDOBMonth() {
+		return dobMonth;
+	}
+	public User setDOBMonth(int dobMonth) {
+		this.dobMonth = dobMonth;
+		return this;
+	}
+  public int getDOBDay() {
+		return dobDay;
+	}
+	public User setDOBDay(int dobDay) {
+		this.dobDay = dobDay;
+		return this;
+	}
+  public int getDOBYear() {
+		return dobYear;
+	}
+	public User setDOBYear(int dobYear) {
+		this.dobYear = dobYear;
+		return this;
+	}
+  public String getAddStreet() {
+		return addStreet;
+	}
+	public User setAddStreet(String addStreet) {
+		this.addStreet = addStreet;
+		return this;
+	}
+  public String getAddCity() {
+		return addCity;
+	}
+	public User setAddCity(String addCity) {
+		this.addCity = addCity;
+		return this;
+	}
+  public String getAddState() {
+		return addState;
+	}
+	public User setAddState(String addState) {
+		this.addState = addState;
+		return this;
+	}
+  public int getAddZip() {
+		return addZip;
+	}
+	public User setAddZip(int addZip) {
+		this.addZip = addZip;
+		return this;
 	}
 }
