@@ -61,6 +61,12 @@ public class UserService {
 			return userFound.get(0);
 		}
 	}
+  
+  @GetMapping("/api/users/profile")
+	public Optional<User> profile(HttpSession session) {
+      User currentUser = (User) session.getAttribute("user");
+      return userRepository.findById(currentUser.getId());
+  }
 
 	@PutMapping("/api/users/{userId}")
 	public User updateUser(
