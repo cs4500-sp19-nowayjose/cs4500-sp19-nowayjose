@@ -14,6 +14,7 @@ public class ServiceProvider {
 
     private String title;
     private Float rating;
+
     private String zipCode;
     private Integer yearsInBusiness;
     private Integer hires;
@@ -130,6 +131,15 @@ public class ServiceProvider {
 
     public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> sqas) {
         this.sqas = sqas;
+    }
+
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
 }

@@ -65,10 +65,10 @@ public class ServiceProviderService {
         return serviceProviderRepository.findAllServiceProviders();
     }
 
-    @PostMapping("/api/service-provider")
-    @ResponseBody
+    @PostMapping("api/service-provider")
     public ServiceProvider addServiceProvider(@RequestBody ServiceProvider serviceProvider) {
-        return serviceProviderRepository.save(serviceProvider);
+        serviceProviderRepository.save(serviceProvider);
+        return serviceProvider;
     }
 
     @DeleteMapping("/api/service-provider/{id}")
