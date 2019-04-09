@@ -31,6 +31,9 @@ public class User {
   
 	private String role;
 
+	@OneToOne
+	private ServiceProvider providerDetail;
+
 	// Need an explicit default now
 	public User() {
 		super();
@@ -85,6 +88,15 @@ public class User {
 		this.lastName = lastName;
 		return this;
 	}
+
+	public ServiceProvider getProviderDetail() {
+		return providerDetail;
+	}
+
+	public void setProviderDetail(ServiceProvider providerDetail) {
+		this.providerDetail = providerDetail;
+	}
+	
   public String getEmail() {
 		return email;
 	}

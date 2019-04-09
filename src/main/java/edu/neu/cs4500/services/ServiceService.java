@@ -17,6 +17,11 @@ public class ServiceService {
 	ServiceRepository serviceRepository;
 	@Autowired
 	ServiceCategoryRepository serviceCategoryRepository;
+
+	@GetMapping("/api/services-search")
+	public List<Service> searchServices(@RequestParam("q") String query) {
+		return serviceRepository.searchServices(query);
+	}
 	
 	@GetMapping("/api/services/{id}/categories")
 	public List<ServiceCategory> getCategoriesForService(

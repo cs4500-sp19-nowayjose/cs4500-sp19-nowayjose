@@ -6,14 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import edu.neu.cs4500.models.User;
 import edu.neu.cs4500.repositories.UserRepository;
@@ -67,6 +60,21 @@ public class UserService {
       User currentUser = (User) session.getAttribute("user");
       return userRepository.findById(currentUser.getId());
   }
+
+	@GetMapping("/api/user/is-service-provider")
+	public Boolean isUserServiceProvider(HttpSession session) {
+		if (session == null) {
+			return false;
+		}
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			return false;
+		}
+		if (user.getProviderDetail() == null) {
+			return false;
+		}
+		return true;
+	}
 
 	@PutMapping("/api/users/{userId}")
 	public User updateUser(

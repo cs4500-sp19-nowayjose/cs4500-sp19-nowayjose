@@ -1,6 +1,8 @@
 package edu.neu.cs4500.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,11 +16,24 @@ public class ServiceProvider {
 
     private String title;
     private Float rating;
+
     private String zipCode;
     private Integer yearsInBusiness;
     private Integer hires;
     private String latestReview;
     private String price;
+
+    private String street;
+    private String state;
+    private String city;
+    private String zip;
+    private String email;
+
+    private String paymentMethod;
+
+    private String twitterLink;
+    private String instagramLink;
+    private String facebookLink;
 
     @Column( length = 1000 )
     private String introduction;
@@ -33,7 +48,8 @@ public class ServiceProvider {
     @JsonIgnore
     private List<ServiceQuestionAnswer> sqas;
 
-
+    @OneToOne(mappedBy="providerDetail")
+    private User user;
 
     public Integer getId() {
         return id;
@@ -132,4 +148,90 @@ public class ServiceProvider {
         this.sqas = sqas;
     }
 
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        String[] paymentMethods = paymentMethod.split(",");
+        for (String s: paymentMethods) {
+            if (!PaymentMethod.contains(s)) {
+                break;
+            }
+        }
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getTwitterLink() {
+        return twitterLink;
+    }
+
+    public void setTwitterLink(String twitterLink) {
+        this.twitterLink = twitterLink;
+    }
+
+    public String getInstagramLink() {
+        return instagramLink;
+    }
+
+    public void setInstagramLink(String instagramLink) {
+        this.instagramLink = instagramLink;
+    }
+
+    public String getFacebookLink() {
+        return facebookLink;
+    }
+
+    public void setFacebookLink(String facebookLink) {
+        this.facebookLink = facebookLink;
+    }
 }

@@ -67,20 +67,107 @@ public class ServiceProviderSearchTest {
     }
 
     @Test
+    public void testGetAllServiceProviders() throws Exception {
+        setUp();
+        this.mockMvc.perform(get("/api/service-provider"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void testAddServiceProvider() throws Exception {
+        setUp();
+        ServiceProvider newUser = new ServiceProvider();
+        newUser.setTitle("yo");
+        newUser.setId(1231);
+
+        this.mockMvc
+                .perform(
+                        post("/api/service-provider")
+                                .contentType(APPLICATION_JSON_UTF8)
+                                .content(asJsonString(newUser)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is("yo")));
+    }
+
+    @Test
     public void testFindAllService() throws Exception {
         setUp();
         String jsonString = "{\"zip\": null, \"title\": null, \"filters\": {}}";
         this.mockMvc
                 .perform(
-                    put("/api/service-provider/filter")
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .content(jsonString)
+                        put("/api/service-provider/filter")
+                                .contentType(APPLICATION_JSON_UTF8)
+                                .content(jsonString)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title", is("bob")));
     }
+
+    @Test
+    public void testTitleSearch() throws Exception {
+        ServiceProvider sp1 = new ServiceProvider();
+        sp1.setTitle("some title");
+        ServiceProvider sp2 = new ServiceProvider();
+        sp2.setTitle("some title is included");
+
+        String jsonString = "{\"zip\": null, \"title\": \"some title\", \"filters\": {}}";
+        when(spr.searchServiceProvidersByTitle("some title")).thenReturn(Arrays.asList(sp1, sp2));
+        this.mockMvc
+                .perform(
+                        put("/api/service-provider/filter")
+                                .contentType(APPLICATION_JSON_UTF8)
+                                .content(jsonString)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+
+    }
+
+    @Test
+    public void testTitleAndZipSearch() throws Exception {
+        ServiceProvider sp1 = new ServiceProvider();
+        sp1.setTitle("some title");
+        sp1.setZipCode("02115");
+        String jsonString = "{\"zip\": \"02115\", \"title\": \"some title\", \"filters\": {}}";
+        when(spr.searchServiceProvidersByTitleAndZip("02115","some title")).thenReturn(Arrays.asList(sp1));
+        this.mockMvc
+                .perform(
+                        put("/api/service-provider/filter")
+                                .contentType(APPLICATION_JSON_UTF8)
+                                .content(jsonString)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].zipCode", is("02115")));
+    }
+
+    @Test
+    public void testZipOnly() throws Exception {
+        ServiceProvider sp1 = new ServiceProvider();
+        sp1.setTitle("some title");
+        sp1.setZipCode("02115");
+        String jsonString = "{\"zip\": \"02115\", \"title\": null, \"filters\": {}}";
+        when(spr.searchServiceProvidersByZip("02115")).thenReturn(Arrays.asList(sp1));
+        this.mockMvc
+                .perform(
+                        put("/api/service-provider/filter")
+                                .contentType(APPLICATION_JSON_UTF8)
+                                .content(jsonString)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].zipCode", is("02115")));
+    }
+
+
 
 }
 
