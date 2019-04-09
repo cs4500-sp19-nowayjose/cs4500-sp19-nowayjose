@@ -38,6 +38,7 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+
 	@PostMapping("/api/users/register")
 	public User register(@RequestBody User user, HttpSession session, HttpServletResponse response) {
 		List<User> userFound = (List<User>) userRepository.findByUsername(user.getUsername());
@@ -48,7 +49,7 @@ public class UserService {
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		return null;
 	}
-
+	
 	@PutMapping("/api/users/login")
 	public User login(@RequestBody User user, HttpSession session, HttpServletResponse response) {
 		List<User> userFound = (List<User>) userRepository.findByCredentials(user.getUsername(), user.getPassword());
