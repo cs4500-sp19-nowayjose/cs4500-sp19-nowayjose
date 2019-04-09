@@ -1,6 +1,6 @@
 package edu.neu.cs4500.models;
 
-public enum PaymentMethod {
+public enum PaymentMethodType {
     CC {
         @Override
         public String toString() {
@@ -39,7 +39,7 @@ public enum PaymentMethod {
     };
 
     public static boolean contains(String s) {
-        for (PaymentMethod p: PaymentMethod.values()) {
+        for (PaymentMethodType p: PaymentMethodType.values()) {
             if (p.toString().toLowerCase().equals(s.toLowerCase())) {
                 return true;
             }
