@@ -18,7 +18,6 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
-  private String email;
   
 	private int dobMonth;
 	private int dobDay;
@@ -96,14 +95,7 @@ public class User {
 	public void setProviderDetail(ServiceProvider providerDetail) {
 		this.providerDetail = providerDetail;
 	}
-	
-  public String getEmail() {
-		return email;
-	}
-	public User setEmail(String email) {
-		this.email = email;
-		return this;
-	}
+  
   public int getDOBMonth() {
 		return dobMonth;
 	}
