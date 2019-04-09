@@ -36,7 +36,15 @@ public enum PaymentMethod {
         public String toString() {
             return "Square";
         }
-    },
+    };
 
-    n
+    public static boolean contains(String s) {
+        for (PaymentMethod p: PaymentMethod.values()) {
+            if (p.toString().toLowerCase().equals(s.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+

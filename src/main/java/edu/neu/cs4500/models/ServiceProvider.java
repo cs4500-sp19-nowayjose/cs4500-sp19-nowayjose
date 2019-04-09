@@ -28,8 +28,6 @@ public class ServiceProvider {
     private String zip;
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    @JsonInclude
     private String paymentMethod;
 
     private String twitterLink;
@@ -202,6 +200,12 @@ public class ServiceProvider {
     }
 
     public void setPaymentMethod(String paymentMethod) {
+        String[] paymentMethods = paymentMethod.split(",");
+        for (String s: paymentMethods) {
+            if (!PaymentMethod.contains(s)) {
+                break;
+            }
+        }
         this.paymentMethod = paymentMethod;
     }
 
