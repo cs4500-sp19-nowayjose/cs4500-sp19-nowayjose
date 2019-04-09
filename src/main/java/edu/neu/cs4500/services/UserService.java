@@ -49,6 +49,19 @@ public class UserService {
 		return null;
 	}
 
+	@PutMapping("/api/users/login")
+	public User login(@RequestBody User user, HttpSession session, HttpServletResponse response) {
+		List<User> userFound = (List<User>) userRepository.findByCredentials(user.getUsername(), user.getPassword());
+		if (userFound.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+		else {
+			session.setAttribute("user", userFound.get(0));
+			return userFound.get(0);
+		}
+	}
+
 	@PutMapping("/api/users/{userId}")
 	public User updateUser(
 			@PathVariable("userId") Integer id,
