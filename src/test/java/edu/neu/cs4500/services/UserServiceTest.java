@@ -73,6 +73,19 @@ class UserServiceTest {
 				is(1))); 
 	}
 	
+	@Test
+	public void alreadyRegisteredUser()
+			throws Exception { 
 
+		HttpServletRequest req = new MockHttpServletRequest();
+
+		List<User> nonemptyList = new ArrayList<User>(); 
+		nonemptyList.add(this.user1);
+	  	when(repo.findByUsername("user1")).thenReturn(nonemptyList);
+		this.mockMvc
+		.perform(get("/api/users/regsiter"))
+		.andDo(print())
+		.andExpect(status().isForbidden());
+	}
 	
 }
