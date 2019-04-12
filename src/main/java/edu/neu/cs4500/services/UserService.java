@@ -56,11 +56,10 @@ public class UserService {
 		}
 	}
   
-  @GetMapping("/api/profile")
-  public User profile(HttpSession session) {
-    User currentUser = (User)
-      session.getAttribute("user");
-    return currentUser;
+  @GetMapping("/api/users/profile")
+  public Optional<User> profile(HttpSession session) {
+     User currentUser = (User) session.getAttribute("user");
+     return userRepository.findById(currentUser.getId());
   }
 
 
