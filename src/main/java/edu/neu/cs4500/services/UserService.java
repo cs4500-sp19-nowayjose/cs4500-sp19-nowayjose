@@ -57,10 +57,11 @@ public class UserService {
 	}
   
   @GetMapping("/api/users/profile")
-	public Optional<User> profile(HttpSession session) {
-      User currentUser = (User) session.getAttribute("user");
-      return userRepository.findById(currentUser.getId());
+  public Optional<User> profile(HttpSession session) {
+     User currentUser = (User) session.getAttribute("user");
+     return userRepository.findById(currentUser.getId());
   }
+
 
 	@GetMapping("/api/user/is-service-provider")
 	public Boolean isUserServiceProvider(HttpSession session) {
@@ -83,10 +84,9 @@ public class UserService {
 			@RequestBody User userUpdates) {
 		User user = userRepository.findUserById(id);
 		user.setRole(userUpdates.getRole());
-		user.setUsername(user.getUsername());
+		user.setUsername(userUpdates.getUsername());
 		user.setFirstName(userUpdates.getFirstName());
 		user.setLastName(userUpdates.getLastName());
-		user.setEmail(userUpdates.getEmail());
 		user.setDOBMonth(userUpdates.getDOBMonth());
 		user.setDOBDay(userUpdates.getDOBDay());
 		user.setDOBYear(userUpdates.getDOBYear());
