@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import edu.neu.cs4500.models.FrequentlyAskedAnswer;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface FrequentlyAskedAnswerRepository  extends CrudRepository<FrequentlyAskedAnswer, Integer>{
     @Query(value="SELECT frequentlyAskedAnswer FROM FrequentlyAskedAnswer frequentlyAskedAnswer")
@@ -17,9 +18,9 @@ public interface FrequentlyAskedAnswerRepository  extends CrudRepository<Frequen
     @Query(value="SELECT frequentlyAskedAnswer FROM FrequentlyAskedAnswer frequentlyAskedAnswer WHERE frequentlyAskedAnswer.id=:id")
     public FrequentlyAskedAnswer findFAQAnswerById(@Param("id") Integer id);
 
-    @Query(value="DELETE FROM FrequentlyAskedAnswer frequentlyAskedAnswer WHERE frequentlyAskedAnswer.user=:user")
-    public void deleteFrequentlyAskedAnswerByUser(@Param("uid") User user);
+    @Transactional
+    public void deleteFrequentlyAskedAnswerByUser(User user);
 
-    @Query(value="DELETE FROM FrequentlyAskedAnswer frequentlyAskedAnswer WHERE frequentlyAskedAnswer.frequentlyAskedQuestion=:question")
-    public void deleteFrequentlyAskedAnswerByQuestion(@Param("uid") FrequentlyAskedQuestion question);
+    @Transactional
+    public void deleteFrequentlyAskedAnswerByFrequentlyAskedQuestion(FrequentlyAskedQuestion question);
 }
