@@ -21,11 +21,11 @@ public class ServiceProvider {
     private Integer hires;
     private String latestReview;
     private String price;
+    private String email;
 
     private String street;
     private String state;
     private String city;
-    private String email;
 
     @JsonProperty("paymentMethod")
     private String paymentMethod;
@@ -185,14 +185,6 @@ public class ServiceProvider {
         this.city = city;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPaymentMethod() {
         return paymentMethod;
     }
@@ -236,6 +228,14 @@ public class ServiceProvider {
         this.facebookLink = facebookLink;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "ServiceProvider{" +
@@ -250,7 +250,6 @@ public class ServiceProvider {
                 ", street='" + street + '\'' +
                 ", state='" + state + '\'' +
                 ", city='" + city + '\'' +
-                ", email='" + email + '\'' +
                 ", paymentMethod='" + paymentMethod + '\'' +
                 ", twitterLink='" + twitterLink + '\'' +
                 ", instagramLink='" + instagramLink + '\'' +
