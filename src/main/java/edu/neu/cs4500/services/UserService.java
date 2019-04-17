@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.neu.cs4500.repositories.FrequentlyAskedAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ import edu.neu.cs4500.repositories.UserRepository;
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	FrequentlyAskedAnswerRepository answerRepository;
 
 	@GetMapping("/api/users")
 	public List<User> findAllUser() {
