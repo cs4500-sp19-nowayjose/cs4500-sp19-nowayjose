@@ -102,6 +102,11 @@ public class UserService {
 	@DeleteMapping("/api/users/{userId}")
 	public void deleteUser(
 			@PathVariable("userId") Integer id) {
+		User u = userRepository.findById(id).orElse(null);
+		if (u == null) {
+			return;
+		}
+		answerRepository.deleteFrequentlyAskedAnswerByUser(u);
 		userRepository.deleteById(id);
 	}
 }
