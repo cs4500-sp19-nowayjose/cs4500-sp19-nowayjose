@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.neu.cs4500.repositories.FrequentlyAskedAnswerRepository;
+import edu.neu.cs4500.models.Service;
+import edu.neu.cs4500.models.ServiceProvider;
+import edu.neu.cs4500.repositories.ServiceProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +23,8 @@ public class UserService {
 	UserRepository userRepository;
 	@Autowired
 	FrequentlyAskedAnswerRepository answerRepository;
+  @Autowired
+	ServiceProviderRepository serviceProviderRepository;
 
 	@GetMapping("/api/users")
 	public List<User> findAllUser() {
@@ -79,6 +84,50 @@ public class UserService {
 			return false;
 		}
 		return true;
+	}
+
+	@GetMapping("/api/user/service-provider/detail")
+	public ServiceProvider getServiceProviderDetail(HttpSession session, HttpServletResponse response) {
+		if (!isUserServiceProvider(session)) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+		User user = (User) session.getAttribute("user");
+		return user.getProviderDetail();
+	}
+
+	@PutMapping("/api/user/service-provider/detail")
+	public void updateServiceProviderDetail(@RequestBody ServiceProvider update, HttpSession session, HttpServletResponse response) {
+		if (!isUserServiceProvider(session)) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		} else if (update.getPaymentMethod() == null) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		} else {
+			User user = (User) session.getAttribute("user");
+			User updated = updateBusinessInfo(user.getId(), update);
+			session.setAttribute("user", updated);
+			response.setStatus(200);
+		}
+	}
+
+	private User updateBusinessInfo(Integer id, ServiceProvider updateInfo) {
+		User user = userRepository.findUserById(id);
+		ServiceProvider detail = user.getProviderDetail();
+		detail.setTitle(updateInfo.getTitle());
+		detail.setYearsInBusiness(updateInfo.getYearsInBusiness());
+		detail.setEmployees(updateInfo.getEmployees());
+		detail.setEmail(updateInfo.getEmail());
+		detail.setStreet(updateInfo.getStreet());
+		detail.setCity(updateInfo.getCity());
+		detail.setState(updateInfo.getState());
+		detail.setZipCode(updateInfo.getZipCode());
+		detail.setTwitterLink(updateInfo.getTwitterLink());
+		detail.setInstagramLink(updateInfo.getInstagramLink());
+		detail.setFacebookLink(updateInfo.getFacebookLink());
+		detail.setPaymentMethod(updateInfo.getPaymentMethod());
+		serviceProviderRepository.save(detail);
+		System.out.println(detail.toString());
+		return user;
 	}
 
 	@PutMapping("/api/users/{userId}")
