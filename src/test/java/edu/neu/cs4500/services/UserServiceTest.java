@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.neu.cs4500.models.ServiceProvider;
+import edu.neu.cs4500.repositories.ServiceProviderRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -29,27 +30,23 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.neu.cs4500.models.User;
 import edu.neu.cs4500.repositories.UserRepository;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(User.class)
+@WebMvcTest(UserService.class)
 public class UserServiceTest {
 	@Autowired
 	private MockMvc mockMvc;
-	@MockBean
-	private UserService service;
 
 	@MockBean
 	private UserRepository repo;
+
+	@MockBean
+	private ServiceProviderRepository spr;
 
 	User user1;
 
@@ -69,12 +66,12 @@ public class UserServiceTest {
 
 	@BeforeEach
     void create() {
-		this.user1 = new User(); 
+		this.user1 = new User();
 		this.user1.setUsername("user1");
 		this.user1.setPassword("password");
 		this.user1.setId(1);
     }
-    
+
     
 	@Test
 	public void registerUser()
@@ -110,20 +107,146 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void testIsUserServiceProvider() throws Exception {
+	public void testUserServiceProviderInfo() throws Exception {
 		User providerUser1 = new User();
 		providerUser1.setUsername("jinkim");
 		providerUser1.setPassword("pass");
+		providerUser1.setId(123);
 
 		ServiceProvider detail = new ServiceProvider();
 		detail.setTitle("we have the best cleaners, believe me");
 		providerUser1.setProviderDetail(detail);
+		detail.setId(123);
 
+		when(repo.findAllUsers()).thenReturn(Arrays.asList(providerUser1));
 		when(repo.findByCredentials("jinkim", "pass")).thenReturn(Arrays.asList(providerUser1));
-		this.mockMvc.perform(put("/api/users/login")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(asJsonString(providerUser1)))
-				.andDo(print());
+		this.mockMvc
+				.perform(post("/api/user/service-provider/detail")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(providerUser1)))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.title", is("we have the best cleaners, believe me")));
 	}
-	
+
+	@Test
+	public void testNonServiceProvider() throws Exception {
+		User providerUser1 = new User();
+		providerUser1.setUsername("jinkim");
+		providerUser1.setPassword("pass");
+		providerUser1.setId(123);
+
+		User dummy = new User();
+
+		when(repo.findAllUsers()).thenReturn(Arrays.asList(providerUser1));
+		when(repo.findByCredentials("jinkim", "pass")).thenReturn(Arrays.asList(providerUser1));
+		this.mockMvc
+				.perform(post("/api/user/service-provider/detail")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(providerUser1)))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
+
+		this.mockMvc
+				.perform(post("/api/user/service-provider/detail")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(dummy)))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void testUpdateProvider() throws Exception {
+		User providerUser1 = new User();
+		providerUser1.setUsername("jinkim");
+		providerUser1.setPassword("pass");
+		providerUser1.setId(123);
+
+		ServiceProvider detail = new ServiceProvider();
+		detail.setTitle("we have the best cleaners, believe me");
+		detail.setId(123);
+		providerUser1.setProviderDetail(detail);
+
+		ServiceProvider update = new ServiceProvider();
+		update.setTitle("fake news");
+		update.setPaymentMethod("Credit Card");
+
+		when(repo.findAllUsers()).thenReturn(Arrays.asList(providerUser1));
+		when(repo.findByUsername("jinkim")).thenReturn(Arrays.asList(providerUser1));
+		when(repo.findUserById(123)).thenReturn(providerUser1);
+		this.mockMvc
+				.perform(put("/api/user/service-provider/detail/jinkim")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(update)))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.title", is("fake news")));
+	}
+
+	@Test
+	public void testUpdateNonProvider() throws Exception {
+		User nonProvider = new User();
+		nonProvider.setUsername("jinkim");
+		nonProvider.setPassword("pass");
+		nonProvider.setId(123);
+
+		ServiceProvider update = new ServiceProvider();
+		update.setTitle("fake news");
+		update.setPaymentMethod("Credit Card");
+
+		when(repo.findAllUsers()).thenReturn(Arrays.asList(nonProvider));
+		when(repo.findByUsername("jinkim")).thenReturn(Arrays.asList(nonProvider));
+		when(repo.findUserById(123)).thenReturn(nonProvider);
+
+		this.mockMvc
+				.perform(put("/api/user/service-provider/detail/jinkim")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(update)))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void testEmptyPaymentMethod() throws Exception {
+		User emptyPayment = new User();
+		emptyPayment.setUsername("jinkim");
+		emptyPayment.setPassword("pass");
+		emptyPayment.setId(123);
+
+		ServiceProvider detail = new ServiceProvider();
+		detail.setPaymentMethod(null);
+		detail.setId(123);
+		emptyPayment.setProviderDetail(detail);
+
+
+		ServiceProvider update = new ServiceProvider();
+		update.setTitle("fake news");
+
+		when(repo.findAllUsers()).thenReturn(Arrays.asList(emptyPayment));
+		when(repo.findByUsername("jinkim")).thenReturn(Arrays.asList(emptyPayment));
+		when(repo.findUserById(123)).thenReturn(emptyPayment);
+
+		this.mockMvc
+				.perform(put("/api/user/service-provider/detail/jinkim")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(update)))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void testNonuserFoundForUpdate() throws Exception {
+		ServiceProvider update = new ServiceProvider();
+		update.setTitle("fake news");
+
+		this.mockMvc
+				.perform(put("/api/user/service-provider/detail/sdafkwlajf32342")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(asJsonString(update)))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
+	}
+
+
+
 }

@@ -68,9 +68,9 @@ public class UserService {
   }
 
 
-	@GetMapping("/api/user/is-service-provider")
-	public Boolean isUserServiceProvider(User user) {
-		List<User> userFound = (List<User>) userRepository.findByCredentials(user.getUsername(), user.getPassword());
+	@PostMapping("/api/user/is-service-provider")
+	public Boolean isUserServiceProvider(@RequestBody User user) {
+		List<User> userFound = userRepository.findByCredentials(user.getUsername(), user.getPassword());
 		if (userFound.size() != 1) {
 			return false;
 		}
@@ -86,20 +86,32 @@ public class UserService {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return null;
 		}
-		return user.getProviderDetail();
+		List<User> u = userRepository.findByCredentials(user.getUsername(), user.getPassword());
+
+		return u.get(0).getProviderDetail();
 	}
 
-	@PutMapping("/api/user/service-provider/detail")
-	public void updateServiceProviderDetail(@RequestBody ServiceProvider update, @RequestBody User user, HttpSession session, HttpServletResponse response) {
-		if (!isUserServiceProvider(user)) {
+
+	@PutMapping("/api/user/service-provider/detail/{username}")
+	public ServiceProvider updateServiceProviderDetail(
+			@RequestBody ServiceProvider update, @PathVariable("username") String username, HttpSession session, HttpServletResponse response) {
+		List<User> userFound = userRepository.findByUsername(username);
+		if (userFound.size() < 1) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		} else if (update.getPaymentMethod() == null) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		} else {
-			User updated = updateBusinessInfo(user.getId(), update);
-			session.setAttribute("user", updated);
-			response.setStatus(200);
+			return null;
 		}
+		if (userFound.get(0).getProviderDetail() == null) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+		if (update.getPaymentMethod() == null) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+		User updated = updateBusinessInfo(userFound.get(0).getId(), update);
+		session.setAttribute("user", updated);
+		response.setStatus(200);
+		return updated.getProviderDetail();
 	}
 
 	private User updateBusinessInfo(Integer id, ServiceProvider updateInfo) {
