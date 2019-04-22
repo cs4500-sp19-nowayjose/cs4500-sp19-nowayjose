@@ -69,38 +69,33 @@ public class UserService {
 
 
 	@GetMapping("/api/user/is-service-provider")
-	public Boolean isUserServiceProvider(HttpSession session) {
-		if (session == null) {
+	public Boolean isUserServiceProvider(User user) {
+		List<User> userFound = (List<User>) userRepository.findByCredentials(user.getUsername(), user.getPassword());
+		if (userFound.size() != 1) {
 			return false;
 		}
-		User user = (User) session.getAttribute("user");
-		if (user == null) {
-			return false;
-		}
-		if (user.getProviderDetail() == null) {
+		if (userFound.get(0).getProviderDetail() == null) {
 			return false;
 		}
 		return true;
 	}
 
-	@GetMapping("/api/user/service-provider/detail")
-	public ServiceProvider getServiceProviderDetail(HttpSession session, HttpServletResponse response) {
-		if (!isUserServiceProvider(session)) {
+	@PostMapping("/api/user/service-provider/detail")
+	public ServiceProvider getServiceProviderDetail(@RequestBody User user, HttpSession session, HttpServletResponse response) {
+		if (!isUserServiceProvider(user)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return null;
 		}
-		User user = (User) session.getAttribute("user");
 		return user.getProviderDetail();
 	}
 
 	@PutMapping("/api/user/service-provider/detail")
-	public void updateServiceProviderDetail(@RequestBody ServiceProvider update, HttpSession session, HttpServletResponse response) {
-		if (!isUserServiceProvider(session)) {
+	public void updateServiceProviderDetail(@RequestBody ServiceProvider update, @RequestBody User user, HttpSession session, HttpServletResponse response) {
+		if (!isUserServiceProvider(user)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		} else if (update.getPaymentMethod() == null) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		} else {
-			User user = (User) session.getAttribute("user");
 			User updated = updateBusinessInfo(user.getId(), update);
 			session.setAttribute("user", updated);
 			response.setStatus(200);
@@ -145,6 +140,7 @@ public class UserService {
 		user.setAddZip(userUpdates.getAddZip());
 		return userRepository.save(user);
 	}
+
 	@DeleteMapping("/api/users/{userId}")
 	public void deleteUser(
 			@PathVariable("userId") Integer id) {
