@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Entity 
 @Table(name="users")
+@Transactional
 public class User {
 
 	@Id
@@ -18,7 +20,7 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
-  
+
 	private int dobMonth;
 	private int dobDay;
 	private int dobYear;
@@ -30,7 +32,7 @@ public class User {
   
 	private String role;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private ServiceProvider providerDetail;
 
 	// Need an explicit default now
@@ -144,5 +146,25 @@ public class User {
 	public User setAddZip(int addZip) {
 		this.addZip = addZip;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", dobMonth=" + dobMonth +
+				", dobDay=" + dobDay +
+				", dobYear=" + dobYear +
+				", addStreet='" + addStreet + '\'' +
+				", addCity='" + addCity + '\'' +
+				", addState='" + addState + '\'' +
+				", addZip=" + addZip +
+				", role='" + role + '\'' +
+				", providerDetail=" + providerDetail +
+				'}';
 	}
 }

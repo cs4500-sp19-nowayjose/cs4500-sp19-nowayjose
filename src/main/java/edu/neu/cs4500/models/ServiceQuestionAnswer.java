@@ -19,7 +19,7 @@ public class ServiceQuestionAnswer {
     private Integer minRangeAnswer;
     private Integer choiceAnswer;
 
-    @OneToOne
+    @ManyToOne
     // In JSON format, include a "provider" field with just the ServiceProvider's ID
     // instead of ignoring it or including the full nested object
     // EX. { provider: { id: 123 } }
