@@ -87,9 +87,7 @@ public class UserService {
 		user.setUsername(userUpdates.getUsername());
 		user.setFirstName(userUpdates.getFirstName());
 		user.setLastName(userUpdates.getLastName());
-		user.setDOBMonth(userUpdates.getDOBMonth());
-		user.setDOBDay(userUpdates.getDOBDay());
-		user.setDOBYear(userUpdates.getDOBYear());
+		user.setDob(userUpdates.getDob());
 		user.setAddStreet(userUpdates.getAddStreet());
 		user.setAddCity(userUpdates.getAddCity());
 		user.setAddState(userUpdates.getAddState());

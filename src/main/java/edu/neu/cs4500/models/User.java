@@ -19,9 +19,7 @@ public class User {
 	private String firstName;
 	private String lastName;
   
-	private int dobMonth;
-	private int dobDay;
-	private int dobYear;
+	private Date dob;
   
 	private String addStreet;
 	private String addCity;
@@ -96,25 +94,11 @@ public class User {
 		this.providerDetail = providerDetail;
 	}
   
-  public int getDOBMonth() {
+  public Date getDob() {
 		return dobMonth;
 	}
-	public User setDOBMonth(int dobMonth) {
-		this.dobMonth = dobMonth;
-		return this;
-	}
-  public int getDOBDay() {
-		return dobDay;
-	}
-	public User setDOBDay(int dobDay) {
-		this.dobDay = dobDay;
-		return this;
-	}
-  public int getDOBYear() {
-		return dobYear;
-	}
-	public User setDOBYear(int dobYear) {
-		this.dobYear = dobYear;
+	public User setDob(Date dob) {
+		this.dob = dob;
 		return this;
 	}
   public String getAddStreet() {
