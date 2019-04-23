@@ -125,6 +125,10 @@ public class ServiceQuestion {
         this.serviceQuestionAnswers.add(ans);
     }
 
+    public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> answers) {
+        this.serviceQuestionAnswers = answers;
+    }
+
     public void removeServiceQuestionAnswer(Integer ansId){
         for (ServiceQuestionAnswer ans: serviceQuestionAnswers){
             if (ans.getId() == ansId){
