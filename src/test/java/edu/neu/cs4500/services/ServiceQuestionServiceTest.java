@@ -2,20 +2,9 @@ package edu.neu.cs4500.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.neu.cs4500.models.Service;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import edu.neu.cs4500.models.ServiceQuestion;
+import edu.neu.cs4500.models.ServiceQuestionAnswer;
 import edu.neu.cs4500.models.ServiceQuestionType;
-import static org.hamcrest.CoreMatchers.is;
-
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +16,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ServiceQuestionService.class)
@@ -80,6 +75,15 @@ public class ServiceQuestionServiceTest {
         questions = new ArrayList<>();
         questions.add(q1);
         questions.add(q2);
+
+        ServiceQuestionAnswer a1 = new ServiceQuestionAnswer()
+            .setId(1)
+            .setServiceQuestion(q1)
+            .setTrueFalseAnswer(true);
+        List<ServiceQuestionAnswer> answers = new LinkedList<>();
+        answers.add(a1);
+        q1.setServiceQuestionAnswers(answers);
+
         when(repo.findAllServiceQuestions()).thenReturn(questions);
         when(repo.findServiceQuestionById(1)).thenReturn(q1);
         when(repo.findServiceQuestionById(2)).thenReturn(q2);
@@ -246,10 +250,7 @@ public class ServiceQuestionServiceTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(2)))
-                .andExpect(jsonPath("$.title", is("updated")))
-                .andExpect(jsonPath("$.service.id", is(123)));
-
-
+                .andExpect(jsonPath("$.title", is("updated")));
     }
 
     @Test
@@ -271,12 +272,24 @@ public class ServiceQuestionServiceTest {
 
     @Test
     public void deleteOneAnswer() throws Exception {
-
+        setUp();
+        this.mockMvc
+            .perform(delete("/api/service_question/1")
+                         .contentType(APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string("Deleted question 1"));
     }
 
     @Test
     public void deleteOneAnswerOfAQuestion() throws Exception {
-
+        setUp();
+        this.mockMvc
+            .perform(delete("/api/service_question/1/service_question_answers/1")
+                         .contentType(APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string("Deleted answer 1 for question 1"));
     }
 
 
