@@ -19,9 +19,10 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
-  
-	@Temporal(value=TemporalType.DATE)
-	private Date dob;
+
+	private int dobMonth;
+	private int dobDay;
+	private int dobYear;
   
 	private String addStreet;
 	private String addCity;
@@ -97,11 +98,25 @@ public class User {
 		this.providerDetail = providerDetail;
 	}
   
-  public Date getDob() {
+  public int getDOBMonth() {
 		return dobMonth;
 	}
-	public User setDob(Date dob) {
-		this.dob = dob;
+	public User setDOBMonth(int dobMonth) {
+		this.dobMonth = dobMonth;
+		return this;
+	}
+  public int getDOBDay() {
+		return dobDay;
+	}
+	public User setDOBDay(int dobDay) {
+		this.dobDay = dobDay;
+		return this;
+	}
+  public int getDOBYear() {
+		return dobYear;
+	}
+	public User setDOBYear(int dobYear) {
+		this.dobYear = dobYear;
 		return this;
 	}
   public String getAddStreet() {

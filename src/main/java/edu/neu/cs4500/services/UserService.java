@@ -35,12 +35,6 @@ public class UserService {
 			@PathVariable("userId") Integer id) {
 		return userRepository.findUserById(id);
 	}
-	@GetMapping("api/users/cred/{username}/{password}")
-	public User findUserByCredentials(
-			@PathVariable("username") String username,
-			@PathVariable("password") String password) {
-		return (List<User>) userRepository.findByCredentials(username, password).get(0);
-	}
 	@PostMapping("/api/users")
 	public User createUser(@RequestBody User user) {
 		return userRepository.save(user);
@@ -71,9 +65,9 @@ public class UserService {
 	}
   
   @GetMapping("/api/users/profile")
-  public User profile(HttpSession session) {
-    User currentUser = (User) session.getAttribute("user");
-    return currentUser;
+  public Optional<User> profile(HttpSession session) {
+     User currentUser = (User) session.getAttribute("user");
+     return userRepository.findById(currentUser.getId());
   }
 
 
@@ -152,7 +146,9 @@ public class UserService {
 		user.setUsername(userUpdates.getUsername());
 		user.setFirstName(userUpdates.getFirstName());
 		user.setLastName(userUpdates.getLastName());
-		user.setDob(userUpdates.getDob());
+		user.setDOBMonth(userUpdates.getDOBMonth());
+		user.setDOBDay(userUpdates.getDOBDay());
+		user.setDOBYear(userUpdates.getDOBYear());
 		user.setAddStreet(userUpdates.getAddStreet());
 		user.setAddCity(userUpdates.getAddCity());
 		user.setAddState(userUpdates.getAddState());
