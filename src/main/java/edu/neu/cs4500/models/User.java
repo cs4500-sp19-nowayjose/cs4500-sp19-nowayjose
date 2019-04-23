@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+
+import java.sql.Date;
 import java.util.List;
 
 @Entity 
@@ -98,7 +100,7 @@ public class User {
 	}
   
   public Date getDob() {
-		return dobMonth;
+		return this.dob;
 	}
 	public User setDob(Date dob) {
 		this.dob = dob;
@@ -141,9 +143,6 @@ public class User {
 				", password='" + password + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
-				", dobMonth=" + dobMonth +
-				", dobDay=" + dobDay +
-				", dobYear=" + dobYear +
 				", addStreet='" + addStreet + '\'' +
 				", addCity='" + addCity + '\'' +
 				", addState='" + addState + '\'' +
