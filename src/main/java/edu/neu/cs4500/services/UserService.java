@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.neu.cs4500.repositories.FrequentlyAskedAnswerRepository;
 import edu.neu.cs4500.models.Service;
 import edu.neu.cs4500.models.ServiceProvider;
 import edu.neu.cs4500.repositories.ServiceProviderRepository;
@@ -21,6 +22,8 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
+	FrequentlyAskedAnswerRepository answerRepository;
+  @Autowired
 	ServiceProviderRepository serviceProviderRepository;
 
 	@GetMapping("/api/users")
@@ -156,6 +159,11 @@ public class UserService {
 	@DeleteMapping("/api/users/{userId}")
 	public void deleteUser(
 			@PathVariable("userId") Integer id) {
+		User u = userRepository.findById(id).orElse(null);
+		if (u == null) {
+			return;
+		}
+		answerRepository.deleteFrequentlyAskedAnswerByUser(u);
 		userRepository.deleteById(id);
 	}
 }
