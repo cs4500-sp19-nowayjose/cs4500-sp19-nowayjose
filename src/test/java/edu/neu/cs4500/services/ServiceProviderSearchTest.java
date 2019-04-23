@@ -1,10 +1,7 @@
 package edu.neu.cs4500.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.neu.cs4500.models.Service;
-import edu.neu.cs4500.models.ServiceProvider;
-import edu.neu.cs4500.models.ServiceQuestion;
-import edu.neu.cs4500.models.ServiceQuestionType;
+import edu.neu.cs4500.models.*;
 import edu.neu.cs4500.repositories.ServiceProviderRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionAnswerRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
@@ -18,10 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -167,6 +161,38 @@ public class ServiceProviderSearchTest {
                 .andExpect(jsonPath("$[0].zipCode", is("02115")));
     }
 
+    @Test
+    public void testFilters() throws Exception {
+        ServiceProvider sp1 = new ServiceProvider();
+        sp1.setId(1);
+        sp1.setTitle("some title");
+        sp1.setZipCode("02115");
+        ServiceQuestion sq = new ServiceQuestion()
+            .setId(1)
+            .setServiceQuestionType(ServiceQuestionType.YESORNO);
+        when(spr.findServiceProviderById(1)).thenReturn(sp1);
+        when(sqr.findServiceQuestionById(1)).thenReturn(sq);
+        ServiceQuestionAnswer answer = new ServiceQuestionAnswer()
+            .setId(1)
+            .setProvider(sp1)
+            .setServiceQuestion(sq)
+            .setTrueFalseAnswer(true);
+        LinkedList<ServiceQuestionAnswer> answers = new LinkedList<>();
+        answers.add(answer);
+        sp1.setServiceQuestionAnswers(answers);
+        String jsonString = "{\"zip\": \"02115\", \"title\": null, \"filters\": {\"1\": true}}";
+        when(spr.searchServiceProvidersByZip("02115")).thenReturn(Arrays.asList(sp1));
+        this.mockMvc
+            .perform(
+                put("/api/service-provider/filter")
+                    .contentType(APPLICATION_JSON_UTF8)
+                    .content(jsonString)
+            )
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].title", is("some title")));
+    }
 
 
 }

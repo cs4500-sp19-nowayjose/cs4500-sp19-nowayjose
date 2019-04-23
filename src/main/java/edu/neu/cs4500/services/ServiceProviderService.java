@@ -51,7 +51,11 @@ public class ServiceProviderService {
             matchingProviders = serviceProviderRepository.findAllServiceProviders();
         }
 
-        if (!root.get("filters").elements().hasNext()) {
+        boolean hasFilter = root
+            .get("filters")
+            .elements()
+            .hasNext();
+        if (!hasFilter) {
             return matchingProviders;
         } else {
             SearchCriteria sq = buildSearchCriteria(root.get("filters"));
@@ -82,11 +86,9 @@ public class ServiceProviderService {
         Optional<Integer> choiceAnswer = Optional.empty();
         switch (sq.getServiceQuestionType()) {
             case MINMAX:
-                rangeAnswer = Optional.of(criterionJson.asInt());
-                break;
+                rangeAnswer = Optional.of(criterionJson.asInt()); break;
             case MULTIPLECHOICES:
-                choiceAnswer = Optional.of(criterionJson.asInt());
-                break;
+                choiceAnswer = Optional.of(criterionJson.asInt()); break;
             case YESORNO:
                 trueFalseAnswer = Optional.of(criterionJson.asBoolean());
                 break;

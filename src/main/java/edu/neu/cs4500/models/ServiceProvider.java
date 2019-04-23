@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 @Entity
 @Table(name="service_providers")
 public class ServiceProvider {
@@ -26,6 +28,7 @@ public class ServiceProvider {
     private String street;
     private String state;
     private String city;
+
 
     @JsonProperty("paymentMethod")
     private String paymentMethod;
@@ -200,7 +203,9 @@ public class ServiceProvider {
     }
 
     public void setPaymentMethod(String paymentMethod) {
-        if (isPaymentMethodCorrect(paymentMethod))
+        if (paymentMethod == null) {
+            this.paymentMethod = null;
+        } else if (isPaymentMethodCorrect(paymentMethod))
             this.paymentMethod = paymentMethod;
     }
 

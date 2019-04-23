@@ -3,11 +3,9 @@ package edu.neu.cs4500.services;
 import edu.neu.cs4500.models.ServiceProvider;
 import edu.neu.cs4500.models.ServiceQuestion;
 import edu.neu.cs4500.models.ServiceQuestionAnswer;
-import edu.neu.cs4500.models.User;
 import edu.neu.cs4500.repositories.ServiceProviderRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionAnswerRepository;
 import edu.neu.cs4500.repositories.ServiceQuestionRepository;
-import edu.neu.cs4500.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class ServiceQuestionAnswerService {
 	@Autowired
 	ServiceProviderRepository providerRepository;
 	@Autowired
-	ServiceQuestionRepository serviceRepository;
+	ServiceQuestionRepository serviceQuestionRepository;
 
 	@GetMapping(ROUTE)
 	public List<ServiceQuestionAnswer> findAllServiceQuestionAnswers() {
@@ -47,7 +45,7 @@ public class ServiceQuestionAnswerService {
         ServiceProvider provider = providerRepository.findServiceProviderById(serviceQuestionAnswer.getProvider().getId());
         serviceQuestionAnswer.setProvider(provider);
 
-		ServiceQuestion serviceQuestion = serviceRepository.findServiceQuestionById(serviceQuestionAnswer.getServiceQuestion().getId());
+		ServiceQuestion serviceQuestion = serviceQuestionRepository.findServiceQuestionById(serviceQuestionAnswer.getServiceQuestion().getId());
 		serviceQuestionAnswer.setServiceQuestion(serviceQuestion);
 
 		Date now = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime();
@@ -73,9 +71,10 @@ public class ServiceQuestionAnswerService {
 	}
 
 	@DeleteMapping(ROUTE + "/{serviceQuestionAnswerId}")
-	public void deleteServiceQuestionAnswer(
+	public String deleteServiceQuestionAnswer(
 			@PathVariable("serviceQuestionAnswerId") Integer id) {
 		answersRepository.deleteById(id);
+		return "Deleted answer " + id;
 	}
 
 }

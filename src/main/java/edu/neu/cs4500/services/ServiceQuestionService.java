@@ -128,12 +128,13 @@ public class ServiceQuestionService {
 
   // to delete one question by given question id
   @DeleteMapping("api/service_question/{serviceQuestionId}")
-  public void deleteOneAnswer( @PathVariable("serviceQuestionId") Integer id) {
+  public String deleteOneAnswer( @PathVariable("serviceQuestionId") Integer id) {
     serviceQuestionRepository.deleteById(id);
+    return "Deleted question " + id;
   }
 
   @DeleteMapping("api/service_question/{serviceQuestionId}/service_question_answers/{serviceQuestionAnswerId}")
-  public void deleteOneAnswerOfAQuestion(
+  public String deleteOneAnswerOfAQuestion(
           @PathVariable("serviceQuestionId") Integer qId,
           @PathVariable("serviceQuestionAnswerId") Integer aId
   )
@@ -141,6 +142,7 @@ public class ServiceQuestionService {
     ServiceQuestion target =
             serviceQuestionRepository.findServiceQuestionById(qId);
     target.removeServiceQuestionAnswer(aId);
+    return "Deleted answer " + aId + " for question " + qId;
   }
 
 }

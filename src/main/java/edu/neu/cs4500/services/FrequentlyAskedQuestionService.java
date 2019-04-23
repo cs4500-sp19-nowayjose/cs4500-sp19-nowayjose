@@ -2,6 +2,7 @@ package edu.neu.cs4500.services;
 
 import edu.neu.cs4500.models.FrequentlyAskedAnswer;
 import edu.neu.cs4500.models.FrequentlyAskedQuestion;
+import edu.neu.cs4500.repositories.FrequentlyAskedAnswerRepository;
 import edu.neu.cs4500.repositories.FrequentlyAskedQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class  FrequentlyAskedQuestionService {
     @Autowired
     FrequentlyAskedQuestionRepository questionRepository;
+    @Autowired
+    FrequentlyAskedAnswerRepository answerRepository;
 
     @PostMapping("/api/faqs")
     public FrequentlyAskedQuestion createFaq(@RequestBody FrequentlyAskedQuestion faq) {
@@ -62,6 +65,11 @@ public class  FrequentlyAskedQuestionService {
 
     @DeleteMapping("api/faq/{faqId}")
     public void removeFaqById(@PathVariable("faqId") Integer id) {
+        FrequentlyAskedQuestion q = questionRepository.findById(id).orElse(null);
+        if (q == null) {
+            return;
+        }
+        answerRepository.deleteFrequentlyAskedAnswerByFrequentlyAskedQuestion(q);
         questionRepository.deleteById(id);
     }
 }
