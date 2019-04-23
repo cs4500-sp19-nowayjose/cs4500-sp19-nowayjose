@@ -126,14 +126,6 @@ public class SubscriptionEstimateDiscountTest {
         assertEquals(70, e4.getEstimate());
     }
 
-
-    @Test
-    public void testRecurringAwards() {
-
-        assertEquals(300, e1.getDiscount());
-        assertEquals(700, e3.getEstimate());
-    }
-
     @Test
     public void testSubscriptionDiscounts() {
         assertEquals(700, e1.getEstimate());
