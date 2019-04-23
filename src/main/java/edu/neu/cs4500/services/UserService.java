@@ -68,43 +68,50 @@ public class UserService {
   }
 
 
-	@GetMapping("/api/user/is-service-provider")
-	public Boolean isUserServiceProvider(HttpSession session) {
-		if (session == null) {
+	@PostMapping("/api/user/is-service-provider")
+	public Boolean isUserServiceProvider(@RequestBody User user) {
+		List<User> userFound = userRepository.findByCredentials(user.getUsername(), user.getPassword());
+		if (userFound.size() != 1) {
 			return false;
 		}
-		User user = (User) session.getAttribute("user");
-		if (user == null) {
-			return false;
-		}
-		if (user.getProviderDetail() == null) {
+		if (userFound.get(0).getProviderDetail() == null) {
 			return false;
 		}
 		return true;
 	}
 
-	@GetMapping("/api/user/service-provider/detail")
-	public ServiceProvider getServiceProviderDetail(HttpSession session, HttpServletResponse response) {
-		if (!isUserServiceProvider(session)) {
+	@PostMapping("/api/user/service-provider/detail")
+	public ServiceProvider getServiceProviderDetail(@RequestBody User user, HttpSession session, HttpServletResponse response) {
+		if (!isUserServiceProvider(user)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return null;
 		}
-		User user = (User) session.getAttribute("user");
-		return user.getProviderDetail();
+		List<User> u = userRepository.findByCredentials(user.getUsername(), user.getPassword());
+
+		return u.get(0).getProviderDetail();
 	}
 
-	@PutMapping("/api/user/service-provider/detail")
-	public void updateServiceProviderDetail(@RequestBody ServiceProvider update, HttpSession session, HttpServletResponse response) {
-		if (!isUserServiceProvider(session)) {
+
+	@PutMapping("/api/user/service-provider/detail/{username}")
+	public ServiceProvider updateServiceProviderDetail(
+			@RequestBody ServiceProvider update, @PathVariable("username") String username, HttpSession session, HttpServletResponse response) {
+		List<User> userFound = userRepository.findByUsername(username);
+		if (userFound.size() < 1) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		} else if (update.getPaymentMethod() == null) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		} else {
-			User user = (User) session.getAttribute("user");
-			User updated = updateBusinessInfo(user.getId(), update);
-			session.setAttribute("user", updated);
-			response.setStatus(200);
+			return null;
 		}
+		if (userFound.get(0).getProviderDetail() == null) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+		if (update.getPaymentMethod() == null) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+		User updated = updateBusinessInfo(userFound.get(0).getId(), update);
+		session.setAttribute("user", updated);
+		response.setStatus(200);
+		return updated.getProviderDetail();
 	}
 
 	private User updateBusinessInfo(Integer id, ServiceProvider updateInfo) {
@@ -145,6 +152,7 @@ public class UserService {
 		user.setAddZip(userUpdates.getAddZip());
 		return userRepository.save(user);
 	}
+
 	@DeleteMapping("/api/users/{userId}")
 	public void deleteUser(
 			@PathVariable("userId") Integer id) {
