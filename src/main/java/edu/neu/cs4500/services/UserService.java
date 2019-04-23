@@ -35,9 +35,11 @@ public class UserService {
 			@PathVariable("userId") Integer id) {
 		return userRepository.findUserById(id);
 	}
-	@GetMapping("api/users/login")
-	public User findUserByCredentials(@RequestBody User user) {
-		List<User> userFound = (List<User>) userRepository.findByCredentials(user.username, user.password);
+	@GetMapping("api/users/cred/{username}/{password}")
+	public User findUserByCredentials(
+			@PathVariable("username") String username,
+			@PathVariable("password") String password) {
+		List<User> userFound = (List<User>) userRepository.findByCredentials(username, password);
 		if (userFound.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return null;
