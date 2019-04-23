@@ -25,8 +25,15 @@ public class FrequentlyAskedAnswerService {
 
 	@PostMapping("/api/faq-answers")
     public FrequentlyAskedAnswer createAnswer(@RequestBody FrequentlyAskedAnswer answer) {
-		User u = userRepository.findByUsername(answer.getUsername()).iterator().next();
+		List<User> user = (List<User>)userRepository.findByUsername(answer.getUsername());
+		if (user.size() != 1) {
+			throw new IllegalArgumentException("User does not exist");
+		}
+		User u = user.get(0);
 		FrequentlyAskedQuestion q = questionRepository.findFrequentlyAskedQuestionByQuestion(answer.getQuestion());
+		if (q == null) {
+			throw new IllegalArgumentException("Question must exist");
+		}
 		answer.setUser(u);
 		answer.setFrequentlyAskedQuestion(q);
         return answerRepository.save(answer);

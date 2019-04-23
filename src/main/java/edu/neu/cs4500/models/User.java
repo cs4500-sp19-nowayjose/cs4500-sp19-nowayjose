@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity 
 @Table(name="users")
-@Transactional
 public class User {
 
 	@Id
@@ -30,6 +29,7 @@ public class User {
   
 	private String role;
 
+	@JsonProperty("propertyDetailId")
 	@OneToOne(cascade = CascadeType.ALL)
 	private ServiceProvider providerDetail;
 

@@ -1,9 +1,6 @@
 package edu.neu.cs4500.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -123,6 +120,10 @@ public class ServiceQuestion {
 
     public void addServiceQuestionAnswer(ServiceQuestionAnswer ans){
         this.serviceQuestionAnswers.add(ans);
+    }
+
+    public void setServiceQuestionAnswers(List<ServiceQuestionAnswer> answers) {
+        this.serviceQuestionAnswers = answers;
     }
 
     public void removeServiceQuestionAnswer(Integer ansId){
