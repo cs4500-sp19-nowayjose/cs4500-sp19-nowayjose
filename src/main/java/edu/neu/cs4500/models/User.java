@@ -22,7 +22,6 @@ public class User {
 	private String firstName;
 	private String lastName;
   
-	@Temporal(value=TemporalType.DATE)
 	private Date dob;
   
 	private String addStreet;
