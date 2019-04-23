@@ -39,7 +39,7 @@ public class UserService {
 	public User findUserByCredentials(
 			@PathVariable("username") String username,
 			@PathVariable("password") String password) {
-		return (List<User>) userRepository.findByCredentials(username, password).get(0);
+		return ((List<User>) userRepository.findByCredentials(username, password)).get(0);
 	}
 	@PostMapping("/api/users")
 	public User createUser(@RequestBody User user) {
