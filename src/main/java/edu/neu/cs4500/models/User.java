@@ -30,6 +30,10 @@ public class User {
 	private int addZip;
   
 	private String role;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy="providers")
+	private List<Service> services;
 
 	@JsonProperty("propertyDetailId")
 	@OneToOne(cascade = CascadeType.ALL)
@@ -149,5 +153,13 @@ public class User {
 				", role='" + role + '\'' +
 				", providerDetail=" + providerDetail +
 				'}';
+	}
+
+	public List<Service> getServices() {
+		return services;
+	}
+
+	public void setServices(List<Service> services) {
+		this.services = services;
 	}
 }

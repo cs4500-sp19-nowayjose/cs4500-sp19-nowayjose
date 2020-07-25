@@ -1,6 +1,9 @@
 package edu.neu.cs4500.models;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity
@@ -18,6 +21,14 @@ public class Service {
 
 	@ManyToMany(mappedBy="services")
 	private List<ServiceCategory> serviceCategories;
+	
+	@ManyToMany
+    @JsonIgnore
+    @JoinTable(
+            name="PROVIDERS_SERVICES",
+            joinColumns=@JoinColumn(name="SERVICE_ID", referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="USER_ID", referencedColumnName="id"))
+    private List<User> providers;
 
 	public String getImageUrl() {
 		return this.imageUrl != null ? this.imageUrl : "https://yt3.ggpht.com/a-/AAuE7mDk-PBd6ZWOvXZ6VFQZ5b1SgLqlCq1aPU8tBw=s288-mo-c-c0xffffffff-rj-k-no";
